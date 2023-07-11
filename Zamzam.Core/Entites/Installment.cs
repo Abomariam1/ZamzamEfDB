@@ -8,20 +8,13 @@
         public DateOnly PayedOn { get; set; }
         public decimal Value { get; set; }
         public int EmployeeId { get; set; }
-
-
         public virtual Customer Customer { get; set; }
-
         public virtual Employee Employee { get; set; }
-
         public virtual SaleOrder SalesOrder { get; set; }
-
     }
 }
 /*
  customer may purcheses many products
 employee collect many installment
-custmoer pay monthly
- 
- 
+custmoer pay monthly 
  */

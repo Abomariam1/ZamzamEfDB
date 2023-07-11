@@ -8,6 +8,7 @@
         public string? Phone { get; set; } = string.Empty;
         public string? Address { get; set; } = string.Empty;
         public string? Notes { get; set; } = string.Empty;
+        public int AreaId { get; set; }
         public bool IsProplem { get; set; } = false;
         public bool IsBlackList { get; set; } = false;
         public bool IsDeleted { get; set; } = false;
