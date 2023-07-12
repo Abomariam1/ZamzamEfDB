@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zamzam.Core;
 
-namespace ZamzamEfDb
+namespace Zamzam.EF
 {
     public class AreaEntityConfiguration : IEntityTypeConfiguration<Area>
     {

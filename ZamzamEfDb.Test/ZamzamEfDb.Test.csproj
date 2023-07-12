@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Zamzam.Core\Zamzam.Core.csproj" />
+    <ProjectReference Include="..\Zamzam.EF\Zamzam.EF.csproj" />
   </ItemGroup>
 
 </Project>
