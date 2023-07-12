@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zamzam.Core;
-namespace ZamzamEfDb.Test.Configurations
+namespace ZamzamEfDb
 {
     public class ReturnSaleOrderEntityConfiguration : IEntityTypeConfiguration<ReturnSaleOrder>
     {

@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ZamzamEfDb.Test.Migrations
+namespace ZamzamEfDb
 {
     /// <inheritdoc />
     public partial class IntialCreaiting : Migration

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zamzam.Core;
 
-namespace ZamzamEfDb.Test.Configurations
+namespace ZamzamEfDb
 {
     public class ReturnPurchaseOrderLineConfiguration : IEntityTypeConfiguration<ReturnPurchaseOrderLine>
     {

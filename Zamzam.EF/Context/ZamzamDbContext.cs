@@ -2,7 +2,7 @@
 using System.Reflection;
 using Zamzam.Core;
 
-namespace ZamzamEfDb.Test.Context
+namespace ZamzamEfDb
 {
     public class ZamzamDbContext : DbContext
     {
