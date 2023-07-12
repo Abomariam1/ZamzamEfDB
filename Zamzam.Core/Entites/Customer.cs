@@ -16,6 +16,7 @@
         public virtual ICollection<SaleOrder> SaleOrders { get; set; }
         public virtual ICollection<ReturnSaleOrder> ReturnSaleOrders { get; set; }
         public virtual ICollection<Installment> Installments { get; set; }
+        public virtual ICollection<Maintenance> Maintenances { get; set; }
 
     }
 }

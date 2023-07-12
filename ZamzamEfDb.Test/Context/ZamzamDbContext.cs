@@ -9,7 +9,7 @@ namespace ZamzamEfDb.Test.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Data Source=MOSTAFA\\SQLEXPRESS;Initial Catalog=ZamzamDbTest;Integrated Security=True;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=ZamzamDb;Integrated Security=True;TrustServerCertificate=True");
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,5 +36,17 @@ namespace ZamzamEfDb.Test.Context
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Installment> Installments { get; set; }
+        public DbSet<Maintenance> Maintenances { get; set; }
+        public DbSet<MaintenanceOrderLine> MaintenanceOrderLines { get; set; }
+        public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+        public DbSet<PurchaseOrderLine> PurchaseOrderLines { get; set; }
+        public DbSet<ReturnPurchaseOrder> ReturnPurchaseOrders { get; set; }
+        public DbSet<ReturnPurchaseOrderLine> ReturnPurchaseOrderLines { get; set; }
+        public DbSet<ReturnSaleOrder> ReturnSaleOrders { get; set; }
+        public DbSet<ReturnSaleOrderLine> ReturnSaleOrderLines { get; set; }
+        public DbSet<SaleOrder> SaleOrders { get; set; }
+        public DbSet<SaleOrderLine> SaleOrderLines { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
     }
 }

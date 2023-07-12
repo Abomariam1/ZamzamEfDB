@@ -1,6 +1,4 @@
-﻿using ZamzamEfDb.Test.Entites.Interfaces;
-
-namespace Zamzam.Core
+﻿namespace Zamzam.Core
 {
 
     public class SaleOrderLine : BaseOrderLine

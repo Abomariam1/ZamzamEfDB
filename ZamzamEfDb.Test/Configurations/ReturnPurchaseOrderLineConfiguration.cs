@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zamzam.Core;
-using ZamzamEfDb.Test.Entites;
 
 namespace ZamzamEfDb.Test.Configurations
 {

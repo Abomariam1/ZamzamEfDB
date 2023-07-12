@@ -12,6 +12,7 @@
         public virtual IList<PurchaseOrder> Purchases { get; set; }
         public virtual IList<ReturnSaleOrder> ReturnSales { get; set; }
         public virtual IList<ReturnPurchaseOrder> ReturnPurchases { get; set; }
+        public virtual IList<Maintenance> Maintenances { get; set; }
 
     }
 }

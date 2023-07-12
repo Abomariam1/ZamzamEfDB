@@ -9,10 +9,12 @@ namespace ZamzamEfDb.Test.Configurations
         public void Configure(EntityTypeBuilder<SaleOrderLine> builder)
         {
             builder.HasKey(x => new { x.ItemId, x.OrderId });
+
             builder.HasOne(p => p.SaleOrder)
-                .WithMany(p => p.SaleOrderLines)
+                .WithMany()
                 .HasForeignKey(p => p.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasOne(p => p.Item)
                 .WithMany(p => p.OrderLines)
                 .HasForeignKey(p => p.ItemId)
@@ -20,6 +22,7 @@ namespace ZamzamEfDb.Test.Configurations
 
             builder.Property(p => p.Price)
                 .HasPrecision(9, 2);
+
             builder.Property(t => t.TotalPrice)
                 .HasPrecision(9, 2)
                 .HasComputedColumnSql("[Price] * [Quantity]");

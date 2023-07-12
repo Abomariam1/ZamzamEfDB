@@ -10,5 +10,7 @@
         public int Balance { get; set; }
         public virtual IList<SaleOrderLine> OrderLines { get; set; }
         public virtual IList<PurchaseOrderLine> PurchaseOrderLines { get; set; }
+        public virtual IList<MaintenanceOrderLine> MaintenanceOrderLines { get; set; }
+
     }
 }
