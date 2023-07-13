@@ -1,14 +1,16 @@
 ﻿namespace Zamzam.Core
 {
-    public class Maintenance
+    public class Maintenance : BaseEntity
     {
-        public int Id { get; set; }
         public int SaleOrderId { get; set; }
         public int CustomerId { get; set; }
         public int EmployeeId { get; set; }
         public DateTime NextMaintenanceDate { get; set; }
         public DateTime LastMaintenanceDate { get; set; }
         public bool IsMaintained { get; set; }
+        public Customer Customer { get; set; }
+        public Employee Employee { get; set; }
+        public SaleOrder SaleOrder { get; set; }
         public virtual IList<MaintenanceOrderLine> MaintenanceOrderLines { get; set; }
 
     }

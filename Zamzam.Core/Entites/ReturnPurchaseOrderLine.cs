@@ -2,7 +2,8 @@
 {
     public class ReturnPurchaseOrderLine : BaseOrderLine
     {
-        //public virtual ReturnPurchaseOrder ReturnPurcheseOrder { get; set; }
-        //public virtual PurchaseOrderLine PurchaseOrderLine { get; set; }
+        public int RerturnPurchaseOrderId { get; set; }
+        public virtual ReturnPurchaseOrder ReturnPurcheseOrder { get; set; }
+        public virtual PurchaseOrderLine PurchaseOrderLine { get; set; }
     }
 }

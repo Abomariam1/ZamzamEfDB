@@ -8,24 +8,26 @@ namespace Zamzam.EF
     {
         public void Configure(EntityTypeBuilder<Installment> builder)
         {
-            builder.HasKey(i => i.InstallmentId);
+            builder.HasKey(i => new { });
 
-            builder.HasOne(p => p.SalesOrder)
+            builder.Property(p => p.Value)
+                .HasPrecision(9, 2);
+
+            builder.HasOne(s => s.SalesOrder)
                 .WithMany(p => p.Installments)
                 .HasForeignKey(i => i.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(p => p.Customer)
+
+            builder.HasOne(c => c.Customer)
                 .WithMany(p => p.Installments)
                 .HasForeignKey(i => i.CustomerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(p => p.Employee)
+            builder.HasOne(e => e.Employee)
                 .WithMany(p => p.Installments)
                 .HasForeignKey(i => i.EmployeeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(p => p.Value)
-                .HasPrecision(9, 2);
 
         }
     }

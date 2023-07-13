@@ -1,8 +1,7 @@
 ﻿namespace Zamzam.Core
 {
-    public class Customer
+    public class Customer : BaseEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; } = "عميل افتراضي";
         public long NationalCardId { get; set; } = 0;
         public string? Phone { get; set; } = string.Empty;

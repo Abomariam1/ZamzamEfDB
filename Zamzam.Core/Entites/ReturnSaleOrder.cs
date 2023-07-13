@@ -4,8 +4,5 @@
     {
         public SaleOrder SaleOrder { get; set; }
         public Employee Employee { get; set; }
-        public IList<ReturnSaleOrderLine> ReturnSaleOrderLines { get; set; }
-
-
     }
 }

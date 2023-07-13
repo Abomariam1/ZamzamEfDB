@@ -24,11 +24,3 @@ namespace Zamzam.EF
         }
     }
 }
-
-
-//public int Id { get; set; }
-//public string Name { get; set; }
-//public decimal PurchasingPrice { get; set; }
-//public decimal sellingCashPrice { get; set; }
-//public decimal InstallmentPrice { get; set; }
-//public int Balance { get; set; }

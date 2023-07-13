@@ -1,8 +1,7 @@
 ﻿namespace Zamzam.Core
 {
-    public class Installment
+    public class Installment : BaseEntity
     {
-        public int InstallmentId { get; set; }
         public int OrderId { get; set; }
         public int CustomerId { get; set; }
         public DateOnly PayedOn { get; set; }

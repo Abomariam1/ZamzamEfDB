@@ -11,7 +11,7 @@ namespace Zamzam.EF
             builder.HasKey(x => new { x.ItemId, x.OrderId });
 
             builder.HasOne(p => p.SaleOrder)
-                .WithMany()
+                .WithMany(s => s.SaleOrderLines)
                 .HasForeignKey(p => p.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);
 

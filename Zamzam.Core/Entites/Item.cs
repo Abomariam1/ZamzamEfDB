@@ -1,8 +1,7 @@
 ﻿namespace Zamzam.Core
 {
-    public class Item
+    public class Item : BaseEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public decimal PurchasingPrice { get; set; }
         public decimal sellingCashPrice { get; set; }

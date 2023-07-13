@@ -3,6 +3,7 @@
 
     public class ReturnSaleOrderLine : BaseOrderLine
     {
+        public int ReturnSaleOrderId { get; set; }
         public virtual ReturnSaleOrder ReturnSaleOrder { get; set; }
         public virtual SaleOrderLine SaleOrderLine { get; set; }
     }

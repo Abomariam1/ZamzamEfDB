@@ -9,14 +9,7 @@ namespace Zamzam.EF
         public void Configure(EntityTypeBuilder<PurchaseOrder> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.HasMany<PurchaseOrderLine>()
-                .WithOne()
-                .HasForeignKey(f => f.OrderId)
-                .OnDelete(DeleteBehavior.Restrict);
-            //builder.HasOne<Supplier>()
-            //    .WithMany(p => p.PurchaseOrders)
-            //    .HasForeignKey(p => p.Supplier )
-            //.OnDelete(DeleteBehavior.Restrict);
+
             builder.Property(d => d.OrderDate)
                 .HasDefaultValueSql("GETDATE()");
 
@@ -35,6 +28,11 @@ namespace Zamzam.EF
             builder.Property(s => s.NetPrice)
                 .HasPrecision(9, 2)
                 .HasComputedColumnSql("[TotalPrice] - [TotalDiscount]");
+
+            builder.HasOne(s => s.Supplier)
+                .WithMany(s => s.PurchaseOrders)
+                .HasForeignKey(s => s.SupplierId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

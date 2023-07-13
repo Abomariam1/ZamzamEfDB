@@ -5,7 +5,7 @@ namespace Zamzam.EF
 {
     public class ZamzamDbContextFactory : IDesignTimeDbContextFactory<ZamzamDbContext>
     {
-        public ZamzamDbContext CreateDbContext(string[] args)
+        public ZamzamDbContext CreateDbContext(string[] args = null)
         {
             var options = new DbContextOptionsBuilder<ZamzamDbContext>();
             options.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=ZamzamDb;Integrated Security=True;TrustServerCertificate=True");

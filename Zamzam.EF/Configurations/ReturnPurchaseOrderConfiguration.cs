@@ -8,8 +8,10 @@ namespace Zamzam.EF
     {
         public void Configure(EntityTypeBuilder<ReturnPurchaseOrder> builder)
         {
-            builder.HasOne<PurchaseOrder>()
-                .WithOne()
+            builder.HasKey(r => r.Id);
+
+            builder.HasOne(p => p.PurchaseOrder)
+                .WithOne(p => p.ReturnPurchaseOrder)
                 .HasForeignKey<ReturnPurchaseOrder>(p => p.Id)
                 .HasPrincipalKey<PurchaseOrder>(p => p.Id)
                 .OnDelete(DeleteBehavior.Restrict);
