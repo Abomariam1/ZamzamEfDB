@@ -13,22 +13,20 @@ namespace Zamzam.EF
             builder.Property(p => p.Value)
                 .HasPrecision(9, 2);
 
-            builder.HasOne(s => s.SalesOrder)
-                .WithMany(p => p.Installments)
-                .HasForeignKey(i => i.OrderId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasOne(s => s.SalesOrder)
+            //    .WithMany(p => p.Installments)
+            //    .HasForeignKey(i => i.OrderId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(c => c.Customer)
-                .WithMany(p => p.Installments)
-                .HasForeignKey(i => i.CustomerId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasOne(c => c.Customer)
+            //    .WithMany(p => p.Installments)
+            //    .HasForeignKey(i => i.CustomerId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(e => e.Employee)
-                .WithMany(p => p.Installments)
-                .HasForeignKey(i => i.EmployeeId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-
+            //builder.HasOne(e => e.Employee)
+            //    .WithMany(p => p.Installments)
+            //    .HasForeignKey(i => i.EmployeeId)
+            //    .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

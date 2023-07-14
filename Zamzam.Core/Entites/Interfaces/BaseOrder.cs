@@ -1,7 +1,7 @@
 ﻿namespace Zamzam.Core
 {
 
-    public abstract class BaseOrder : IOrder
+    public abstract class BaseOrder : BaseEntity, IOrder
     {
         public int Id { get; set; }
         public DateOnly OrderDate { get; set; }
@@ -13,6 +13,6 @@
         public int EmployeeId { get; set; }
         public bool IsInstallmented { get; set; }
         public bool IsDeleted { get; set; }
-        public virtual Employee Employee { get; set; }
+
     }
 }

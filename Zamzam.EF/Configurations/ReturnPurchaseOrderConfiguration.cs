@@ -10,11 +10,21 @@ namespace Zamzam.EF
         {
             builder.HasKey(r => r.Id);
 
-            builder.HasOne(p => p.PurchaseOrder)
-                .WithOne(p => p.ReturnPurchaseOrder)
-                .HasForeignKey<ReturnPurchaseOrder>(p => p.Id)
-                .HasPrincipalKey<PurchaseOrder>(p => p.Id)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasOne(p => p.PurchaseOrder)
+            //    .WithOne(p => p.ReturnPurchaseOrder)
+            //    .HasForeignKey<ReturnPurchaseOrder>(p => p.PurchaaseOrderId)
+            //    .HasPrincipalKey<PurchaseOrder>(p => p.Id)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.HasOne(p => p.Supplier)
+            //    .WithMany(p => p.ReturnPurchases)
+            //    .HasForeignKey(p => p.SupplierId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.HasOne(p => p.Employee)
+            //    .WithMany(p => p.ReturnPurchases)
+            //    .HasForeignKey(p => p.EmployeeId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(d => d.OrderDate)
                 .HasDefaultValueSql("GETDATE()");

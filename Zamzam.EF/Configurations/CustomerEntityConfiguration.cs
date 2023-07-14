@@ -8,6 +8,12 @@ namespace Zamzam.EF
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
+            builder.HasKey(x => x.Id);
+            //builder.HasOne(a => a.Area)
+            //    .WithMany(a => a.Customers)
+            //    .HasForeignKey(a => a.AreaId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
             builder.Property(n => n.Name).IsRequired()
                 .HasMaxLength(100);
             builder.Property(p => p.Phone).HasMaxLength(15);

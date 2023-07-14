@@ -12,8 +12,3 @@
         public virtual SaleOrder SalesOrder { get; set; }
     }
 }
-/*
- customer may purcheses many products
-employee collect many installment
-custmoer pay monthly 
- */

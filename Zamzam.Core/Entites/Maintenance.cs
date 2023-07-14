@@ -11,7 +11,6 @@
         public Customer Customer { get; set; }
         public Employee Employee { get; set; }
         public SaleOrder SaleOrder { get; set; }
-        public virtual IList<MaintenanceOrderLine> MaintenanceOrderLines { get; set; }
-
+        public virtual ICollection<MaintenanceOrderLine> MaintenanceOrderLines { get; set; }
     }
 }

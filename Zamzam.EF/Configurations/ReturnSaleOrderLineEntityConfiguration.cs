@@ -8,17 +8,16 @@ namespace Zamzam.EF
     {
         public void Configure(EntityTypeBuilder<ReturnSaleOrderLine> builder)
         {
-            builder.HasOne(p => p.SaleOrderLine)
-                .WithOne(p => p.ReturnSaleOrderLine)
-                .HasForeignKey<ReturnSaleOrderLine>(p => p.OrderId)
-                .HasPrincipalKey<SaleOrderLine>(p => p.OrderId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasKey(x => new { x.OrderId, x.ItemId });
+            //builder.HasOne(p => p.ReturnSaleOrder)
+            //    .WithMany(p => p.returnSaleOrderLines)
+            //    .HasForeignKey(p => p.ReturnSaleOrderId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(p => p.SaleOrderLine)
-                .WithOne(p => p.ReturnSaleOrderLine)
-                .HasForeignKey<ReturnSaleOrderLine>(p => p.ItemId)
-                .HasPrincipalKey<SaleOrderLine>(p => p.ItemId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasOne(p => p.Item)
+            //    .WithMany(p => p.ReturnSaleOrderLines)
+            //    .HasForeignKey(p => p.ItemId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
 
             builder.Property(p => p.Price).HasPrecision(9, 2);

@@ -2,7 +2,8 @@
 {
     public class ReturnSaleOrder : BaseOrder
     {
-        public SaleOrder SaleOrder { get; set; }
-        public Employee Employee { get; set; }
+        public int EmployeeId { get; set; }
+        public virtual Employee Employee { get; set; }
+        public ICollection<ReturnSaleOrderLine> returnSaleOrderLines { get; set; }
     }
 }

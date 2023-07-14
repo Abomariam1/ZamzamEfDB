@@ -29,10 +29,15 @@ namespace Zamzam.EF
                 .HasPrecision(9, 2)
                 .HasComputedColumnSql("[TotalPrice] - [TotalDiscount]");
 
-            builder.HasOne(s => s.Supplier)
-                .WithMany(s => s.PurchaseOrders)
-                .HasForeignKey(s => s.SupplierId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasOne(s => s.Supplier)
+            //    .WithMany(s => s.PurchaseOrders)
+            //    .HasForeignKey(s => s.SupplierId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.HasOne(p => p.Employee)
+            //    .WithMany(p => p.Purchases)
+            //    .HasForeignKey(s => s.EmployeeId)
+            //    .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

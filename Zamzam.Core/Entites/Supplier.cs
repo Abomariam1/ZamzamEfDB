@@ -1,13 +1,12 @@
 ﻿namespace Zamzam.Core
 {
-    public class Supplier
+    public class Supplier : BaseEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
-        public virtual IList<PurchaseOrder> PurchaseOrders { get; set; }
-        public virtual IList<ReturnPurchaseOrder> ReturnPurchases { get; set; }
+        public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }
+        public virtual ICollection<ReturnPurchaseOrder> ReturnPurchases { get; set; }
 
     }
 }
