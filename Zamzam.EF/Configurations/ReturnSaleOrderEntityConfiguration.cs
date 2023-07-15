@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zamzam.Core;
+
 namespace Zamzam.EF
 {
     public class ReturnSaleOrderEntityConfiguration : IEntityTypeConfiguration<ReturnSaleOrder>
@@ -9,15 +10,15 @@ namespace Zamzam.EF
         {
             builder.HasKey(x => x.Id);
 
-            //builder.HasOne(x => x.SaleOrder)
-            //    .WithOne(s => s.ReturnSaleOrder)
-            //    .HasForeignKey<ReturnSaleOrder>(s => s.SaleOrderId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.SaleOrder)
+                .WithMany(s => s.ReturnSaleOrder)
+                .HasForeignKey(s => s.SaleOrderId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.HasOne(x => x.Employee)
-            //    .WithMany(s => s.ReturnSales)
-            //    .HasForeignKey(p => p.EmployeeId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.Employee)
+                .WithMany(s => s.ReturnSales)
+                .HasForeignKey(p => p.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(t => t.TotalPrice)
                 .HasPrecision(9, 2);

@@ -9,10 +9,11 @@ namespace Zamzam.EF
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
             builder.HasKey(x => x.Id);
-            //builder.HasOne(a => a.Area)
-            //    .WithMany(a => a.Customers)
-            //    .HasForeignKey(a => a.AreaId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(a => a.Area)
+                .WithMany(a => a.Customers)
+                .HasForeignKey(a => a.AreaId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(n => n.Name).IsRequired()
                 .HasMaxLength(100);
@@ -21,8 +22,6 @@ namespace Zamzam.EF
                 .HasMaxLength(150);
             builder.Property(n => n.Notes)
                 .HasMaxLength(150);
-            builder.HasOne(i => i.Area).WithMany();
-
         }
     }
 }

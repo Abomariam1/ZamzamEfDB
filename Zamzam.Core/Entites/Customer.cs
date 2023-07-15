@@ -13,9 +13,9 @@
         public bool IsDeleted { get; set; } = false;
         public virtual Area Area { get; }
         public virtual ICollection<SaleOrder> SaleOrders { get; set; }
-        public virtual ICollection<ReturnSaleOrder> ReturnSaleOrders { get; set; }
         public virtual ICollection<Installment> Installments { get; set; }
         public virtual ICollection<Maintenance> Maintenances { get; set; }
+        //public virtual ICollection<ReturnSaleOrder> ReturnSaleOrders { get; set; }
 
     }
 }

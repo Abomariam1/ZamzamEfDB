@@ -8,6 +8,7 @@ namespace Zamzam.EF
     {
         public void Configure(EntityTypeBuilder<Area> builder)
         {
+            builder.HasKey(x => x.Id);
             builder.Property(a => a.Name).IsRequired()
                 .HasMaxLength(100);
             builder.Property(s => s.Staion).IsRequired()

@@ -10,20 +10,20 @@ namespace Zamzam.EF
         {
             builder.HasKey(x => x.Id);
 
-            //builder.HasOne(c => c.Customer)
-            //    .WithMany(x => x.Maintenances)
-            //    .HasForeignKey(x => x.CustomerId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(c => c.Customer)
+                .WithMany(x => x.Maintenances)
+                .HasForeignKey(x => x.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.HasOne<Employee>(e => e.Employee)
-            //    .WithMany(x => x.Maintenances).
-            //    HasForeignKey(x => x.EmployeeId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(e => e.Employee)
+                .WithMany(x => x.Maintenances).
+                HasForeignKey(x => x.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.HasOne(s => s.SaleOrder)
-            //    .WithMany(x => x.Maintenances)
-            //    .HasForeignKey(x => x.SaleOrderId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(s => s.SaleOrder)
+                .WithMany(x => x.Maintenances)
+                .HasForeignKey(x => x.SaleOrderId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

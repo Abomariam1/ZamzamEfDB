@@ -15,10 +15,10 @@ namespace Zamzam.EF
 
             builder.Property(a => a.Address).HasMaxLength(150);
 
-            //builder.HasOne(x => x.Department)
-            //    .WithMany(x => x.Employees)
-            //    .HasForeignKey(x => x.DepartmentId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.Department)
+                .WithMany(x => x.Employees)
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

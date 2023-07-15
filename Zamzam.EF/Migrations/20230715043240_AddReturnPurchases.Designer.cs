@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Zamzam.EF;
 
@@ -11,9 +12,11 @@ using Zamzam.EF;
 namespace Zamzam.EF.Migrations
 {
     [DbContext(typeof(ZamzamDbContext))]
-    partial class ZamzamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230715043240_AddReturnPurchases")]
+    partial class AddReturnPurchases
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -385,102 +388,6 @@ namespace Zamzam.EF.Migrations
                     b.ToTable("PurchaseOrderLines");
                 });
 
-            modelBuilder.Entity("Zamzam.Core.ReturnPurchaseOrder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsInstallmented")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("NetPrice")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasPrecision(9, 2)
-                        .HasColumnType("decimal(9,2)")
-                        .HasComputedColumnSql("[TotalPrice] - [TotalDiscount]");
-
-                    b.Property<DateOnly>("OrderDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("date")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<decimal>("Payed")
-                        .HasPrecision(9, 2)
-                        .HasColumnType("decimal(9,2)");
-
-                    b.Property<int>("PurchaseId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Remains")
-                        .HasPrecision(9, 2)
-                        .HasColumnType("decimal(9,2)");
-
-                    b.Property<int>("SupplierId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalDiscount")
-                        .HasPrecision(9, 2)
-                        .HasColumnType("decimal(9,2)");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasPrecision(9, 2)
-                        .HasColumnType("decimal(9,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("PurchaseId");
-
-                    b.HasIndex("SupplierId");
-
-                    b.ToTable("ReturnPurchaseOrders");
-                });
-
-            modelBuilder.Entity("Zamzam.Core.ReturnPurchaseOrderLine", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Discount")
-                        .HasPrecision(9, 2)
-                        .HasColumnType("decimal(9,2)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasPrecision(9, 2)
-                        .HasColumnType("decimal(9,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalPrice")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasPrecision(9, 2)
-                        .HasColumnType("decimal(9,2)")
-                        .HasComputedColumnSql("([Price] * [Quantity]) -[Discount]");
-
-                    b.HasKey("OrderId", "ItemId");
-
-                    b.HasIndex("ItemId");
-
-                    b.ToTable("ReturnPurchaseOrderLines");
-                });
-
             modelBuilder.Entity("Zamzam.Core.ReturnSaleOrder", b =>
                 {
                     b.Property<int>("Id")
@@ -827,52 +734,6 @@ namespace Zamzam.EF.Migrations
                     b.Navigation("PurchaseOrder");
                 });
 
-            modelBuilder.Entity("Zamzam.Core.ReturnPurchaseOrder", b =>
-                {
-                    b.HasOne("Zamzam.Core.Employee", "Employee")
-                        .WithMany("ReturnPurchases")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Zamzam.Core.PurchaseOrder", "PurchaseOrder")
-                        .WithMany("ReturnPurchaseOrders")
-                        .HasForeignKey("PurchaseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Zamzam.Core.Supplier", "Supplier")
-                        .WithMany("ReturnPurchases")
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("PurchaseOrder");
-
-                    b.Navigation("Supplier");
-                });
-
-            modelBuilder.Entity("Zamzam.Core.ReturnPurchaseOrderLine", b =>
-                {
-                    b.HasOne("Zamzam.Core.Item", "Item")
-                        .WithMany("ReturnPurchaseOrderLines")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Zamzam.Core.ReturnPurchaseOrder", "ReturnPurcheseOrder")
-                        .WithMany("ReturnPurchaseOrderLines")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-
-                    b.Navigation("ReturnPurcheseOrder");
-                });
-
             modelBuilder.Entity("Zamzam.Core.ReturnSaleOrder", b =>
                 {
                     b.HasOne("Zamzam.Core.Employee", "Employee")
@@ -976,8 +837,6 @@ namespace Zamzam.EF.Migrations
 
                     b.Navigation("Purchases");
 
-                    b.Navigation("ReturnPurchases");
-
                     b.Navigation("ReturnSales");
 
                     b.Navigation("Sales");
@@ -988,8 +847,6 @@ namespace Zamzam.EF.Migrations
                     b.Navigation("MaintenanceOrderLines");
 
                     b.Navigation("PurchaseOrderLines");
-
-                    b.Navigation("ReturnPurchaseOrderLines");
 
                     b.Navigation("ReturnSaleOrderLines");
 
@@ -1004,13 +861,6 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.PurchaseOrder", b =>
                 {
                     b.Navigation("PurchaseOrderLines");
-
-                    b.Navigation("ReturnPurchaseOrders");
-                });
-
-            modelBuilder.Entity("Zamzam.Core.ReturnPurchaseOrder", b =>
-                {
-                    b.Navigation("ReturnPurchaseOrderLines");
                 });
 
             modelBuilder.Entity("Zamzam.Core.ReturnSaleOrder", b =>
@@ -1032,8 +882,6 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.Supplier", b =>
                 {
                     b.Navigation("PurchaseOrders");
-
-                    b.Navigation("ReturnPurchases");
                 });
 #pragma warning restore 612, 618
         }

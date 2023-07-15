@@ -8,22 +8,24 @@ namespace Zamzam.EF
     {
         public void Configure(EntityTypeBuilder<ReturnSaleOrderLine> builder)
         {
-            //builder.HasKey(x => new { x.OrderId, x.ItemId });
-            //builder.HasOne(p => p.ReturnSaleOrder)
-            //    .WithMany(p => p.returnSaleOrderLines)
-            //    .HasForeignKey(p => p.ReturnSaleOrderId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.HasKey(x => new { x.OrderId, x.ItemId });
+            builder.HasOne(p => p.ReturnSaleOrder)
+                .WithMany(p => p.returnSaleOrderLines)
+                .HasForeignKey(p => p.ReturnSaleOrderId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.HasOne(p => p.Item)
-            //    .WithMany(p => p.ReturnSaleOrderLines)
-            //    .HasForeignKey(p => p.ItemId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(p => p.Item)
+                .WithMany(p => p.ReturnSaleOrderLines)
+                .HasForeignKey(p => p.ItemId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
             builder.Property(p => p.Price).HasPrecision(9, 2);
+            builder.Property(p => p.Discount).HasPrecision(9, 2);
             builder.Property(t => t.TotalPrice)
+
                 .HasComputedColumnSql("[Price] * [Quantity]")
-                .HasColumnType("decimal(9,2)");
+                .HasPrecision(9, 2);
         }
     }
 }

@@ -2,10 +2,11 @@
 {
     public class PurchaseOrder : BaseOrder
     {
+        public int EmployeeId { get; set; }
         public int SupplierId { get; set; }
-        //public virtual ReturnPurchaseOrder ReturnPurchaseOrder { get; set; }
         public Supplier Supplier { get; set; }
         public Employee Employee { get; set; }
+        public virtual ICollection<ReturnPurchaseOrder> ReturnPurchaseOrders { get; set; }
         public virtual ICollection<PurchaseOrderLine> PurchaseOrderLines { get; set; }
     }
 }
