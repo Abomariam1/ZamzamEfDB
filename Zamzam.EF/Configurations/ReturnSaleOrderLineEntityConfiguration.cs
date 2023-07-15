@@ -9,6 +9,7 @@ namespace Zamzam.EF
         public void Configure(EntityTypeBuilder<ReturnSaleOrderLine> builder)
         {
             builder.HasKey(x => new { x.OrderId, x.ItemId });
+
             builder.HasOne(p => p.ReturnSaleOrder)
                 .WithMany(p => p.returnSaleOrderLines)
                 .HasForeignKey(p => p.ReturnSaleOrderId)
@@ -19,12 +20,11 @@ namespace Zamzam.EF
                 .HasForeignKey(p => p.ItemId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
+            builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(p => p.Price).HasPrecision(9, 2);
             builder.Property(p => p.Discount).HasPrecision(9, 2);
             builder.Property(t => t.TotalPrice)
-
-                .HasComputedColumnSql("[Price] * [Quantity]")
+                .HasComputedColumnSql("([Price] * [Quantity]) - [Discount]")
                 .HasPrecision(9, 2);
         }
     }

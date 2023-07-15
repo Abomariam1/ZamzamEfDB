@@ -38,7 +38,7 @@ namespace Zamzam.EF.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Staion")
+                    b.Property<string>("Station")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
@@ -272,7 +272,10 @@ namespace Zamzam.EF.Migrations
                         .HasColumnType("decimal(9,2)");
 
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Price")
                         .HasPrecision(9, 2)
@@ -285,7 +288,7 @@ namespace Zamzam.EF.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)")
-                        .HasComputedColumnSql("[Price] * [Quantity]");
+                        .HasComputedColumnSql("([Price] * [Quantity]) -[Discount]");
 
                     b.HasKey("OrderId", "ItemId");
 
@@ -363,7 +366,10 @@ namespace Zamzam.EF.Migrations
                         .HasColumnType("decimal(9,2)");
 
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Price")
                         .HasPrecision(9, 2)
@@ -376,7 +382,7 @@ namespace Zamzam.EF.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)")
-                        .HasComputedColumnSql("[Price] * [Quantity]");
+                        .HasComputedColumnSql("([Price] * [Quantity]) -[Discount]");
 
                     b.HasKey("OrderId", "ItemId");
 
@@ -459,7 +465,10 @@ namespace Zamzam.EF.Migrations
                         .HasColumnType("decimal(9,2)");
 
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Price")
                         .HasPrecision(9, 2)
@@ -548,7 +557,10 @@ namespace Zamzam.EF.Migrations
                         .HasColumnType("decimal(9,2)");
 
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Price")
                         .HasPrecision(9, 2)
@@ -564,7 +576,7 @@ namespace Zamzam.EF.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)")
-                        .HasComputedColumnSql("[Price] * [Quantity]");
+                        .HasComputedColumnSql("([Price] * [Quantity]) - [Discount]");
 
                     b.HasKey("OrderId", "ItemId");
 
@@ -644,7 +656,10 @@ namespace Zamzam.EF.Migrations
                         .HasColumnType("decimal(9,2)");
 
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Price")
                         .HasPrecision(9, 2)
@@ -657,7 +672,7 @@ namespace Zamzam.EF.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)")
-                        .HasComputedColumnSql("[Price] * [Quantity]");
+                        .HasComputedColumnSql("([Price] * [Quantity]) - [Discount]");
 
                     b.HasKey("ItemId", "OrderId");
 

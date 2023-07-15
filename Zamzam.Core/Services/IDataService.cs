@@ -3,7 +3,7 @@
     public interface IDataService<T> where T : class
     {
         Task<IEnumerable<T>> GetAll();
-        Task<IEnumerable<T>> GetById(int id);
+        Task<T> GetById(int id);
         Task<T> Create(T entity);
         Task<T> Update(int id, T entity);
         Task<bool> Delete(int id);

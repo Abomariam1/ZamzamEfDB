@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Zamzam.Core;
 
 namespace Zamzam.EF
@@ -16,7 +17,8 @@ namespace Zamzam.EF
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
-                var CreatedEntity = await context.Set<T>().AddAsync(entity);
+                EntityEntry<T>? CreatedEntity = await context.Set<T>().AddAsync(entity);
+                await context.SaveChangesAsync();
                 return CreatedEntity.Entity;
             }
         }
@@ -41,11 +43,11 @@ namespace Zamzam.EF
             }
         }
 
-        public async Task<IEnumerable<T>> GetById(int id)
+        public async Task<T> GetById(int id)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
-                IEnumerable<T> entities = await context.Set<T>().Where(e => e.Id == id).ToListAsync();
+                T entities = await context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
                 return entities;
             }
 
@@ -57,7 +59,7 @@ namespace Zamzam.EF
             {
                 entity.Id = id;
                 context.Set<T>().Update(entity);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
                 return entity;
             }
         }

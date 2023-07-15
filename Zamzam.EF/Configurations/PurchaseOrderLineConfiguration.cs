@@ -21,17 +21,13 @@ namespace Zamzam.EF
                 .HasForeignKey(x => x.ItemId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(p => p.Price)
-                .HasPrecision(9, 2);
-            builder.Property(p => p.Price)
-                .HasPrecision(9, 2);
 
-            builder.Property(p => p.Discount)
-               .HasPrecision(9, 2);
-
-            builder.Property(p => p.TotalPrice)
-                .HasPrecision(9, 2)
-                .HasComputedColumnSql("[Price] * [Quantity]");
+            builder.Property(x => x.Id).UseIdentityColumn();
+            builder.Property(p => p.Price).HasPrecision(9, 2);
+            builder.Property(p => p.Price).HasPrecision(9, 2);
+            builder.Property(p => p.Discount).HasPrecision(9, 2);
+            builder.Property(p => p.TotalPrice).HasPrecision(9, 2)
+                .HasComputedColumnSql("([Price] * [Quantity]) -[Discount]");
 
         }
     }

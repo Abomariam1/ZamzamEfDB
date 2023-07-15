@@ -11,7 +11,7 @@ namespace Zamzam.EF
             builder.HasKey(x => x.Id);
             builder.Property(a => a.Name).IsRequired()
                 .HasMaxLength(100);
-            builder.Property(s => s.Staion).IsRequired()
+            builder.Property(s => s.Station).IsRequired()
                 .HasMaxLength(30);
         }
     }

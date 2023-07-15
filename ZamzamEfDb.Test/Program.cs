@@ -2,4 +2,6 @@
 using Zamzam.EF;
 
 IDataService<Area> service = new GenericDataServices<Area>(new ZamzamDbContextFactory());
-await service.Create(new Area { Id = 1, Name = "Kafr sakr", Staion = "kk" });
+var entity = await service.Delete(2);
+entity.ToString();
+Console.ReadKey();

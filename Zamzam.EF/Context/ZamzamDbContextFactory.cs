@@ -9,6 +9,7 @@ namespace Zamzam.EF
         {
             var options = new DbContextOptionsBuilder<ZamzamDbContext>();
             options.UseSqlServer("Data Source=MOSTAFA\\SQLEXPRESS;DataBase=ZamzamDb;Integrated Security=True;TrustServerCertificate=True");
+
             return new ZamzamDbContext(options.Options);
         }
     }
