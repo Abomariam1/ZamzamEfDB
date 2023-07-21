@@ -7,7 +7,13 @@ namespace ZamzamCo.VewModels
         Home,
         Items,
         Sales,
-        Installments
+        Installments,
+        Customers,
+        Employee,
+        Maintenance,
+        Purchases,
+        Supliers,
+        About
     }
     public class Navigator : ViewModelBase, INavigator
     {
@@ -22,7 +28,5 @@ namespace ZamzamCo.VewModels
             }
         }
         public ICommand UpdateCurrentViewModelCommand => new UpdateViewModel(this);
-
-
     }
 }

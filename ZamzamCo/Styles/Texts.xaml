@@ -1,0 +1,46 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="TextblockNavbar" TargetType="RadioButton">
+        <Setter Property="Foreground" Value="{StaticResource BackgrounLightBrush}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="{StaticResource NotoNaskhArabic}"/>
+        <Setter Property="FontWeight" Value="Regular"/>
+        <Setter Property="Padding" Value="10 5"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Grid x:Name="NavGridBtn" RenderOptions.EdgeMode="Aliased" Background="{TemplateBinding Background}">
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Padding="{TemplateBinding Padding}"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" Value="{StaticResource SocendryColorBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard >
+                        <ColorAnimation  To="{StaticResource SocendryColor}" Duration="0:0:0.3" Storyboard.TargetProperty="Background.Color"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard >
+                        <ColorAnimation  To="Transparent" Duration="0:0:0.3" Storyboard.TargetProperty="Background.Color"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

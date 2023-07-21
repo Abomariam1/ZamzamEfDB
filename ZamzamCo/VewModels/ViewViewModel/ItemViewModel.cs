@@ -1,6 +1,6 @@
 ﻿namespace ZamzamCo.VewModels.ViewViewModel
 {
-    internal class ItemViewModel : ViewModelBase
+    public class ItemViewModel : ViewModelBase
     {
     }
 }

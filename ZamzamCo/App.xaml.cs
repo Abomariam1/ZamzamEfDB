@@ -10,9 +10,10 @@ namespace ZamzamCo
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+
             Window window = new MainWindow();
             window.DataContext = new MainViewModel();
-
+            window.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             window.Show();
             base.OnStartup(e);
         }

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZamzamCo.VewModels.ViewViewModel
+﻿namespace ZamzamCo.VewModels.ViewViewModel
 {
-    internal class SaleViewModel
+    public class SaleViewModel : ViewModelBase
     {
     }
 }
