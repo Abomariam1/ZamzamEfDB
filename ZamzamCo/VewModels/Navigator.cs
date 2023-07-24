@@ -1,20 +1,12 @@
 ﻿using System.Windows.Input;
+using ZamzamCo.Commands;
 
 namespace ZamzamCo.VewModels
 {
-    public enum ViewType
-    {
-        Home,
-        Items,
-        Sales,
-        Installments,
-        Customers,
-        Employee,
-        Maintenance,
-        Purchases,
-        Supliers,
-        About
-    }
+}
+
+namespace ZamzamCo.VewModels
+{
     public class Navigator : ViewModelBase, INavigator
     {
         private ViewModelBase _viewModel;
@@ -27,6 +19,6 @@ namespace ZamzamCo.VewModels
                 OnPropertyChanged(nameof(CurrentViewModel));
             }
         }
-        public ICommand UpdateCurrentViewModelCommand => new UpdateViewModel(this);
+        public ICommand UpdateCurrentViewModelCommand => new UpdateViewModelCommand(this);
     }
 }

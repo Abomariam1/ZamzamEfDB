@@ -3,21 +3,25 @@
                     xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp">
     <!--Rounded Button-->
     <Style x:Key="RoundedBTN" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource BackgrounMainButtonBrush}"/>
-        <Setter Property="Foreground" Value="{StaticResource MainColor1Brush}"/>
+        <Setter Property="Background" Value="{StaticResource MainColor1Brush}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForgroundVeryLightBrush}"/>
         <Setter Property="FontFamily" Value="{StaticResource LatoThin}"/>
         <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Margin" Value="20 0"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border BorderThickness="2"
-                            CornerRadius="20"
+                            CornerRadius="10"
                             Height="40"
                             Background="{TemplateBinding Background}">
                         <TextBlock Margin="5" 
                                    TextAlignment="Center"
                                    HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
                                    FontSize="{Binding Path=FontSize,RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                    Text="{Binding Path=Content,RelativeSource={RelativeSource  Mode=TemplatedParent}}"/>
                     </Border>

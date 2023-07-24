@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using Zamzam.Core;
+using Zamzam.EF;
 using ZamzamCo.VewModels;
 
 namespace ZamzamCo
@@ -10,12 +12,23 @@ namespace ZamzamCo
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            IDataService<Item> itemService = new GenericDataServices<Item>(new ZamzamDbContextFactory());
+            //_ = itemService.Delete(1);
+            //Window window = new MainWindow
+            //{
+            //    DataContext = new MainViewModel(),
+            //    MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight
+            //};
+            Window window = new SignIn
+            {
+                DataContext = new SignInVewModel()
+            };
 
-            Window window = new MainWindow();
-            window.DataContext = new MainViewModel();
-            window.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             window.Show();
             base.OnStartup(e);
         }
+
+
     }
 }
+

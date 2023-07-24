@@ -18,6 +18,14 @@
     <Window.Resources>
 
     </Window.Resources>
+    <Window.DataContext>
+        <Binding >
+            <Binding.Source >
+                <Nav:MainViewModel/>
+            </Binding.Source>
+            
+        </Binding>
+    </Window.DataContext>
     <Grid FlowDirection="RightToLeft" x:Name="PnlControlBar"
           MouseLeftButtonDown="PnlControlBar_MouseLeftButtonDown">
         <Grid.RowDefinitions>

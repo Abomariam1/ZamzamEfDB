@@ -96,6 +96,9 @@
                                  Margin="10 0"/>
                         <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
                                     VerticalAlignment="Center">
+                            <StackPanel.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource RoundedBTN}"/>
+                            </StackPanel.Resources>
                             <Button Content="أضافة" Margin="10 0"/>
                             <Button Content="تعديل" Margin="10 0"/>
                             <Button Content="حذف" Margin="10 0"/>

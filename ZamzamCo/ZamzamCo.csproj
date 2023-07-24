@@ -10,12 +10,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\ArefRuqaaInk-Bold.ttf" />
+    <None Remove="Fonts\ArefRuqaaInk-Regular.ttf" />
     <None Remove="Fonts\NotoNaskhArabic-Regular.ttf" />
     <None Remove="Images\coffee-icon.png" />
     <None Remove="Images\zamzamlogo.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Fonts\ArefRuqaaInk-Bold.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\ArefRuqaaInk-Regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Fonts\NotoNaskhArabic-Regular.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -33,6 +41,16 @@
 
   <ItemGroup>
     <PackageReference Include="FontAwesome.Sharp" Version="6.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.6.23329.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Zamzam.Application\Zamzam.Application.csproj" />
+    <ProjectReference Include="..\Zamzam.Core\Zamzam.Core.csproj" />
+    <ProjectReference Include="..\Zamzam.EF\Zamzam.EF.csproj" />
   </ItemGroup>
 
 </Project>

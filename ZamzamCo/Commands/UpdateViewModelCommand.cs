@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Windows.Input;
+using ZamzamCo.VewModels;
 using ZamzamCo.VewModels.ViewViewModel;
 
-namespace ZamzamCo.VewModels
+namespace ZamzamCo.Commands
 {
-    public class UpdateViewModel : ICommand
+    public class UpdateViewModelCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
         private INavigator _navigation;
-        public UpdateViewModel(INavigator navigator)
+        public UpdateViewModelCommand(INavigator navigator)
         {
             _navigation = navigator;
         }
@@ -19,9 +20,8 @@ namespace ZamzamCo.VewModels
 
         public void Execute(object? parameter)
         {
-            if (parameter is ViewType)
+            if (parameter is ViewType type)
             {
-                ViewType type = (ViewType)parameter;
                 switch (type)
                 {
                     case ViewType.Home:

@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zamzam.Core", "Zamzam.Core\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zamzam.EF", "Zamzam.EF\Zamzam.EF.csproj", "{E22B8E40-E23E-4AA3-B6F9-331F4C88C52E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zamzam.Application", "Zamzam.Application\Zamzam.Application.csproj", "{D9112414-28FC-4311-B238-E3681EC6CD06}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,14 @@ Global
 		{E22B8E40-E23E-4AA3-B6F9-331F4C88C52E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E22B8E40-E23E-4AA3-B6F9-331F4C88C52E}.Release|x86.ActiveCfg = Release|Any CPU
 		{E22B8E40-E23E-4AA3-B6F9-331F4C88C52E}.Release|x86.Build.0 = Release|Any CPU
+		{D9112414-28FC-4311-B238-E3681EC6CD06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9112414-28FC-4311-B238-E3681EC6CD06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9112414-28FC-4311-B238-E3681EC6CD06}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D9112414-28FC-4311-B238-E3681EC6CD06}.Debug|x86.Build.0 = Debug|Any CPU
+		{D9112414-28FC-4311-B238-E3681EC6CD06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9112414-28FC-4311-B238-E3681EC6CD06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9112414-28FC-4311-B238-E3681EC6CD06}.Release|x86.ActiveCfg = Release|Any CPU
+		{D9112414-28FC-4311-B238-E3681EC6CD06}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +65,7 @@ Global
 		{488585D1-278A-46B9-9D00-0A9AE7B36401} = {F895CF5E-A4BA-4B32-9F2B-2F03A92844F8}
 		{A533AC94-7144-4AB3-AB0B-A125F0AA387A} = {EF93EE2F-BD9F-49B1-8658-86E233192DE2}
 		{E22B8E40-E23E-4AA3-B6F9-331F4C88C52E} = {F62BA9D5-9036-43E8-89EA-412F5EA1C6C6}
+		{D9112414-28FC-4311-B238-E3681EC6CD06} = {F62BA9D5-9036-43E8-89EA-412F5EA1C6C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1642FFE-55B5-4430-AE94-040B024A7BCB}

@@ -10,6 +10,7 @@
     <FontFamily x:Key="Tajawal_Light">pack://application:,,,/Fonts/#Tajawal Light</FontFamily>
     <FontFamily x:Key="Tajawal-Medium">pack://application:,,,/Fonts/#Tajawal Medium</FontFamily>
     <FontFamily x:Key="NotoNaskhArabic">pack://application:,,,/Fonts/#Noto Naskh Arabic</FontFamily>
+    <FontFamily x:Key="ArefRuqaa">pack://application:,,,/Fonts/#Aref Ruqaa Ink</FontFamily>
     <Style x:Key="BaseStyle" TargetType="Control" >
         <Setter Property="FontFamily" Value="{StaticResource NotoNaskhArabic}" />
     </Style>

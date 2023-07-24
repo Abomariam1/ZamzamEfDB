@@ -22,8 +22,8 @@
     </LinearGradientBrush>
     
     <!--Danger-->
-    <Color x:Key="Danger" >#FF8A1515</Color>
-    <SolidColorBrush x:Key="DangerBrush" Color="#FFF31D1D"/>
+    <Color x:Key="Danger" >#FFED8554</Color>
+    <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource Danger}"/>
     
     <Color x:Key="BackgrounVeryLight" >#fafafa</Color>
     <SolidColorBrush x:Key="BackgrounVeryLightBrush" Color="{StaticResource BackgrounVeryLight}"/>

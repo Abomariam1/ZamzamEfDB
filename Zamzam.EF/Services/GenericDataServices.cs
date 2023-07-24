@@ -27,7 +27,7 @@ namespace Zamzam.EF
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
-                T entity = await context.Set<T>().FirstOrDefaultAsync(predicate: e => e.Id == id);
+                T entity = await context.Set<T>().FirstOrDefaultAsync(predicate: ((e) => e.Id == id));
                 context.Set<T>().Remove(entity);
                 await context.SaveChangesAsync();
                 return true;
