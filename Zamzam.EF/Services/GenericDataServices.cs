@@ -47,7 +47,7 @@ namespace Zamzam.EF
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
-                T entities = await context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
+                T? entities = context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id).Result;
                 return entities;
             }
 

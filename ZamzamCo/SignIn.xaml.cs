@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using Zamzam.Core;
 using Zamzam.Core.Entites;
 using Zamzam.EF;
@@ -33,6 +34,8 @@ namespace ZamzamCo
                         DataContext = new MainViewModel(),
                         MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight
                     };
+                    window.Show();
+                    this.Hide();
                 }
                 else
                 {
@@ -54,10 +57,18 @@ namespace ZamzamCo
             Application.Current.Shutdown();
         }
 
-        //private void PasswordTxt_PasswordChanged(object sender, RoutedEventArgs e)
-        //{
-        //    var p = (PasswordBox)sender;
-        //    pstext = p.Password;
-        //}
+        private void PasswordTxt_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PasswordBoxTest_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (e.Source != null)
+            {
+                var pws = (PasswordBox)e.Source;
+                var str = pws.Password;
+            }
+        }
     }
 }

@@ -1,7 +1,4 @@
 ﻿using System.Windows;
-using Zamzam.Core;
-using Zamzam.EF;
-using ZamzamCo.VewModels;
 
 namespace ZamzamCo
 {
@@ -12,7 +9,7 @@ namespace ZamzamCo
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            IDataService<Item> itemService = new GenericDataServices<Item>(new ZamzamDbContextFactory());
+            //IDataService<Item> itemService = new GenericDataServices<Item>(new ZamzamDbContextFactory());
             //_ = itemService.Delete(1);
             //Window window = new MainWindow
             //{
@@ -21,7 +18,7 @@ namespace ZamzamCo
             //};
             Window window = new SignIn
             {
-                DataContext = new SignInVewModel()
+                //DataContext = new SignInVewModel()
             };
 
             window.Show();
