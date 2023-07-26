@@ -1,8 +1,8 @@
 ﻿namespace Zamzam.Core.Services
 {
-    public interface IItemService
+    public interface IItemService : IDataService<Item>
     {
-        Task<Item> GetItemAsync(int id);
+        Task<Item> FindItemAsync(string name);
 
     }
 }

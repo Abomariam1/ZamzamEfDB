@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Zamzam.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class IntialCreate : Migration
+    public partial class IntialCreation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,10 +15,9 @@ namespace Zamzam.EF.Migrations
                 name: "Areas",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Staion = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Station = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -30,8 +29,7 @@ namespace Zamzam.EF.Migrations
                 name: "Departments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -43,8 +41,7 @@ namespace Zamzam.EF.Migrations
                 name: "Items",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PurchasingPrice = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false, defaultValue: 0m),
                     sellingCashPrice = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false, defaultValue: 0m),
@@ -60,8 +57,7 @@ namespace Zamzam.EF.Migrations
                 name: "Suppliers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
@@ -72,17 +68,31 @@ namespace Zamzam.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Customers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     NationalCardId = table.Column<long>(type: "bigint", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    AreaId = table.Column<int>(type: "int", nullable: false),
+                    AreaId = table.Column<string>(type: "varchar(26)", nullable: false),
                     IsProplem = table.Column<bool>(type: "bit", nullable: false),
                     IsBlackList = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -102,12 +112,22 @@ namespace Zamzam.EF.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    DepartmentId = table.Column<int>(type: "int", nullable: false)
+                    Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Region = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    NationalId = table.Column<long>(type: "bigint", nullable: false),
+                    Titel = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    HireDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    Salary = table.Column<decimal>(type: "decimal(7,2)", precision: 7, scale: 2, nullable: false),
+                    Qualification = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Photo = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    DepartmentId = table.Column<string>(type: "varchar(26)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,10 +144,9 @@ namespace Zamzam.EF.Migrations
                 name: "PurchaseOrders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    SupplierId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    SupplierId = table.Column<string>(type: "varchar(26)", nullable: false),
                     OrderDate = table.Column<DateOnly>(type: "date", nullable: false, defaultValueSql: "GETDATE()"),
                     TotalPrice = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
                     TotalDiscount = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
@@ -158,10 +177,9 @@ namespace Zamzam.EF.Migrations
                 name: "SaleOrders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
+                    CustomerId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "varchar(26)", nullable: false),
                     OrderDate = table.Column<DateOnly>(type: "date", nullable: false, defaultValueSql: "GETDATE()"),
                     TotalPrice = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
                     TotalDiscount = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
@@ -192,10 +210,9 @@ namespace Zamzam.EF.Migrations
                 name: "PurchaseOrderLines",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    ItemId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
@@ -222,11 +239,10 @@ namespace Zamzam.EF.Migrations
                 name: "ReturnPurchaseOrders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SupplierId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    PurchaseId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
+                    SupplierId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    PurchaseId = table.Column<string>(type: "varchar(26)", nullable: false),
                     OrderDate = table.Column<DateOnly>(type: "date", nullable: false, defaultValueSql: "GETDATE()"),
                     TotalPrice = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
                     TotalDiscount = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
@@ -263,13 +279,12 @@ namespace Zamzam.EF.Migrations
                 name: "Installments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
+                    OrderId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    CustomerId = table.Column<string>(type: "varchar(26)", nullable: false),
                     PayedOn = table.Column<DateOnly>(type: "date", nullable: false, defaultValueSql: "GETDATE()"),
                     Value = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                    EmployeeId = table.Column<string>(type: "varchar(26)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -298,11 +313,10 @@ namespace Zamzam.EF.Migrations
                 name: "Maintenances",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SaleOrderId = table.Column<int>(type: "int", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
+                    SaleOrderId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    CustomerId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "varchar(26)", nullable: false),
                     NextMaintenanceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastMaintenanceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsMaintained = table.Column<bool>(type: "bit", nullable: false)
@@ -334,10 +348,9 @@ namespace Zamzam.EF.Migrations
                 name: "ReturnSaleOrders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    SaleOrderId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    SaleOrderId = table.Column<string>(type: "varchar(26)", nullable: false),
                     OrderDate = table.Column<DateOnly>(type: "date", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
                     TotalDiscount = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
@@ -368,10 +381,9 @@ namespace Zamzam.EF.Migrations
                 name: "SaleOrderLines",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    ItemId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
@@ -398,10 +410,9 @@ namespace Zamzam.EF.Migrations
                 name: "ReturnPurchaseOrderLines",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    ItemId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
@@ -428,10 +439,9 @@ namespace Zamzam.EF.Migrations
                 name: "MaintenanceOrderLines",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<string>(type: "varchar(26)", maxLength: 24, nullable: false),
+                    ItemId = table.Column<string>(type: "varchar(26)", maxLength: 24, nullable: false),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
@@ -458,11 +468,10 @@ namespace Zamzam.EF.Migrations
                 name: "ReturnSaleOrderLines",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
-                    ReturnSaleOrderId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    ItemId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    ReturnSaleOrderId = table.Column<string>(type: "varchar(26)", nullable: false),
+                    Id = table.Column<string>(type: "varchar(26)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
@@ -621,6 +630,9 @@ namespace Zamzam.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "SaleOrderLines");
+
+            migrationBuilder.DropTable(
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Maintenances");

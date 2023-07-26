@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ZamzamCo.Views"
              xmlns:vvmodel="clr-namespace:ZamzamCo.VewModels.ViewViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="1280">
     <Grid DataContext="{Binding Source={x:Type vvmodel:ItemViewModel}}">
         
         <Grid.RowDefinitions>
@@ -41,6 +41,8 @@
                 <Border Grid.Column="0"
                         Margin="10" BorderBrush="{StaticResource BorderBrushBrush}"
                         BorderThickness="2" Padding="10"
+                        MaxHeight="400"
+                        MaxWidth="500"
                         CornerRadius="10">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -59,7 +61,8 @@
                                    Text="الاسم" FontSize="16"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    Margin="10 0"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="ItemNameTxt"
+                        <TextBox Grid.Row="0" Grid.Column="1" 
+                                 x:Name="ItemNameTxt"
                                  FontSize="16" Height="25"
                                  Margin="10 0"/>
                         
@@ -67,7 +70,8 @@
                                    Text="سعر الشراء" FontSize="16"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    Margin="10 0"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="ItemPurchasePriceTxt"
+                        <TextBox Grid.Row="1" Grid.Column="1" 
+                                 x:Name="ItemPurchasePriceTxt"
                                  FontSize="16" Height="25"
                                  Margin="10 0"/>
                         
@@ -75,7 +79,8 @@
                                    Text="سعر البيع نقدا" FontSize="16"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    Margin="10 0"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" x:Name="ItemSalecashPriceTxt"
+                        <TextBox Grid.Row="2" Grid.Column="1" 
+                                 x:Name="ItemSalecashPriceTxt"
                                  FontSize="16" Height="25"
                                  Margin="10 0"/>
 
@@ -83,7 +88,8 @@
                                    Text="سعر البيع اجل" FontSize="16"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    Margin="10 0"/>
-                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="ItemSaleInstPriceTxt"
+                        <TextBox Grid.Row="3" Grid.Column="1" 
+                                 x:Name="ItemSaleInstPriceTxt"
                                  FontSize="16" Height="25"
                                  Margin="10 0"/>
 
@@ -91,7 +97,8 @@
                                    Text=" الرصيد" FontSize="16"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    Margin="10 0"/>
-                        <TextBox Grid.Row="4" Grid.Column="1" x:Name="ItemBalanceTxt"
+                        <TextBox Grid.Row="4" Grid.Column="1" 
+                                 x:Name="ItemBalanceTxt"
                                  FontSize="16" Height="25"
                                  Margin="10 0"/>
                         <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"

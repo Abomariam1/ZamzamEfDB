@@ -27,29 +27,47 @@ namespace ZamzamCo.Commands
                     case ViewType.Home:
                         _navigation.CurrentViewModel = new HomeViewModel();
                         break;
-                    case ViewType.Items:
-                        _navigation.CurrentViewModel = new ItemViewModel();
+                    case ViewType.Departments:
+                        _navigation.CurrentViewModel = new DepartmentViewModel();
                         break;
-                    case ViewType.Sales:
-                        _navigation.CurrentViewModel = new SaleViewModel();
-                        break;
-                    case ViewType.Installments:
-                        _navigation.CurrentViewModel = new InstallmentViewModel();
-                        break;
-                    case ViewType.Customers:
-                        _navigation.CurrentViewModel = new CustomerViewModel();
+                    case ViewType.Area:
+                        _navigation.CurrentViewModel = new AreaViewModel();
                         break;
                     case ViewType.Employee:
                         _navigation.CurrentViewModel = new EmployeeViewModel();
                         break;
-                    case ViewType.Maintenance:
-                        _navigation.CurrentViewModel = new MaintenanceViewModel();
+                    case ViewType.Items:
+                        _navigation.CurrentViewModel = new ItemViewModel();
+                        break;
+                    case ViewType.Supliers:
+                        _navigation.CurrentViewModel = new SuplierViewModel();
+                        break;
+                    case ViewType.Customers:
+                        _navigation.CurrentViewModel = new CustomerViewModel();
+                        break;
+                    case ViewType.User:
+                        _navigation.CurrentViewModel = new UserViewModel();
+                        break;
+                    case ViewType.Sales:
+                        _navigation.CurrentViewModel = new SaleViewModel();
                         break;
                     case ViewType.Purchases:
                         _navigation.CurrentViewModel = new PurchasesViewModel();
                         break;
-                    case ViewType.Supliers:
-                        _navigation.CurrentViewModel = new SuplierViewModel();
+                    case ViewType.ReturnPurchases:
+                        _navigation.CurrentViewModel = new ReturnPurcheseViewModel();
+                        break;
+                    case ViewType.ReturnSales:
+                        _navigation.CurrentViewModel = new ReturnSaleViewModel();
+                        break;
+                    case ViewType.Installments:
+                        _navigation.CurrentViewModel = new InstallmentViewModel();
+                        break;
+                    case ViewType.Maintenance:
+                        _navigation.CurrentViewModel = new MaintenanceViewModel();
+                        break;
+                    case ViewType.SignIn:
+                        _navigation.CurrentViewModel = new SignInVewModel();
                         break;
                     case ViewType.About:
                         _navigation.CurrentViewModel = new AboutViewModel();

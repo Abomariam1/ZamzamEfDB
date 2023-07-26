@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zamzam.Core;
+using Zamzam.EF.Converters;
 
 namespace Zamzam.EF
 {
@@ -8,6 +9,16 @@ namespace Zamzam.EF
     {
         public void Configure(EntityTypeBuilder<ReturnPurchaseOrderLine> builder)
         {
+
+            builder.Property(x => x.Id)
+                .HasConversion(UlidToGuidValueConverter.ulidconverter)
+                .HasColumnType("varchar(26)");
+
+            builder.Property(x => x.OrderId).HasConversion(UlidToGuidValueConverter.ulidconverter).HasColumnType("varchar(26)");
+            builder.Property(x => x.ItemId).HasConversion(UlidToGuidValueConverter.ulidconverter).HasColumnType("varchar(26)");
+
+
+            builder.HasKey(x => x.Id);
             builder.HasKey(k => new { k.OrderId, k.ItemId, });
 
             builder.HasOne(r => r.ReturnPurcheseOrder)
@@ -20,7 +31,6 @@ namespace Zamzam.EF
                 .HasForeignKey(p => p.ItemId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(p => p.Price).HasPrecision(9, 2);
             builder.Property(p => p.Discount).HasPrecision(9, 2);
             builder.Property(p => p.TotalPrice).HasPrecision(9, 2)

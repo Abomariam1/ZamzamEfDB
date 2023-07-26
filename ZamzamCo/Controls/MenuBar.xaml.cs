@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ZamzamCo.Controls
 {
@@ -23,6 +11,23 @@ namespace ZamzamCo.Controls
         public MenuBar()
         {
             InitializeComponent();
+        }
+
+        private void RadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("هل تريد الخروج من البرنامج", "خروج", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                Application.Current.Shutdown();
+            }
+        }
+
+        private void ExitRadiobutton_FocusableChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var Rd = (RadioButton)sender;
+            if (Rd != null)
+            {
+
+            }
         }
     }
 }

@@ -17,33 +17,63 @@
             <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
                 <views:HomeView/>
             </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewModel:AreaViewModel}">
+                <views:AreaView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewModel:DepartmentViewModel}">
+                <views:Departments/>
+            </DataTemplate>
+            
             <DataTemplate DataType="{x:Type viewModel:ItemViewModel}">
                 <views:ItemsView/>
             </DataTemplate>
+            
             <DataTemplate DataType="{x:Type viewModel:CustomerViewModel}">
                 <views:CustomersView/>
             </DataTemplate>
+            
             <DataTemplate DataType="{x:Type viewModel:EmployeeViewModel}">
                 <views:EmployeesView/>
             </DataTemplate>
+            
             <DataTemplate DataType="{x:Type viewModel:InstallmentViewModel}">
                 <views:InstallmentsView/>
             </DataTemplate>
+            
             <DataTemplate DataType="{x:Type viewModel:MaintenanceViewModel}">
                 <views:Maintenance/>
             </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewModel:ReturnPurcheseViewModel}">
+                <views:ReturnPurchasesView/>
+            </DataTemplate>
+            
             <DataTemplate DataType="{x:Type viewModel:PurchasesViewModel}">
                 <views:PurchasesView/>
             </DataTemplate>
+            
             <DataTemplate DataType="{x:Type viewModel:SaleViewModel}">
                 <views:SalesView/>
             </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewModel:ReturnSaleViewModel}">
+                <views:ReturnSalesView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewModel:UserViewModel}">
+                <views:UsersView/>
+            </DataTemplate>
+            
             <DataTemplate DataType="{x:Type viewModel:SuplierViewModel}">
                 <views:SuplierView/>
             </DataTemplate>
+            
             <DataTemplate DataType="{x:Type viewModel:AboutViewModel}">
                 <views:AboutView/>
             </DataTemplate>
+            
         </ResourceDictionary>
     </Application.Resources>
     

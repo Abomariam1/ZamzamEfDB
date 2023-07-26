@@ -96,7 +96,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Navigator:MenuBar Grid.Column="0"/>
+            <Navigator:MenuBar Grid.Column="0" DataContext="{Binding Path= Navigator}"/>
 
             <ContentControl Grid.Column="1" Content="{Binding Navigator.CurrentViewModel}"/>
 

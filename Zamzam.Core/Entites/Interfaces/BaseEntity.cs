@@ -7,7 +7,7 @@ namespace Zamzam.Core
     public abstract class BaseEntity : IEntity
     {
         private readonly List<BaseEvent> _events = new();
-        public int Id { get; set; }
+        public Ulid Id { get; } = Ulid.NewUlid();
 
         [NotMapped]
         public IReadOnlyCollection<BaseEvent> Events => _events.AsReadOnly();

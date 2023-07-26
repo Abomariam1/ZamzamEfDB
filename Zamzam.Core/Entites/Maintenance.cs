@@ -2,9 +2,9 @@
 {
     public class Maintenance : BaseEntity
     {
-        public int SaleOrderId { get; set; }
-        public int CustomerId { get; set; }
-        public int EmployeeId { get; set; }
+        public Ulid SaleOrderId { get; set; }
+        public Ulid CustomerId { get; set; }
+        public Ulid EmployeeId { get; set; }
         public DateTime NextMaintenanceDate { get; set; }
         public DateTime LastMaintenanceDate { get; set; }
         public bool IsMaintained { get; set; }

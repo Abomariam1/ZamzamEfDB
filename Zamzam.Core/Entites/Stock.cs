@@ -2,7 +2,7 @@
 {
     public class Stock
     {
-        public int ItemId { get; set; }
+        public Ulid ItemId { get; set; }
         public int Quantity { get; set; }
     }
 }

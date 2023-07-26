@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using Zamzam.Core;
 using Zamzam.Core.Entites;
 using Zamzam.EF;
+using Zamzam.EF.Services;
 using ZamzamCo.VewModels;
 
 namespace ZamzamCo
@@ -12,7 +13,7 @@ namespace ZamzamCo
     /// </summary>
     public partial class SignIn : Window
     {
-        IDataService<User> userService = new GenericDataServices<User>(new ZamzamDbContextFactory());
+        IDataService<User> userService = new UserDataService(new ZamzamDbContextFactory());
         string pstext;
         public SignIn()
         {
@@ -20,11 +21,11 @@ namespace ZamzamCo
             InitializeComponent();
         }
 
-        private void SignInBtn_Click(object sender, RoutedEventArgs e)
+        private async void SignInBtn_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(UserTxt.Text)) { MessageBox.Show("ادخل اسم المستخدم"); return; }
             if (string.IsNullOrEmpty(PasswordTxt.Password)) { MessageBox.Show("ادخل كلمة المرور"); return; }
-            User user = userService.GetById(2).Result;
+            User user = await userService.FindByNameAsync("Mostafa");
             if (user != null)
             {
                 if (user.UserName == UserTxt.Text && user.Password == PasswordTxt.Password)

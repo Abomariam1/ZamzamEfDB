@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zamzam.Core;
+using Zamzam.EF.Converters;
 
 namespace Zamzam.EF
 {
@@ -14,6 +15,10 @@ namespace Zamzam.EF
                 .WithMany(a => a.Customers)
                 .HasForeignKey(a => a.AreaId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(x => x.Id)
+                .HasConversion(UlidToGuidValueConverter.ulidconverter)
+                .HasColumnType("varchar(26)");
 
             builder.Property(n => n.Name).IsRequired()
                 .HasMaxLength(100);

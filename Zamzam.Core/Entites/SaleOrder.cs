@@ -2,8 +2,8 @@
 {
     public class SaleOrder : BaseOrder
     {
-        public int CustomerId { get; set; }
-        public int EmployeeId { get; set; }
+        public Ulid CustomerId { get; set; }
+        public Ulid EmployeeId { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual Employee Employee { get; set; }
         public virtual ICollection<ReturnSaleOrder> ReturnSaleOrder { get; set; }

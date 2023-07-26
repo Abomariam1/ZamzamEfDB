@@ -4,20 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-             xmlns:local="clr-namespace:ZamzamCo.Controls"
+             xmlns:local="clr-namespace:ZamzamCo.Controls" 
+             xmlns:nav="clr-namespace:ZamzamCo.VewModels" d:DataContext="{d:DesignInstance Type=nav:Navigator}"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="250">
-    <Grid Background="{StaticResource MenuLinearGraniantBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Image Grid.Row="0" Source="/Images/zamzamlogo.png" Margin="60 20"/>
-        <Separator Grid.Row="1" 
-                   Foreground="{StaticResource MenuLinearGraniantBrush}" Margin="45 5"/>
-        <StackPanel Grid.Row="2">
-            <StackPanel.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Background="{StaticResource MenuLinearGraniantBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.Resources>
                 <Style TargetType="RadioButton">
                     <!--Normal Menu Button-->
                     <Setter Property="Background" Value="Transparent"/>
@@ -31,25 +29,6 @@
                                 <Border Background="{TemplateBinding Background}" BorderThickness="4 0 0 0" BorderBrush="{StaticResource PrimaryColorBrush}">
                                     <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                                 </Border>
-                                <!--<Grid >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <ContentPresenter VerticalAlignment="Center" 
-                                                    HorizontalAlignment="Stretch"/>
-                                    <fa:IconImage Grid.Column="0" 
-                                                  Icon="{Binding Tag,RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                                  Foreground="{TemplateBinding Foreground}"
-                                                  VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                                                  HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                                  Height="20"
-                                                  Margin="30 0"/>
-                                    <TextBlock Grid.Column="1" 
-                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                               Text="{TemplateBinding Content}"/>
-                                </Grid>-->
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -59,7 +38,7 @@
                             <Setter Property="Foreground" Value="{StaticResource BackgrounVeryLightBrush}"/>
                             <Setter Property="Tag" Value="{StaticResource PrimaryColor}"/>
                             <Setter Property="Background" Value="{StaticResource PraimaryLinearGraniantBrush}"/>
-                            
+
                         </Trigger>
 
                         <!--Active button back coler-->
@@ -69,33 +48,157 @@
                             <Setter Property="Foreground" Value="{Binding Path=Tag,RelativeSource={RelativeSource Mode=Self}}"/>
                             <Setter Property="BorderBrush" Value="{Binding Path=Tag,RelativeSource={RelativeSource Mode=Self}}"/>
                         </Trigger>
+                        
                     </Style.Triggers>
                 </Style>
-            </StackPanel.Resources>
-            <RadioButton x:Name="MenuHomeView">
-                <StackPanel Orientation="Horizontal">
-                    <fa:IconImage Icon="Home" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
-                    <TextBlock Text="الرئيسية" VerticalAlignment="Center"
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="18"/>
+                </Style>
+            </Grid.Resources>
+            <Image Grid.Row="0" Source="/Images/zamzamlogo.png" Margin="60 20"/>
+            <Separator Grid.Row="1" 
+                   Foreground="{StaticResource MenuLinearGraniantBrush}" Margin="45 5"/>
+            <StackPanel Grid.Row="2">
+
+                <RadioButton x:Name="MenuHomeView" Tag="{StaticResource ForgroundVeryLightBrush}"
+                             Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Home}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="Home" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="الرئيسية" VerticalAlignment="Center"
                                HorizontalAlignment="Stretch"/>
-                </StackPanel>
-            </RadioButton>
-            <RadioButton Content="الرئيسية" Tag="Home"/>
-            <RadioButton Content="الاصناف" Tag="Codepen"/>
-            <RadioButton Content="الاقسام" Tag="Home"/>
-            <RadioButton Content="الموظفين" Tag="User"/>
-            <RadioButton Content="العملاء" Tag="UserShield"/>
-            <RadioButton Content="المشتريات" Tag="CartArrowDown"/>
-            <RadioButton Content="المبيعات" Tag="CartShopping"/>
-            <RadioButton Content="التحصيل" Tag="HandHoldingDollar"/>
-            <RadioButton Content="الصيانة" Tag="screwdriverwrench"/>
-            <RadioButton Content="المخزن" Tag="CubesStacked"/>
-            <RadioButton Content="الخزنة" Tag="Dollar"/>
-            <RadioButton Content="المناديب" Tag="personchalkboard"/>
-            <RadioButton Content="تقارير" Tag="scroll"/>
-            <RadioButton Content="عن البرنامج" Tag="flag"/>
-            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
-                <RadioButton Content="خروج" Tag="personwalkingarrowright"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton  Tag="{StaticResource ForgroundVeryLightBrush}"
+                              Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Items}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="Codepen" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="الاصناف" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Tag="{StaticResource ForgroundVeryLightBrush}"
+                             Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Departments}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="Sitemap" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="الاقسام" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Tag="{StaticResource ForgroundVeryLightBrush}"
+                             Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Employee}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="User" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="الموظفين" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Tag="{StaticResource ForgroundVeryLightBrush}"
+                             Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Customers}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="UserShield" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="العملاء" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Tag="{StaticResource ForgroundVeryLightBrush}"
+                             Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Purchases}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="CartArrowDown" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="المشتريات" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Tag="{StaticResource ForgroundVeryLightBrush}"
+                             Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Sales}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="CartShopping" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="المبيعات" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Tag="{StaticResource ForgroundVeryLightBrush}"
+                             Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Installments}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="HandHoldingDollar" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="التحصيل" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Tag="{StaticResource ForgroundVeryLightBrush}"
+                             Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Maintenance}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="screwdriverwrench" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="الصيانة" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Tag="{StaticResource ForgroundVeryLightBrush}"
+                             Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Items}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="CubesStacked" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="المخزن" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Tag="{StaticResource ForgroundVeryLightBrush}"
+                             Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Employee}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="Dollar" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="الخزنة" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Tag="{StaticResource ForgroundVeryLightBrush}"
+                             Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Employee}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="personchalkboard" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="المناديب" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Tag="{StaticResource ForgroundVeryLightBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="scroll" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="تقارير" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Tag="{StaticResource ForgroundVeryLightBrush}"
+                             Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.About}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="flag" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="عن البرنامج" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
+                
+                <RadioButton Tag="{StaticResource ForgroundVeryLightBrush}" 
+                             x:Name="ExitRadiobutton"
+                             Margin="0 15 0 0"
+                             Click="RadioButton_Click"
+                             FocusableChanged="ExitRadiobutton_FocusableChanged"
+                             >
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="personwalkingarrowright" Style="{StaticResource IconBtnIcon}" Margin="10 0"/>
+                        <TextBlock Text="خروج" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </RadioButton>
             </StackPanel>
-        </StackPanel>
-    </Grid>
+        </Grid>
+
+    </ScrollViewer>
 </UserControl>
