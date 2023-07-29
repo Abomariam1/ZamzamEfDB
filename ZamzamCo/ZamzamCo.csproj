@@ -14,6 +14,7 @@
     <None Remove="Fonts\ArefRuqaaInk-Bold.ttf" />
     <None Remove="Fonts\ArefRuqaaInk-Regular.ttf" />
     <None Remove="Fonts\NotoNaskhArabic-Regular.ttf" />
+    <None Remove="Images\55.jpg" />
     <None Remove="Images\coffee-icon.png" />
     <None Remove="Images\zamzamlogo.png" />
   </ItemGroup>
@@ -32,6 +33,9 @@
     <Resource Include="Fonts\NotoNaskhArabic-Regular.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\55.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\coffee-icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -45,6 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dirkster.NumericUpDownLib" Version="3.4.0" />
     <PackageReference Include="FontAwesome.Sharp" Version="6.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.6.23329.4">
       <PrivateAssets>all</PrivateAssets>

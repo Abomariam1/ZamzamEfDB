@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vvmodel="clr-namespace:ZamzamCo.VewModels.ViewViewModel"
              xmlns:local="clr-namespace:ZamzamCo.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d" >
     <Grid DataContext="{Binding Source={x:Type vvmodel:DepartmentViewModel}}">
 
         <Grid.RowDefinitions>
@@ -28,7 +27,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <TextBlock Text="اشعارات" Grid.Row="0"
                        FontSize="16" 
@@ -41,12 +39,10 @@
                 <Border Grid.Column="0"
                         Margin="10" BorderBrush="{StaticResource BorderBrushBrush}"
                         BorderThickness="2" Padding="10"
-                        MaxHeight="400"
-                        MaxWidth="500"
                         CornerRadius="10">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" MaxWidth="120" MinWidth="100"/>
                             <ColumnDefinition Width="3*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -72,8 +68,8 @@
                                     
                                  FontSize="16" Height="25"
                                  Margin="10 0"/>
-                        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
-                                    VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                    VerticalAlignment="Center" HorizontalAlignment="Center">
                             <StackPanel.Resources>
                                 <Style TargetType="Button" BasedOn="{StaticResource RoundedBTN}"/>
                             </StackPanel.Resources>
@@ -89,7 +85,7 @@
                         BorderThickness="2" Margin="10"
                         CornerRadius="10"
                         Padding="10">
-                    <TextBlock Text="Items Reports"/>
+                    <TextBlock Text="Departments Reports"/>
                 </Border>
             </Grid>
         </Grid>
