@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vvmodel="clr-namespace:ZamzamCo.VewModels.ViewViewModel"
              xmlns:local="clr-namespace:ZamzamCo.Views"
+             xmlns:scar="clr-namespace:Scar.Common.WPF.Controls;assembly=Scar.Common.WPF.Controls.NumericUpDown"
              xmlns:numeric="clr-namespace:NumericUpDownLib;assembly=NumericUpDownLib"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1250">
@@ -134,12 +135,15 @@
                         <DatePicker Grid.Row="2" Grid.Column="1" x:Name="EmpHeireDateDt" VerticalAlignment="Center"/>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="المرتب"/>
-                        <numeric:NumericUpDown Grid.Row="3" Grid.Column="1" 
-                                               x:Name="EmpSalaryNum"
-                                               VerticalAlignment="Center"
-                                               Value="2000"
-                                               StepSize="100"/>
-                        
+                        <scar:NumericUpDown  Grid.Row="3" Grid.Column="1"
+                                             
+                                             BorderThickness="1" 
+                                             BorderBrush="{StaticResource BackgrounVeryLightBrush}"
+                                             VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                             HorizontalContentAlignment="Stretch"
+                                             />
+
+
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="المؤهلات" />
                         <TextBox Grid.Row="4" Grid.Column="1" x:Name="EmpQualificationTxt"/>
                         

@@ -55,6 +55,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Scar.Common.WPF.Controls.NumericUpDown" Version="1.0.6811.31762" />
+    <PackageReference Include="Scar.Common.WPF.Controls.TimePicker" Version="1.0.6812.22525" />
+    <PackageReference Include="SolidShineUi" Version="1.9.6" />
   </ItemGroup>
 
   <ItemGroup>
