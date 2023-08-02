@@ -45,19 +45,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Dirkster.NumericUpDownLib" Version="3.4.0" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
     <PackageReference Include="FontAwesome.Sharp" Version="6.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.6.23329.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Scar.Common.WPF.Controls.NumericUpDown" Version="1.0.6811.31762" />
-    <PackageReference Include="Scar.Common.WPF.Controls.TimePicker" Version="1.0.6812.22525" />
-    <PackageReference Include="SolidShineUi" Version="1.9.6" />
   </ItemGroup>
 
   <ItemGroup>

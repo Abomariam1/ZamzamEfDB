@@ -3,10 +3,6 @@ using ZamzamCo.Commands;
 
 namespace ZamzamCo.VewModels
 {
-}
-
-namespace ZamzamCo.VewModels
-{
     public class Navigator : ViewModelBase, INavigator
     {
         private ViewModelBase _viewModel;

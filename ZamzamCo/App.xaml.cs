@@ -8,9 +8,15 @@ namespace ZamzamCo
     /// </summary>
     public partial class App : Application
     {
+
+        public App()
+        {
+
+        }
         protected override void OnStartup(StartupEventArgs e)
         {
             //IDataService<Item> itemService = new GenericDataServices<Item>(new ZamzamDbContextFactory());
+            //IDataService<Department> DepartmentService = new GenericDataServices<Department>(new ZamzamDbContextFactory());
             //_ = itemService.Delete(1);
             Window window = new MainWindow
             {

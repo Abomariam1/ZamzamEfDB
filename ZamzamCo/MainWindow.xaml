@@ -16,16 +16,13 @@
         ResizeMode="CanResizeWithGrip"
         Title="MainWindow" Height="800" Width="1350">
     <Window.Resources>
-
+        <!--<Binding.Source >
+            <Nav:MainViewModel/>
+        </Binding.Source>-->
     </Window.Resources>
-    <Window.DataContext>
-        <Binding >
-            <Binding.Source >
-                <Nav:MainViewModel/>
-            </Binding.Source>
-            
-        </Binding>
-    </Window.DataContext>
+    <!--<Window.DataContext>
+        <Binding Source="{x:Type Nav:MainViewModel}" />
+    </Window.DataContext>-->
     <Grid FlowDirection="RightToLeft" x:Name="PnlControlBar"
           MouseLeftButtonDown="PnlControlBar_MouseLeftButtonDown">
         <Grid.RowDefinitions>

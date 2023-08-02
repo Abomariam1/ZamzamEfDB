@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:local="clr-namespace:ZamzamCo.Controls" 
-             xmlns:nav="clr-namespace:ZamzamCo.VewModels" d:DataContext="{d:DesignInstance Type=nav:Navigator}"
+             xmlns:nav="clr-namespace:ZamzamCo.VewModels"
+             d:DataContext="{d:DesignInstance Type=nav:Navigator}"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="250">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -58,6 +59,7 @@
             <Image Grid.Row="0" Source="/Images/zamzamlogo.png" Margin="60 20"/>
             <Separator Grid.Row="1" 
                    Foreground="{StaticResource MenuLinearGraniantBrush}" Margin="45 5"/>
+            
             <StackPanel Grid.Row="2">
 
                 <RadioButton x:Name="MenuHomeView" Tag="{StaticResource ForgroundVeryLightBrush}"

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ZamzamCo.Controls
+namespace ZamzamCo.Shorts
 {
     /// <summary>
-    /// Interaction logic for Departments.xaml
+    /// Interaction logic for ShortDepartment.xaml
     /// </summary>
-    public partial class Departments : UserControl
+    public partial class ShortDepartment : UserControl
     {
-        public Departments()
+        public ShortDepartment()
         {
             InitializeComponent();
         }

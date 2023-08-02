@@ -3,13 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:vvmodel="clr-namespace:ZamzamCo.VewModels.ViewViewModel"
-             xmlns:local="clr-namespace:ZamzamCo.Views"
-             xmlns:scar="clr-namespace:Scar.Common.WPF.Controls;assembly=Scar.Common.WPF.Controls.NumericUpDown"
-             xmlns:numeric="clr-namespace:NumericUpDownLib;assembly=NumericUpDownLib"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1250">
-    <Grid DataContext="{Binding Source={x:Type vvmodel:EmployeeViewModel}}">
+             d:DesignHeight="800" d:DesignWidth="1250" d:Background="Azure"
+             
+             xmlns:exceed="http://schemas.xceed.com/wpf/xaml/toolkit" 
+             xmlns:vvmodel="clr-namespace:ZamzamCo.VewModels.ViewViewModel"
+             xmlns:model="clr-namespace:ZamzamCo.VewModels"
+             xmlns:controls="clr-namespace:ZamzamCo.Controls"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             >
+    <UserControl.DataContext>
+        <vvmodel:EmployeeViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+
+    </UserControl.Resources>
+    <Grid >
         <Grid.Resources>
             <Style TargetType="TextBlock">
                 <Setter Property="Margin" Value="5 0"/>
@@ -41,7 +50,7 @@
                    TextAlignment="Center"
                    Foreground="{StaticResource ForgroundVeryLightBrush}"/>
         </Border>
-        
+
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -77,33 +86,51 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        
+
                         <TextBlock Grid.Row="0" Grid.Column="0"  Text="اسم الموظف"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="EmpNameTxt"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" 
+                                 x:Name="EmpNameTxt"
+                                 Text="{Binding EmpName,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="رقم الهاتف" />
-                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="EmpPhoneTxt"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" 
+                                 x:Name="EmpPhoneTxt"
+                                 Text="{Binding Phone,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="العنوان" />
-                        <TextBox Grid.Row="2" Grid.Column="1" x:Name="EmpAddressTxt"/>
+                        <TextBox Grid.Row="2" Grid.Column="1"
+                                 x:Name="EmpAddressTxt"
+                                 Text="{Binding Address,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="المدينة" />
-                        <ComboBox Grid.Row="3" Grid.Column="1" x:Name="EmpCityCbo"/>
+                        <ComboBox Grid.Row="3" Grid.Column="1" 
+                                  x:Name="EmpCityCbo"
+                                  Text="{Binding City,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="المحافظة" />
-                        <ComboBox Grid.Row="4" Grid.Column="1" x:Name="EmpRegionCbo"/>
+                        <ComboBox Grid.Row="4" Grid.Column="1"
+                                  x:Name="EmpRegionCbo"
+                                  Text="{Binding Region,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="5" Grid.Column="0" Text="الدولة" />
-                        <ComboBox Grid.Row="5" Grid.Column="1" x:Name="EmpContryCbo"/>
+                        <ComboBox Grid.Row="5" Grid.Column="1"
+                                  x:Name="EmpContryCbo"
+                                  Text="{Binding Country,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="6" Grid.Column="0" Text="الرمز البريدي" />
-                        <TextBox Grid.Row="6" Grid.Column="1" x:Name="EmpPostaTxt"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" 
+                                 x:Name="EmpPostaTxt"
+                                 Text="{Binding PostalCode,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="7" Grid.Column="0" Text="الرقم القومي" />
-                        <TextBox Grid.Row="7" Grid.Column="1" x:Name="EmpNIDTxt"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" 
+                                 x:Name="EmpNIDTxt"
+                                 Text="{Binding NID,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="8" Grid.Column="0" Text="تاريخ الميلاد" />
-                        <DatePicker Grid.Row="8" Grid.Column="1" x:Name="EmpBirthDateDt" VerticalAlignment="Center"/>
+                        <DatePicker Grid.Row="8" Grid.Column="1" 
+                                    x:Name="EmpBirthDateDt" VerticalAlignment="Center"
+                                    DisplayDate="{Binding BirthDate,UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                 </Border>
                 <Border Grid.Column="1" BorderBrush="{StaticResource BorderBrushBrush}"
@@ -126,27 +153,52 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="القسم" />
-                        <ComboBox Grid.Row="0" Grid.Column="1" x:Name="EmpDepCbo"/>
-                        
+                        <WrapPanel Grid.Row ="0" Grid.Column="1"
+                                   VerticalAlignment="Center">
+                            <ComboBox  x:Name="EmpDepCbo" 
+                                       HorizontalAlignment="Stretch"
+                                       MinWidth="120"
+                                       Margin="0 1 10 0"
+                                       ItemsSource="{Binding Departments}"
+                                       DisplayMemberPath="DeparmentName"/>
+
+                            <Button Name="AddDepartment" 
+                                    Command="{Binding AddDepartmentCommand }" CommandParameter="{x:Static model:NavigatePrimatives.MinDepartments}"
+                                    Content="+"
+                                    Height="30" Width="30"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"
+                                    VerticalContentAlignment="Center"
+                                    HorizontalContentAlignment="Center"
+                                    FontSize="20"/>
+                        </WrapPanel>
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="المسمى الوظيفي" FontSize="16"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="EmpTitleTxt"/>
+                        <TextBox Grid.Row="1" Grid.Column="1"
+                                 x:Name="EmpTitleTxt"
+                                 Text="{Binding Titel,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="تاريخ التعيين" />
                         <DatePicker Grid.Row="2" Grid.Column="1" x:Name="EmpHeireDateDt" VerticalAlignment="Center"/>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="المرتب"/>
-                        <scar:NumericUpDown  Grid.Row="3" Grid.Column="1"
-                                             
+                        <exceed:ShortUpDown  Grid.Row="3" Grid.Column="1"
+                                             x:Name="EmpSalaryNum"
+                                             Value="{Binding Salary,UpdateSourceTrigger=PropertyChanged}"
+                                             Increment="100"
+                                             Watermark="2000"
                                              BorderThickness="1" 
-                                             BorderBrush="{StaticResource BackgrounVeryLightBrush}"
+                                             BorderBrush="{StaticResource BorderBrushBrush}"
                                              VerticalAlignment="Center" HorizontalAlignment="Stretch"
                                              HorizontalContentAlignment="Stretch"
+                                             VerticalContentAlignment="Center"
                                              />
 
 
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="المؤهلات" />
-                        <TextBox Grid.Row="4" Grid.Column="1" x:Name="EmpQualificationTxt"/>
-                        
+                        <TextBox Grid.Row="4" Grid.Column="1" 
+                                 x:Name="EmpQualificationTxt"
+                                 Text="{Binding Qualifications1,UpdateSourceTrigger=PropertyChanged}"/>
+
                         <StackPanel Grid.Row="5"  Grid.RowSpan="3" Grid.ColumnSpan="2" 
                                  Orientation="Horizontal">
 
@@ -180,12 +232,19 @@
                         BorderThickness="2" Margin="10"
                         CornerRadius="10"
                         Padding="10">
-                    <Grid >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" MinWidth="115"/>
-                            <ColumnDefinition Width="3*" />
+                    <Grid DataContext="{Binding SubNavigation}">
+                        <Grid.Resources>
+                            <DataTemplate DataType="{x:Type vvmodel:MinDepartmentsViewModel}">
+                                <controls:MinDepartments/>
+                            </DataTemplate>
+                        </Grid.Resources>
+
+
+                            <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
+                        <ContentControl Content="{Binding CurrentViewModel}" />
                     </Grid>
                 </Border>
 

@@ -5,12 +5,12 @@
     <Style x:Key="RoundedBTN" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource MainColor1Brush}"/>
         <Setter Property="Foreground" Value="{StaticResource ForgroundVeryLightBrush}"/>
-        <Setter Property="FontFamily" Value="{StaticResource LatoThin}"/>
-        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontFamily" Value="{StaticResource NotoNaskhArabic}"/>
+        <Setter Property="FontSize" Value="14"/>
         <Setter Property="Margin" Value="10 0"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Width" Value="70"/>
-        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="60"/>
+        <Setter Property="Height" Value="35"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="Template">
@@ -18,7 +18,7 @@
                 <ControlTemplate TargetType="Button">
                     <Border BorderThickness="2"
                             CornerRadius="10"
-                            Height="40"
+                            Height="35"
                             Background="{TemplateBinding Background}">
                         <TextBlock Margin="5" 
                                    TextAlignment="Center"
