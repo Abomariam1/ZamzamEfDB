@@ -90,47 +90,50 @@
                         <TextBlock Grid.Row="0" Grid.Column="0"  Text="اسم الموظف"/>
                         <TextBox Grid.Row="0" Grid.Column="1" 
                                  x:Name="EmpNameTxt"
-                                 Text="{Binding EmpName,UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding EmpName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="رقم الهاتف" />
                         <TextBox Grid.Row="1" Grid.Column="1" 
                                  x:Name="EmpPhoneTxt"
-                                 Text="{Binding Phone,UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding Phone,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="العنوان" />
                         <TextBox Grid.Row="2" Grid.Column="1"
                                  x:Name="EmpAddressTxt"
-                                 Text="{Binding Address,UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding Address,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="المدينة" />
                         <ComboBox Grid.Row="3" Grid.Column="1" 
                                   x:Name="EmpCityCbo"
-                                  Text="{Binding City,UpdateSourceTrigger=PropertyChanged}"/>
+                                  Text="{Binding City,UpdateSourceTrigger=PropertyChanged}"
+                                  IsEditable="True"/>
 
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="المحافظة" />
                         <ComboBox Grid.Row="4" Grid.Column="1"
+                                  IsEditable="True"
                                   x:Name="EmpRegionCbo"
-                                  Text="{Binding Region,UpdateSourceTrigger=PropertyChanged}"/>
+                                  Text="{Binding Region,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="5" Grid.Column="0" Text="الدولة" />
                         <ComboBox Grid.Row="5" Grid.Column="1"
+                                  IsEditable="True"
                                   x:Name="EmpContryCbo"
-                                  Text="{Binding Country,UpdateSourceTrigger=PropertyChanged}"/>
+                                  Text="{Binding Country,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="6" Grid.Column="0" Text="الرمز البريدي" />
                         <TextBox Grid.Row="6" Grid.Column="1" 
                                  x:Name="EmpPostaTxt"
-                                 Text="{Binding PostalCode,UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding PostalCode,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="7" Grid.Column="0" Text="الرقم القومي" />
                         <TextBox Grid.Row="7" Grid.Column="1" 
                                  x:Name="EmpNIDTxt"
-                                 Text="{Binding NID,UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding NID,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="8" Grid.Column="0" Text="تاريخ الميلاد" />
                         <DatePicker Grid.Row="8" Grid.Column="1" 
                                     x:Name="EmpBirthDateDt" VerticalAlignment="Center"
-                                    DisplayDate="{Binding BirthDate,UpdateSourceTrigger=PropertyChanged}"/>
+                                    SelectedDate="{Binding BirthDate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                 </Border>
                 <Border Grid.Column="1" BorderBrush="{StaticResource BorderBrushBrush}"
@@ -158,10 +161,10 @@
                             <ComboBox  x:Name="EmpDepCbo" 
                                        HorizontalAlignment="Stretch"
                                        MinWidth="120"
-                                       Margin="0 1 10 0"
-                                       ItemsSource="{Binding Departments}"
-                                       DisplayMemberPath="DeparmentName"/>
-
+                                       Margin="0 0 10 0"
+                                       ItemsSource="{Binding Departments,UpdateSourceTrigger=PropertyChanged}"
+                                       DisplayMemberPath="Name" 
+                                       SelectedItem="{Binding SelectedDepartment}"/>
                             <Button Name="AddDepartment" 
                                     Command="{Binding AddDepartmentCommand }" CommandParameter="{x:Static model:NavigatePrimatives.MinDepartments}"
                                     Content="+"
@@ -175,15 +178,23 @@
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="المسمى الوظيفي" FontSize="16"/>
                         <TextBox Grid.Row="1" Grid.Column="1"
                                  x:Name="EmpTitleTxt"
-                                 Text="{Binding Titel,UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding Titel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="تاريخ التعيين" />
-                        <DatePicker Grid.Row="2" Grid.Column="1" x:Name="EmpHeireDateDt" VerticalAlignment="Center"/>
+                        <DatePicker Grid.Row="2" Grid.Column="1" 
+                                    x:Name="EmpHeireDateDt" 
+                                    VerticalAlignment="Center"
+                                    SelectedDate="{Binding HireDate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged
+                            ,StringFormat={}{0: dd-MM-yyyy},FallbackValue={x:Static sys:DateTime.Now}}"
+                                    DisplayDate="{Binding HireDate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged
+                            ,StringFormat={}{0: dd-MM-yyyy}}"
+                                    Text="{Binding HireDate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged
+                            ,StringFormat={}{0: dd-MM-yyyy}}"/>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="المرتب"/>
                         <exceed:ShortUpDown  Grid.Row="3" Grid.Column="1"
                                              x:Name="EmpSalaryNum"
-                                             Value="{Binding Salary,UpdateSourceTrigger=PropertyChanged}"
+                                             Value="{Binding Salary,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                              Increment="100"
                                              Watermark="2000"
                                              BorderThickness="1" 
@@ -197,27 +208,34 @@
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="المؤهلات" />
                         <TextBox Grid.Row="4" Grid.Column="1" 
                                  x:Name="EmpQualificationTxt"
-                                 Text="{Binding Qualifications1,UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding Qualifications,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
                         <StackPanel Grid.Row="5"  Grid.RowSpan="3" Grid.ColumnSpan="2" 
                                  Orientation="Horizontal">
 
 
                             <Ellipse  Stroke="{StaticResource BackGrounMainTextBrush }"
-                                      Width="150" Height="150" FlowDirection="LeftToRight">
+                                      Width="150" Height="150" 
+                                      StrokeThickness="2">
                                 <Ellipse.Fill >
-                                    <DrawingBrush  Stretch="UniformToFill"  >
+                                    <DrawingBrush  Stretch="Fill" >
                                         <DrawingBrush.Drawing  >
-                                            <ImageDrawing  ImageSource="/Images/55.jpg" 
-                                                          Rect="0 0 150 150"  />
+                                            <ImageDrawing ImageSource="{Binding Image,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                          Rect="0 0 150 150"
+                                                          x:Name="EmpPhotoImg">
+                                            </ImageDrawing>
                                         </DrawingBrush.Drawing>
-                                    </DrawingBrush>
+                                        <!--<DrawingBrush.RelativeTransform>
+                                            <RotateTransform CenterX="0.5" CenterY="0.5" Angle="90"/>
+                                        </DrawingBrush.RelativeTransform>-->
 
+                                    </DrawingBrush>
                                 </Ellipse.Fill>
                             </Ellipse>
 
                             <Button Grid.Row="6" Grid.Column="1"
                                     Content="..."
+                                    Command="{Binding AddPhoto}"
                                     Margin="50 0 0 0"
                                     Width="40"
                                     VerticalAlignment="Center"
@@ -240,7 +258,7 @@
                         </Grid.Resources>
 
 
-                            <Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
@@ -259,10 +277,10 @@
                 <StackPanel.Resources>
                     <Style TargetType="Button" BasedOn="{StaticResource RoundedBTN}"/>
                 </StackPanel.Resources>
-                <Button Content="أضافة" Margin="10 0"/>
-                <Button Content="تعديل" Margin="10 0"/>
-                <Button Content="حذف" Margin="10 0"/>
-                <Button Content="بحث" Margin="10 0"/>
+                <Button Content="أضافة" Margin="10 0" Command="{Binding AddEmployee}"/>
+                <Button Content="تعديل" Margin="10 0" Command="{Binding EditEmployee}"/>
+                <Button Content="حذف" Margin="10 0" Command="{Binding DeleteEmployee}"/>
+                <Button Content="بحث" Margin="10 0" Command="{Binding AddEmployee}"/>
             </StackPanel>
 
         </Grid>

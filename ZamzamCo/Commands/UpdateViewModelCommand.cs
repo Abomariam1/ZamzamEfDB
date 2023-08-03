@@ -11,10 +11,6 @@ namespace ZamzamCo.Commands
         {
             _navigation = navigator;
         }
-        public bool CanExecute(object? parameter)
-        {
-            return true;
-        }
 
         public override void Execute(object? parameter)
         {

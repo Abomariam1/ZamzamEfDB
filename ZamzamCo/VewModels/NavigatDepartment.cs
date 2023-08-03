@@ -8,6 +8,6 @@ namespace ZamzamCo.VewModels
         private ViewModelBase _viewModelBase;
         public ViewModelBase CurrentViewModel { get => _viewModelBase; set { _viewModelBase = value; OnPropertyChanged(nameof(CurrentViewModel)); } }
 
-        public ICommand UpdateCurrentViewModelCommand => new NavigateDepartmentCommand(this);
+        public ICommand UpdateCurrentViewModelCommand => new DepartmentCommand(this);
     }
 }

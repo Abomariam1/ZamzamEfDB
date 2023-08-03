@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using Zamzam.Core;
 using Zamzam.EF;
@@ -6,7 +7,7 @@ using ZamzamCo.Commands.CrudCommands;
 
 namespace ZamzamCo.VewModels.ViewViewModel
 {
-    class MinDepartmentsViewModel : ViewModelBase
+    public class MinDepartmentsViewModel : ViewModelBase
     {
         private IDataService<Department> DepartmentService = new GenericDataServices<Department>(new ZamzamDbContextFactory());
 
@@ -38,11 +39,17 @@ namespace ZamzamCo.VewModels.ViewViewModel
         #region Methods
         public void AddDeparmentAsync()
         {
+            if (string.IsNullOrEmpty(DeparmentName))
+            {
+                MessageBox.Show("برجاء ادخال اسم القسم");
+                return;
+            }
             Department dep = new()
             {
                 Name = DeparmentName
             };
             DepartmentService.CreateAsync(dep);
+            EmployeeViewModel.Departments = DepartmentService.GetAll();
         }
         #endregion
 

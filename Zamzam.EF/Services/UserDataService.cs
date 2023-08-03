@@ -46,5 +46,35 @@ namespace Zamzam.EF.Services
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<User> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public User GetById(Ulid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User Create(User entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User Update(Ulid id, User entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(Ulid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User FindByName(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

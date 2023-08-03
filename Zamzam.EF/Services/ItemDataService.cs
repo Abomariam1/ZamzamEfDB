@@ -14,6 +14,11 @@ namespace Zamzam.EF.Services
             _dbContextFactory = context;
         }
 
+        public Item Create(Item entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Item> CreateAsync(Item entity)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
@@ -22,6 +27,11 @@ namespace Zamzam.EF.Services
                 await context.SaveChangesAsync();
                 return CreatedEntity.Entity;
             }
+        }
+
+        public bool Delete(Ulid id)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> DeleteAsync(Ulid id)
@@ -33,6 +43,11 @@ namespace Zamzam.EF.Services
                 await context.SaveChangesAsync();
                 return true;
             }
+        }
+
+        public Item FindByName(string name)
+        {
+            throw new NotImplementedException();
         }
 
         public Task<User> FindByNameAsync(string name)
@@ -58,6 +73,11 @@ namespace Zamzam.EF.Services
             }
         }
 
+        public Item GetById(Ulid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Item> GetByIdAsync(Ulid id)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
@@ -65,6 +85,11 @@ namespace Zamzam.EF.Services
                 Item? entities = context.Set<Item>().FirstOrDefaultAsync((e) => e.Id == id).Result;
                 return entities;
             }
+        }
+
+        public Item Update(Ulid id, Item entity)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<Item> UpdateAsync(Ulid id, Item entity)
@@ -75,6 +100,16 @@ namespace Zamzam.EF.Services
                 await context.SaveChangesAsync();
                 return entity;
             }
+        }
+
+        Task<Item> IDataService<Item>.FindByNameAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Item> IDataService<Item>.GetAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }

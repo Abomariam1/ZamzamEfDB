@@ -3,12 +3,12 @@ using ZamzamCo.VewModels.ViewViewModel;
 
 namespace ZamzamCo.Commands
 {
-    public class NavigateDepartmentCommand : CommandBase
+    public class DepartmentCommand : CommandBase
     {
 
         INavigator _navigator;
 
-        public NavigateDepartmentCommand(INavigator navigator)
+        public DepartmentCommand(INavigator navigator)
         {
             _navigator = navigator;
         }

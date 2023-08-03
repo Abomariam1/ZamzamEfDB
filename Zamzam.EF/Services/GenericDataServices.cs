@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Zamzam.Core;
-using Zamzam.Core.Entites;
 
 namespace Zamzam.EF
 {
@@ -14,6 +13,71 @@ namespace Zamzam.EF
             _dbContextFactory = dbContextFactory;
         }
 
+        public T Create(T entity)
+        {
+            using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
+            {
+                EntityEntry<T>? CreatedEntity = context.Set<T>().Add(entity);
+                context.SaveChanges();
+                return CreatedEntity.Entity;
+            }
+        }
+
+        public T Update(Ulid id, T entity)
+        {
+            using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
+            {
+                context.Set<T>().Update(entity);
+                context.SaveChanges();
+                return entity;
+            }
+        }
+        public bool Delete(Ulid id)
+        {
+            using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
+            {
+                T? entity = context.Set<T>().FirstOrDefault(predicate: (e) => e.Id == id);
+                context.Set<T>().Remove(entity);
+                context.SaveChanges();
+                return true;
+            }
+        }
+        public IEnumerable<T> GetAll()
+        {
+            using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
+            {
+                IEnumerable<T> entities = context.Set<T>().ToList();
+                return entities;
+            }
+        }
+
+        public T GetById(Ulid id)
+        {
+            using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
+            {
+                T? entities = context.Set<T>().FirstOrDefault((e) => e.Id == id);
+                return entities;
+            }
+        }
+
+        public T FindByName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public async Task<bool> DeleteAsync(Ulid id)
+        {
+            using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
+            {
+                T? entity = await context.Set<T>().FirstOrDefaultAsync(predicate: (e) => e.Id == id);
+                context.Set<T>().Remove(entity);
+                await context.SaveChangesAsync();
+                return true;
+            }
+        }
+
+
         public async Task<T> CreateAsync(T entity)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
@@ -22,22 +86,6 @@ namespace Zamzam.EF
                 await context.SaveChangesAsync();
                 return CreatedEntity.Entity;
             }
-        }
-
-        public async Task<bool> DeleteAsync(Ulid id)
-        {
-            using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
-            {
-                T entity = await context.Set<T>().FirstOrDefaultAsync(predicate: ((e) => e.Id == id));
-                context.Set<T>().Remove(entity);
-                await context.SaveChangesAsync();
-                return true;
-            }
-        }
-
-        public Task<User> FindByNameAsync(string name)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -53,7 +101,7 @@ namespace Zamzam.EF
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
-                T? entities = context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id).Result;
+                T? entities = await context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id);
                 return entities;
             }
 
@@ -67,6 +115,11 @@ namespace Zamzam.EF
                 await context.SaveChangesAsync();
                 return entity;
             }
+        }
+
+        Task<T> IDataService<T>.FindByNameAsync(string name)
+        {
+            throw new NotImplementedException();
         }
     }
 }
