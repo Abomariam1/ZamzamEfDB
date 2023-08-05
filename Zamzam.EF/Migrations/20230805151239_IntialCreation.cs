@@ -439,8 +439,8 @@ namespace Zamzam.EF.Migrations
                 name: "MaintenanceOrderLines",
                 columns: table => new
                 {
-                    OrderId = table.Column<Guid>(type: "uniqueidentifier", maxLength: 24, nullable: false),
-                    ItemId = table.Column<Guid>(type: "uniqueidentifier", maxLength: 24, nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),

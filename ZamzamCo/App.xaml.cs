@@ -1,5 +1,8 @@
 ﻿using System.Windows;
+using ZamzamCo.Controls;
+using ZamzamCo.Dialogs;
 using ZamzamCo.VewModels;
+using ZamzamCo.VewModels.ViewViewModel;
 
 namespace ZamzamCo
 {
@@ -11,8 +14,9 @@ namespace ZamzamCo
 
         public App()
         {
-
+            DialogService.RegisterDialog<MinDepartments, MinDepartmentsViewModel>();
         }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             //IDataService<Item> itemService = new GenericDataServices<Item>(new ZamzamDbContextFactory());

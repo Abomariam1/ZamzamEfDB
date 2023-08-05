@@ -23,7 +23,7 @@ namespace Zamzam.EF
             }
         }
 
-        public T Update(Ulid id, T entity)
+        public T Update(Guid id, T entity)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
@@ -32,7 +32,7 @@ namespace Zamzam.EF
                 return entity;
             }
         }
-        public bool Delete(Ulid id)
+        public bool Delete(Guid id)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
@@ -51,7 +51,7 @@ namespace Zamzam.EF
             }
         }
 
-        public T GetById(Ulid id)
+        public T GetById(Guid id)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
@@ -66,7 +66,7 @@ namespace Zamzam.EF
         }
 
 
-        public async Task<bool> DeleteAsync(Ulid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
@@ -97,7 +97,7 @@ namespace Zamzam.EF
             }
         }
 
-        public async Task<T> GetByIdAsync(Ulid id)
+        public async Task<T> GetByIdAsync(Guid id)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
@@ -107,7 +107,7 @@ namespace Zamzam.EF
 
         }
 
-        public async Task<T> UpdateAsync(Ulid id, T entity)
+        public async Task<T> UpdateAsync(Guid id, T entity)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {

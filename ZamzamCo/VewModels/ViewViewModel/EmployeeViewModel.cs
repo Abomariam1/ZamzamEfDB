@@ -1,6 +1,5 @@
 ﻿using Prism.Commands;
 using System;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -57,7 +56,7 @@ namespace ZamzamCo.VewModels.ViewViewModel
         public ImageSource Image { get { return _imageSource; } set { _imageSource = value; OnPropertyChanged(nameof(Image)); } }
         public INavigator SubNavigation { get; set; } = new NavigatDepartment();
         public Department SelectedDepartment { get { return _department; } set { _department = value; OnPropertyChanged(nameof(SelectedDepartment)); } }
-        public static ObservableCollection<Department>? Departments => new(DepartmentService.GetDepartments());
+        //public static ObservableCollection<Department>? Departments => new(DepartmentService.GetDepartments());
         public EmployeeViewModel Employee { get { return _employee; } set { _employee = value; OnPropertyChanged(nameof(Employee)); } }
         public ICommand ShowEmployee => new IOCommand(Show);
         public ICommand AddEmployee => new CrudComand(AddNewEmployee);
@@ -68,9 +67,9 @@ namespace ZamzamCo.VewModels.ViewViewModel
         public DelegateCommand ShowDepartment => _showDepartment ?? (_showDepartment = new DelegateCommand(ExecuteShowDepartment));
 
 
-        public static ICommand? AddDepartment => MinDepartments.AddDeparmentCommand;
+        public static ICommand? AddDepartment => MinDepartments1.AddDeparmentCommand;
 
-        public static MinDepartmentsViewModel MinDepartments => new();
+        public static MinDepartmentsViewModel MinDepartments1 => new();
 
         public EmployeeViewModel()
         {
@@ -97,7 +96,10 @@ namespace ZamzamCo.VewModels.ViewViewModel
         }
         private void ExecuteShowDepartment()
         {
-            _dialogServices.ShowDialog();
+            _dialogServices.ShowDialog<MinDepartmentsViewModel>(result =>
+            {
+                var test = result;
+            });
         }
 
         private void AddNewEmployee()
@@ -124,7 +126,6 @@ namespace ZamzamCo.VewModels.ViewViewModel
             employee.Salary = Salary;
             employee.Qualification = Qualifications;
             employee.Photo = Photo;
-            employee.DepartmentId = SelectedDepartment.Id;
             var emp = EmployeeService.Create(employee);
             if (emp != null)
             {

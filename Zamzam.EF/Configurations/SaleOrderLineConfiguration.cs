@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zamzam.Core;
-using Zamzam.EF.Converters;
 
 namespace Zamzam.EF
 {
@@ -10,17 +9,17 @@ namespace Zamzam.EF
         public void Configure(EntityTypeBuilder<SaleOrderLine> builder)
         {
 
-            builder.Property(x => x.Id)
-                .HasConversion(UlidToGuidValueConverter.ulidconverter)
-                .HasColumnType("uniqueidentifier");
+            //builder.Property(x => x.Id)
+            //    .HasConversion(UlidToGuidValueConverter.ulidconverter)
+            //    .HasColumnType("uniqueidentifier");
 
-            builder.Property(x => x.ItemId)
-                .HasConversion(UlidToGuidValueConverter.ulidconverter)
-                .HasColumnType("uniqueidentifier");
+            //builder.Property(x => x.ItemId)
+            //    .HasConversion(UlidToGuidValueConverter.ulidconverter)
+            //    .HasColumnType("uniqueidentifier");
 
-            builder.Property(x => x.OrderId)
-                .HasConversion(UlidToGuidValueConverter.ulidconverter)
-                .HasColumnType("uniqueidentifier");
+            //builder.Property(x => x.OrderId)
+            //    .HasConversion(UlidToGuidValueConverter.ulidconverter)
+            //    .HasColumnType("uniqueidentifier");
 
 
             builder.HasKey(x => x.Id);

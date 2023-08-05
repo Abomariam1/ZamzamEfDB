@@ -28,6 +28,7 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.Area", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Location")
@@ -51,6 +52,7 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.Customer", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
@@ -95,6 +97,7 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.Department", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -110,6 +113,7 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.Employee", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
@@ -185,6 +189,7 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.Entites.User", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
@@ -215,6 +220,7 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.Installment", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CustomerId")
@@ -249,6 +255,7 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.Item", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Balance")
@@ -287,6 +294,7 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.Maintenance", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CustomerId")
@@ -321,11 +329,9 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.MaintenanceOrderLine", b =>
                 {
                     b.Property<Guid>("OrderId")
-                        .HasMaxLength(24)
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ItemId")
-                        .HasMaxLength(24)
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Discount")
@@ -358,6 +364,7 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.PurchaseOrder", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("EmployeeId")
@@ -446,6 +453,7 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.ReturnPurchaseOrder", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("EmployeeId")
@@ -539,6 +547,7 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.ReturnSaleOrder", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("EmployeeId")
@@ -630,6 +639,7 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.SaleOrder", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CustomerId")
@@ -718,6 +728,7 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Core.Supplier", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")

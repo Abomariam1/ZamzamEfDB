@@ -7,7 +7,7 @@
         public string? Address { get; set; } = string.Empty;
         public long NationalCardId { get; set; } = 0;
         public string? Notes { get; set; } = string.Empty;
-        public Ulid AreaId { get; set; }
+        public Guid AreaId { get; set; }
         public bool IsProplem { get; set; } = false;
         public bool IsBlackList { get; set; } = false;
         public bool IsDeleted { get; set; } = false;

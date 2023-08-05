@@ -16,7 +16,7 @@
         public decimal Salary { get; set; }
         public string Qualification { get; set; } = string.Empty;
         public byte[]? Photo { get; set; }
-        public Ulid DepartmentId { get; set; }
+        public Guid DepartmentId { get; set; }
         public virtual Department Department { get; set; }
         public virtual ICollection<SaleOrder> Sales { get; set; }
         public virtual ICollection<Installment> Installments { get; set; }

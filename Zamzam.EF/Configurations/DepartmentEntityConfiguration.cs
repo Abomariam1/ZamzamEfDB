@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zamzam.Core;
-using Zamzam.EF.Converters;
 
 namespace Zamzam.EF
 {
@@ -11,7 +10,6 @@ namespace Zamzam.EF
         {
 
             builder.Property(x => x.Id)
-                .HasConversion(UlidToGuidValueConverter.ulidconverter)
                 .HasColumnType("uniqueidentifier");
 
             builder.Property(n => n.Name).IsRequired()

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zamzam.Core;
-using Zamzam.EF.Converters;
 
 namespace Zamzam.EF
 {
@@ -10,9 +9,8 @@ namespace Zamzam.EF
         public void Configure(EntityTypeBuilder<Area> builder)
         {
 
-            builder.Property(x => x.Id)
-                .HasConversion(UlidToGuidValueConverter.ulidconverter)
-                .HasColumnType("uniqueidentifier");
+            //builder.Property(x => x.Id)
+            //    .HasColumnType("uniqueidentifier");
             builder.HasKey(x => x.Id);
             builder.Property(a => a.Name).IsRequired()
                 .HasMaxLength(100);
