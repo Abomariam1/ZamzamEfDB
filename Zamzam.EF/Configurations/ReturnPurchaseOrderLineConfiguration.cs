@@ -12,10 +12,10 @@ namespace Zamzam.EF
 
             builder.Property(x => x.Id)
                 .HasConversion(UlidToGuidValueConverter.ulidconverter)
-                .HasColumnType("varchar(26)");
+                .HasColumnType("uniqueidentifier");
 
-            builder.Property(x => x.OrderId).HasConversion(UlidToGuidValueConverter.ulidconverter).HasColumnType("varchar(26)");
-            builder.Property(x => x.ItemId).HasConversion(UlidToGuidValueConverter.ulidconverter).HasColumnType("varchar(26)");
+            builder.Property(x => x.OrderId).HasConversion(UlidToGuidValueConverter.ulidconverter).HasColumnType("uniqueidentifier");
+            builder.Property(x => x.ItemId).HasConversion(UlidToGuidValueConverter.ulidconverter).HasColumnType("uniqueidentifier");
 
 
             builder.HasKey(x => x.Id);

@@ -6,9 +6,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1250" d:Background="Azure"
              
+             xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
              xmlns:exceed="http://schemas.xceed.com/wpf/xaml/toolkit" 
              xmlns:vvmodel="clr-namespace:ZamzamCo.VewModels.ViewViewModel"
              xmlns:model="clr-namespace:ZamzamCo.VewModels"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:controls="clr-namespace:ZamzamCo.Controls"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              >
@@ -57,15 +59,17 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="اشعارات" Grid.Row="0"
+            <TextBlock Text="{Binding Notify}" Grid.Row="0"
                        FontSize="16" 
+                       Foreground="{StaticResource MainColor1Brush}"
                        Background="{StaticResource BackgrounLightBrush}"/>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" MaxWidth="350"/>
-                    <ColumnDefinition Width="*" MaxWidth="350"/>
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="1.5*" />
                 </Grid.ColumnDefinitions>
+                
                 <Border Grid.Column="0"
                         Margin="10" BorderBrush="{StaticResource BorderBrushBrush}"
                         BorderThickness="2" Padding="10"
@@ -133,9 +137,15 @@
                         <TextBlock Grid.Row="8" Grid.Column="0" Text="تاريخ الميلاد" />
                         <DatePicker Grid.Row="8" Grid.Column="1" 
                                     x:Name="EmpBirthDateDt" VerticalAlignment="Center"
-                                    SelectedDate="{Binding BirthDate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                    Text="{Binding BirthDate
+                            ,Mode=TwoWay
+                            ,UpdateSourceTrigger=PropertyChanged
+                            ,StringFormat={}{0: dd/MM/yyyy}
+                            ,ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}
+                            ,FallbackValue={x:Static sys:DateTime.UtcNow}}"/>
                     </Grid>
                 </Border>
+                
                 <Border Grid.Column="1" BorderBrush="{StaticResource BorderBrushBrush}"
                         BorderThickness="2" Margin="10"
                         CornerRadius="10"
@@ -156,8 +166,12 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="القسم" />
-                        <WrapPanel Grid.Row ="0" Grid.Column="1"
+                        <Grid Grid.Row ="0" Grid.Column="1"
                                    VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
                             <ComboBox  x:Name="EmpDepCbo" 
                                        HorizontalAlignment="Stretch"
                                        MinWidth="120"
@@ -165,8 +179,9 @@
                                        ItemsSource="{Binding Departments,UpdateSourceTrigger=PropertyChanged}"
                                        DisplayMemberPath="Name" 
                                        SelectedItem="{Binding SelectedDepartment}"/>
-                            <Button Name="AddDepartment" 
-                                    Command="{Binding AddDepartmentCommand }" CommandParameter="{x:Static model:NavigatePrimatives.MinDepartments}"
+                            <Button Name="AddDepartment"
+                                    Grid.Column="1"
+                                    Command="{Binding ShowDepartment }" CommandParameter="{x:Static model:NavigatePrimatives.MinDepartments}"
                                     Content="+"
                                     Height="30" Width="30"
                                     VerticalAlignment="Center"
@@ -174,7 +189,7 @@
                                     VerticalContentAlignment="Center"
                                     HorizontalContentAlignment="Center"
                                     FontSize="20"/>
-                        </WrapPanel>
+                        </Grid>
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="المسمى الوظيفي" FontSize="16"/>
                         <TextBox Grid.Row="1" Grid.Column="1"
                                  x:Name="EmpTitleTxt"
@@ -184,12 +199,11 @@
                         <DatePicker Grid.Row="2" Grid.Column="1" 
                                     x:Name="EmpHeireDateDt" 
                                     VerticalAlignment="Center"
-                                    SelectedDate="{Binding HireDate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged
-                            ,StringFormat={}{0: dd-MM-yyyy},FallbackValue={x:Static sys:DateTime.Now}}"
-                                    DisplayDate="{Binding HireDate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged
-                            ,StringFormat={}{0: dd-MM-yyyy}}"
-                                    Text="{Binding HireDate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged
-                            ,StringFormat={}{0: dd-MM-yyyy}}"/>
+                                    Text="{Binding HireDate
+                            ,Mode=TwoWay
+                            ,UpdateSourceTrigger=PropertyChanged
+                            ,ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}
+                            ,FallbackValue={x:Static sys:DateTime.UtcNow}}" />
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="المرتب"/>
                         <exceed:ShortUpDown  Grid.Row="3" Grid.Column="1"
@@ -203,8 +217,7 @@
                                              HorizontalContentAlignment="Stretch"
                                              VerticalContentAlignment="Center"
                                              />
-
-
+                        
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="المؤهلات" />
                         <TextBox Grid.Row="4" Grid.Column="1" 
                                  x:Name="EmpQualificationTxt"
@@ -246,23 +259,22 @@
 
                     </Grid>
                 </Border>
+                
                 <Border Grid.Column="2" BorderBrush="{StaticResource BorderBrushBrush}"
                         BorderThickness="2" Margin="10"
                         CornerRadius="10"
                         Padding="10">
-                    <Grid DataContext="{Binding SubNavigation}">
-                        <Grid.Resources>
-                            <DataTemplate DataType="{x:Type vvmodel:MinDepartmentsViewModel}">
-                                <controls:MinDepartments/>
-                            </DataTemplate>
-                        </Grid.Resources>
+                    <Grid>
 
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <ContentControl Content="{Binding CurrentViewModel}" />
+                        <TreeView x:Name="EmpTreeView" ItemsSource="{Binding Departments}" >
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate ItemsSource="{Binding Employees}">
+                                    <TextBlock Text="{Binding Name}"/>
+                                </HierarchicalDataTemplate>
+                                
+                            </TreeView.ItemTemplate>
+                            
+                        </TreeView>
                     </Grid>
                 </Border>
 

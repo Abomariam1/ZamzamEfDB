@@ -12,7 +12,7 @@ namespace Zamzam.EF.Configurations
 
             builder.Property(x => x.Id)
                 .HasConversion(UlidToGuidValueConverter.ulidconverter)
-                .HasColumnType("varchar(26)");
+                .HasColumnType("uniqueidentifier");
 
             builder.HasKey(x => x.Id);
             builder.Property(n => n.UserName).HasMaxLength(50);

@@ -12,7 +12,7 @@ using Zamzam.EF;
 namespace Zamzam.EF.Migrations
 {
     [DbContext(typeof(ZamzamDbContext))]
-    [Migration("20230726082544_IntialCreation")]
+    [Migration("20230805104257_IntialCreation")]
     partial class IntialCreation
     {
         /// <inheritdoc />
@@ -21,14 +21,17 @@ namespace Zamzam.EF.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.0-preview.6.23329.4")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Zamzam.Core.Area", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
@@ -50,16 +53,15 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.Customer", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<string>("AreaId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("AreaId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsBlackList")
                         .HasColumnType("bit");
@@ -95,8 +97,8 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.Department", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -110,8 +112,8 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.Employee", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -131,9 +133,8 @@ namespace Zamzam.EF.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<string>("DepartmentId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateOnly>("HireDate")
                         .HasColumnType("date");
@@ -186,8 +187,8 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.Entites.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -216,20 +217,17 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.Installment", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("OrderId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateOnly>("PayedOn")
                         .ValueGeneratedOnAdd()
@@ -253,8 +251,8 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.Item", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Balance")
                         .ValueGeneratedOnAdd()
@@ -291,16 +289,14 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.Maintenance", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsMaintained")
                         .HasColumnType("bit");
@@ -311,9 +307,8 @@ namespace Zamzam.EF.Migrations
                     b.Property<DateTime>("NextMaintenanceDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("SaleOrderId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("SaleOrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -328,21 +323,20 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.MaintenanceOrderLine", b =>
                 {
-                    b.Property<string>("OrderId")
+                    b.Property<Guid>("OrderId")
                         .HasMaxLength(24)
-                        .HasColumnType("varchar(26)");
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ItemId")
+                    b.Property<Guid>("ItemId")
                         .HasMaxLength(24)
-                        .HasColumnType("varchar(26)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Discount")
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)");
 
-                    b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(9, 2)
@@ -366,12 +360,11 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.PurchaseOrder", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -398,9 +391,8 @@ namespace Zamzam.EF.Migrations
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)");
 
-                    b.Property<string>("SupplierId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalDiscount")
                         .HasPrecision(9, 2)
@@ -421,19 +413,18 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.PurchaseOrderLine", b =>
                 {
-                    b.Property<string>("OrderId")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ItemId")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Discount")
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)");
 
-                    b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(9, 2)
@@ -457,12 +448,11 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.ReturnPurchaseOrder", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -485,17 +475,15 @@ namespace Zamzam.EF.Migrations
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)");
 
-                    b.Property<string>("PurchaseId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("PurchaseId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Remains")
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)");
 
-                    b.Property<string>("SupplierId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalDiscount")
                         .HasPrecision(9, 2)
@@ -518,19 +506,18 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.ReturnPurchaseOrderLine", b =>
                 {
-                    b.Property<string>("OrderId")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ItemId")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Discount")
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)");
 
-                    b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(9, 2)
@@ -554,12 +541,11 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.ReturnSaleOrder", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -584,9 +570,8 @@ namespace Zamzam.EF.Migrations
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)");
 
-                    b.Property<string>("SaleOrderId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("SaleOrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalDiscount")
                         .HasPrecision(9, 2)
@@ -607,19 +592,18 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.ReturnSaleOrderLine", b =>
                 {
-                    b.Property<string>("OrderId")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ItemId")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Discount")
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)");
 
-                    b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(9, 2)
@@ -628,9 +612,8 @@ namespace Zamzam.EF.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("ReturnSaleOrderId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("ReturnSaleOrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalPrice")
                         .ValueGeneratedOnAddOrUpdate()
@@ -649,16 +632,14 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.SaleOrder", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -704,19 +685,18 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.SaleOrderLine", b =>
                 {
-                    b.Property<string>("ItemId")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("OrderId")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Discount")
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)");
 
-                    b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(9, 2)
@@ -740,8 +720,8 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Core.Supplier", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(26)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .IsRequired()

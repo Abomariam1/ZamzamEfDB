@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vvm="clr-namespace:ZamzamCo.VewModels.ViewViewModel"
              xmlns:local="clr-namespace:ZamzamCo.Controls"
+             
              mc:Ignorable="d" >
     <UserControl.DataContext>
         <vvm:MinDepartmentsViewModel/>
