@@ -2,7 +2,10 @@
 {
     public class Department : BaseEntity
     {
-        public string Name { get; set; } = string.Empty;
+
+        public string DepName { get; set; } = string.Empty;
+        public DateOnly CreatedOn { get; set; }
         public virtual ICollection<Employee>? Employees { get; }
+
     }
 }

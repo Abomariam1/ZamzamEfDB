@@ -4,25 +4,25 @@ using System.Windows;
 using System.Windows.Input;
 using Zamzam.Core;
 using Zamzam.EF;
-using Zamzam.EF.Services;
 using ZamzamCo.Commands.CrudCommands;
 
 namespace ZamzamCo.VewModels.ViewViewModel
 {
     public class MinDepartmentsViewModel : ViewModelBase
     {
-        private IDataService<Department> DepartmentService = new GenericDataServices<Department>(new ZamzamDbContextFactory());
-        private EmployeeDataServices EmployeeService = new(new ZamzamDbContextFactory());
+        private readonly IDataService<Department> DepartmentService = new GenericDataServices<Department>(new ZamzamDbContextFactory());
 
         private string departmentName;
         private Department _selectedDepatment;
-        private DateOnly createdOn;
-        public string DeparmentName { get { return departmentName; } set { departmentName = value; OnPropertyChanged(nameof(DeparmentName)); } }
-        public DateOnly CreatedOn { get { return createdOn; } set { createdOn = value; OnPropertyChanged(nameof(CreatedOn)); } }
-        public bool CanAdd => !string.IsNullOrEmpty(DeparmentName);
-        public ICommand? AddDeparmentCommand => new CrudComand(AddDeparmentAsync);
-        public Department SelectedDpeartment { get { return _selectedDepatment; } set { _selectedDepatment = value; OnPropertyChanged(nameof(SelectedDpeartment)); } }
+        private DateOnly _createdOn;
+
+
         public ObservableCollection<Department>? Departments => new(DepartmentService.GetAll());
+        public string DeparmentName { get { return departmentName; } set { departmentName = value; OnPropertyChanged(nameof(DeparmentName)); } }
+        public DateOnly CreatedOn { get { return _createdOn; } set { _createdOn = value; OnPropertyChanged(nameof(CreatedOn)); } }
+        public bool CanAdd => !string.IsNullOrEmpty(DeparmentName);
+        public Department SelectedDpeartment { get { return _selectedDepatment; } set { _selectedDepatment = value; OnPropertyChanged(nameof(SelectedDpeartment)); } }
+        public ICommand? AddDeparmentCommand => new CrudComand(AddDeparmentAsync);
 
 
         #region Methods
@@ -34,11 +34,11 @@ namespace ZamzamCo.VewModels.ViewViewModel
 
                 return;
             }
-            Department dep = new()
-            {
-                Name = DeparmentName,
-            };
+            Department dep = new();
+            dep.DepName = DeparmentName;
+            dep.CreatedOn = CreatedOn;
             DepartmentService.CreateAsync(dep);
+            MessageBox.Show("تم ادخال القسم بنجاح");
 
         }
 

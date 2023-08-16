@@ -1,4 +1,5 @@
-﻿using Zamzam.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using Zamzam.Core;
 
 namespace Zamzam.EF.Services
 {
@@ -14,7 +15,8 @@ namespace Zamzam.EF.Services
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
-                return context.Set<Department>().ToList();
+                var dep = context.Set<Department>().Include(e => e.Employees).ToList();
+                return dep;
             }
         }
         public bool IsEmpty()
@@ -22,6 +24,14 @@ namespace Zamzam.EF.Services
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
                 return !context.Set<Department>().Any();
+            }
+        }
+        public Department GetDepartmentByName(string name)
+        {
+            using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
+            {
+                var department = context.Set<Department>().FirstOrDefault(d => d.DepName == name);
+                return department;
             }
         }
     }

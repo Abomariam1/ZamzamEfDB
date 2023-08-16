@@ -18,7 +18,7 @@ namespace Zamzam.EF.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteAsync(Guid id)
+        public Task<bool> DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
@@ -28,7 +28,7 @@ namespace Zamzam.EF.Services
             throw new NotImplementedException();
         }
 
-        public Task<User> GetByIdAsync(Guid id)
+        public Task<User> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
@@ -42,7 +42,7 @@ namespace Zamzam.EF.Services
             }
         }
 
-        public Task<User> UpdateAsync(Guid id, User entity)
+        public Task<User> UpdateAsync(int id, User entity)
         {
             throw new NotImplementedException();
         }
@@ -52,7 +52,7 @@ namespace Zamzam.EF.Services
             throw new NotImplementedException();
         }
 
-        public User GetById(Guid id)
+        public User GetById(int id)
         {
             throw new NotImplementedException();
         }
@@ -62,12 +62,12 @@ namespace Zamzam.EF.Services
             throw new NotImplementedException();
         }
 
-        public User Update(Guid id, User entity)
+        public User Update(int id, User entity)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(Guid id)
+        public bool Delete(int id)
         {
             throw new NotImplementedException();
         }

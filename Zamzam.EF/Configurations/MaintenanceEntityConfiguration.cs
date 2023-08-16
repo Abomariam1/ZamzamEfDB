@@ -8,25 +8,16 @@ namespace Zamzam.EF
     {
         public void Configure(EntityTypeBuilder<Maintenance> builder)
         {
-
-            builder.Property(x => x.Id)
-                .HasColumnType("uniqueidentifier");
-
             builder.HasKey(x => x.Id);
-
-            builder.HasOne(c => c.Customer)
-                .WithMany(x => x.Maintenances)
-                .HasForeignKey(x => x.CustomerId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(e => e.Employee)
                 .WithMany(x => x.Maintenances).
                 HasForeignKey(x => x.EmployeeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(s => s.SaleOrder)
+            builder.HasOne(s => s.Order)
                 .WithMany(x => x.Maintenances)
-                .HasForeignKey(x => x.SaleOrderId)
+                .HasForeignKey(x => x.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

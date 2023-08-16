@@ -29,12 +29,12 @@ namespace Zamzam.EF.Services
             }
         }
 
-        public bool Delete(Guid id)
+        public bool Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(int id)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
@@ -73,12 +73,12 @@ namespace Zamzam.EF.Services
             }
         }
 
-        public Item GetById(Guid id)
+        public Item GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Item> GetByIdAsync(Guid id)
+        public async Task<Item> GetByIdAsync(int id)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
@@ -87,12 +87,12 @@ namespace Zamzam.EF.Services
             }
         }
 
-        public Item Update(Guid id, Item entity)
+        public Item Update(int id, Item entity)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Item> UpdateAsync(Guid id, Item entity)
+        public async Task<Item> UpdateAsync(int id, Item entity)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {

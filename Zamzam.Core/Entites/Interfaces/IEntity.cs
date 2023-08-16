@@ -2,6 +2,7 @@
 {
     public interface IEntity
     {
-        public Guid Id { get; }
+        public int Id { get; }
+        public bool IsDeleted { get; }
     }
 }

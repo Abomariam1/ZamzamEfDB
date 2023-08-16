@@ -4,6 +4,7 @@ using Zamzam.Core;
 using Zamzam.Core.Entites;
 using Zamzam.EF;
 using Zamzam.EF.Services;
+using ZamzamCo.Navigations;
 using ZamzamCo.VewModels;
 
 namespace ZamzamCo
@@ -13,8 +14,9 @@ namespace ZamzamCo
     /// </summary>
     public partial class SignIn : Window
     {
-        IDataService<User> userService = new UserDataService(new ZamzamDbContextFactory());
+        readonly IDataService<User> userService = new UserDataService(new ZamzamDbContextFactory());
         string pstext;
+        public static INavigator Navigator => new MainNavigator();
         public SignIn()
         {
 
@@ -32,7 +34,7 @@ namespace ZamzamCo
                 {
                     Window window = new MainWindow
                     {
-                        DataContext = new MainViewModel(),
+                        //DataContext = new MainViewModel(Navigator),
                         MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight
                     };
                     window.Show();

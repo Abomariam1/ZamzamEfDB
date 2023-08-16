@@ -53,12 +53,17 @@
     </PackageReference>
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+    <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Zamzam.Application\Zamzam.Application.csproj" />
     <ProjectReference Include="..\Zamzam.Core\Zamzam.Core.csproj" />
     <ProjectReference Include="..\Zamzam.EF\Zamzam.EF.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="VewModels\ViewViewModel\Listings\" />
   </ItemGroup>
 
 </Project>

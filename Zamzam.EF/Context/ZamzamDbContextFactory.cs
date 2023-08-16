@@ -9,7 +9,7 @@ namespace Zamzam.EF
         {
             var options = new DbContextOptionsBuilder<ZamzamDbContext>();
 
-            options.UseLazyLoadingProxies().UseSqlServer("Data Source=.\\SQLEXPRESS;DataBase=ZamzamDb;Integrated Security=True;TrustServerCertificate=True");
+            options.UseSqlServer("Data Source=.\\SQLEXPRESS;DataBase=ZamzamDb;Integrated Security=True;TrustServerCertificate=True");
 
             return new ZamzamDbContext(options.Options);
         }

@@ -8,10 +8,6 @@ namespace Zamzam.EF
     {
         public void Configure(EntityTypeBuilder<Item> builder)
         {
-
-            builder.Property(x => x.Id)
-                .HasColumnType("uniqueidentifier");
-
             builder.HasKey(x => x.Id);
             builder.Property(n => n.Name).IsRequired()
                 .HasMaxLength(50);

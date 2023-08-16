@@ -9,10 +9,9 @@ namespace Zamzam.EF
         public void Configure(EntityTypeBuilder<Department> builder)
         {
 
-            builder.Property(x => x.Id)
-                .HasColumnType("uniqueidentifier");
+            builder.HasKey(x => x.Id);
 
-            builder.Property(n => n.Name).IsRequired()
+            builder.Property(n => n.DepName).IsRequired()
                 .HasMaxLength(50);
         }
     }

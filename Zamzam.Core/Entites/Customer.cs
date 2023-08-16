@@ -7,14 +7,11 @@
         public string? Address { get; set; } = string.Empty;
         public long NationalCardId { get; set; } = 0;
         public string? Notes { get; set; } = string.Empty;
-        public Guid AreaId { get; set; }
+        public int AreaId { get; set; }
         public bool IsProplem { get; set; } = false;
         public bool IsBlackList { get; set; } = false;
-        public bool IsDeleted { get; set; } = false;
-        public virtual Area Area { get; }
-        public virtual ICollection<SaleOrder> SaleOrders { get; set; }
-        public virtual ICollection<Installment> Installments { get; set; }
-        public virtual ICollection<Maintenance> Maintenances { get; set; }
+        public virtual required Area Area { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
         //public virtual ICollection<ReturnSaleOrder> ReturnSaleOrders { get; set; }
 
     }

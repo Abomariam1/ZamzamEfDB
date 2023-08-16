@@ -90,12 +90,13 @@
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="250"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="13*"/>
+                <ColumnDefinition Width="97*"/>
             </Grid.ColumnDefinitions>
 
             <Navigator:MenuBar Grid.Column="0" DataContext="{Binding Path= Navigator}"/>
 
-            <ContentControl Grid.Column="1" Content="{Binding Navigator.CurrentViewModel}"/>
+            <ContentControl Grid.Column="1" Content="{Binding Navigator.CurrentViewModel}" Grid.ColumnSpan="2"/>
 
         </Grid>
     </Grid>

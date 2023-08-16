@@ -8,10 +8,6 @@ namespace Zamzam.EF
     {
         public void Configure(EntityTypeBuilder<Installment> builder)
         {
-
-            builder.Property(x => x.Id)
-                .HasColumnType("uniqueidentifier");
-
             builder.HasKey(i => i.Id);
 
             builder.Property(p => p.Value)
@@ -19,14 +15,9 @@ namespace Zamzam.EF
             builder.Property(d => d.PayedOn)
                 .HasDefaultValueSql("GETDATE()");
 
-            builder.HasOne(s => s.SalesOrder)
+            builder.HasOne(s => s.Order)
                 .WithMany(p => p.Installments)
                 .HasForeignKey(i => i.OrderId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasOne(c => c.Customer)
-                .WithMany(p => p.Installments)
-                .HasForeignKey(i => i.CustomerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(e => e.Employee)

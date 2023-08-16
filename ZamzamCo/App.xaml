@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:viewModel="clr-namespace:ZamzamCo.VewModels.ViewViewModel"
-             xmlns:views="clr-namespace:ZamzamCo.Views" xmlns:controls="clr-namespace:ZamzamCo.Controls">
+             xmlns:views="clr-namespace:ZamzamCo.Views" 
+             xmlns:controls="clr-namespace:ZamzamCo.Controls">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -73,7 +74,10 @@
             <DataTemplate DataType="{x:Type viewModel:AboutViewModel}">
                 <views:AboutView/>
             </DataTemplate>
-            
+            <DataTemplate DataType="{x:Type viewModel:MinDepartmentsViewModel}">
+                <controls:MinDepartments/>
+            </DataTemplate>
+            <BooleanToVisibilityConverter x:Key="booltovis"/>
         </ResourceDictionary>
     </Application.Resources>
     

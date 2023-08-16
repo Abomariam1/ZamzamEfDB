@@ -5,22 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1250" d:Background="Azure"
+             d:DataContext="{d:DesignInstance Type=vvmodel:EmployeeViewModel}"
              
-             xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              xmlns:exceed="http://schemas.xceed.com/wpf/xaml/toolkit" 
              xmlns:vvmodel="clr-namespace:ZamzamCo.VewModels.ViewViewModel"
-             xmlns:model="clr-namespace:ZamzamCo.VewModels"
-             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-             xmlns:controls="clr-namespace:ZamzamCo.Controls"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             >
-    <UserControl.DataContext>
-        <vvmodel:EmployeeViewModel/>
-    </UserControl.DataContext>
+             xmlns:nav="clr-namespace:ZamzamCo.Navigations"
+             xmlns:cor ="clr-namespace:Zamzam.Core;assembly=Zamzam.Core"
+             xmlns:modl="clr-namespace:ModalControl;assembly=ModalControl"
+             xmlns:conv="clr-namespace:ZamzamCo.Converters" >
+    <!--<UserControl.DataContext>
+        <vvmodel:EmployeeViewModel SubNavigation=""/>
+    </UserControl.DataContext>-->
     <UserControl.Resources>
 
     </UserControl.Resources>
-    <Grid >
+    <Grid x:Name="GarndParent" >
         <Grid.Resources>
             <Style TargetType="TextBlock">
                 <Setter Property="Margin" Value="5 0"/>
@@ -37,6 +37,7 @@
                 <Setter Property="Height" Value="25"/>
             </Style>
         </Grid.Resources>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="5*"/>
@@ -53,135 +54,155 @@
                    Foreground="{StaticResource ForgroundVeryLightBrush}"/>
         </Border>
 
-        <Grid Grid.Row="1">
+        <Grid x:Name="Parent" Grid.Row="1" >
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="{Binding Notify}" Grid.Row="0"
+            <TextBlock Text="" Grid.Row="0"
                        FontSize="16" 
                        Foreground="{StaticResource MainColor1Brush}"
                        Background="{StaticResource BackgrounLightBrush}"/>
-            <Grid Grid.Row="1">
+            <Grid x:Name="MainGrid" Grid.Row="1" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="1.5*" />
+                    <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                
-                <Border Grid.Column="0"
+                <Grid Grid.Column="0" DataContext="{Binding EmployeeDetailsViewModel}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0"
                         Margin="10" BorderBrush="{StaticResource BorderBrushBrush}"
                         BorderThickness="2" Padding="10"
                         CornerRadius="10">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" MaxWidth="115" MinWidth="100"/>
-                            <ColumnDefinition Width="3*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" MaxWidth="115" MinWidth="100"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.Column="0"  Text="اسم الموظف"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" 
+                            <TextBlock Grid.Row="0" Grid.Column="0"  Text="اسم الموظف"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" 
                                  x:Name="EmpNameTxt"
-                                 Text="{Binding EmpName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding EmpName,UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="رقم الهاتف" />
-                        <TextBox Grid.Row="1" Grid.Column="1" 
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="رقم الهاتف" />
+                            <TextBox Grid.Row="1" Grid.Column="1" 
                                  x:Name="EmpPhoneTxt"
-                                 Text="{Binding Phone,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding Phone,UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="العنوان" />
-                        <TextBox Grid.Row="2" Grid.Column="1"
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="العنوان" />
+                            <TextBox Grid.Row="2" Grid.Column="1"
                                  x:Name="EmpAddressTxt"
-                                 Text="{Binding Address,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding Address ,UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="المدينة" />
-                        <ComboBox Grid.Row="3" Grid.Column="1" 
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="المدينة" />
+                            <ComboBox Grid.Row="3" Grid.Column="1" 
                                   x:Name="EmpCityCbo"
                                   Text="{Binding City,UpdateSourceTrigger=PropertyChanged}"
                                   IsEditable="True"/>
 
-                        <TextBlock Grid.Row="4" Grid.Column="0" Text="المحافظة" />
-                        <ComboBox Grid.Row="4" Grid.Column="1"
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="المحافظة" />
+                            <ComboBox Grid.Row="4" Grid.Column="1"
                                   IsEditable="True"
                                   x:Name="EmpRegionCbo"
-                                  Text="{Binding Region,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                  Text="{Binding Region,UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <TextBlock Grid.Row="5" Grid.Column="0" Text="الدولة" />
-                        <ComboBox Grid.Row="5" Grid.Column="1"
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="الدولة" />
+                            <ComboBox Grid.Row="5" Grid.Column="1"
                                   IsEditable="True"
                                   x:Name="EmpContryCbo"
-                                  Text="{Binding Country,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                  Text="{Binding Country,UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <TextBlock Grid.Row="6" Grid.Column="0" Text="الرمز البريدي" />
-                        <TextBox Grid.Row="6" Grid.Column="1" 
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="الرمز البريدي" />
+                            <TextBox Grid.Row="6" Grid.Column="1" 
                                  x:Name="EmpPostaTxt"
-                                 Text="{Binding PostalCode,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding PostalCode,UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <TextBlock Grid.Row="7" Grid.Column="0" Text="الرقم القومي" />
-                        <TextBox Grid.Row="7" Grid.Column="1" 
+                            <TextBlock Grid.Row="7" Grid.Column="0" Text="الرقم القومي" />
+                            <TextBox Grid.Row="7" Grid.Column="1" 
                                  x:Name="EmpNIDTxt"
-                                 Text="{Binding NID,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding NID,UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <TextBlock Grid.Row="8" Grid.Column="0" Text="تاريخ الميلاد" />
-                        <DatePicker Grid.Row="8" Grid.Column="1" 
+                            <TextBlock Grid.Row="8" Grid.Column="0" Text="تاريخ الميلاد" />
+                            <DatePicker Grid.Row="8" Grid.Column="1" 
+                                        SelectedDateFormat="Short" 
+                                        DisplayDate="{x:Static sys:DateTime.Now}"
                                     x:Name="EmpBirthDateDt" VerticalAlignment="Center"
-                                    Text="{Binding BirthDate
-                            ,Mode=TwoWay
-                            ,UpdateSourceTrigger=PropertyChanged
-                            ,StringFormat={}{0: dd/MM/yyyy}
-                            ,ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}
-                            ,FallbackValue={x:Static sys:DateTime.UtcNow}}"/>
-                    </Grid>
-                </Border>
-                
-                <Border Grid.Column="1" BorderBrush="{StaticResource BorderBrushBrush}"
+                                    SelectedDate="{Binding BirthDate,
+                                UpdateSourceTrigger=PropertyChanged,
+                                Converter={conv:DateTimeToDateOnlyConverter},
+                                StringFormat={}{0:dd-MM-yyyy}}"/>
+                        </Grid>
+                    </Border>
+
+                    <Border x:Name="Border2" Grid.Column="1"
+                            BorderBrush="{StaticResource BorderBrushBrush}"
                         BorderThickness="2" Margin="10"
                         CornerRadius="10"
                         Padding="10">
-                    <Grid >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" MaxWidth="150" MinWidth="135"/>
-                            <ColumnDefinition Width="3*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="القسم" />
-                        <Grid Grid.Row ="0" Grid.Column="1"
-                                   VerticalAlignment="Center">
+                        <Grid x:Name="Grid2">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="5*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" MaxWidth="150" MinWidth="135"/>
+                                <ColumnDefinition Width="3*" />
                             </Grid.ColumnDefinitions>
-                            <ComboBox  x:Name="EmpDepCbo" 
-                                       HorizontalAlignment="Stretch"
-                                       MinWidth="120"
-                                       Margin="0 0 10 0"
-                                       ItemsSource="{Binding Departments,UpdateSourceTrigger=PropertyChanged}"
-                                       DisplayMemberPath="Name" 
-                                       SelectedItem="{Binding SelectedDepartment}"/>
-                            <Button Name="AddDepartment"
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" 
+                                       Text="القسم:" />
+                            <Grid Grid.Row ="0" Grid.Column="1"
+                                   VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <ComboBox  x:Name="EmpDepCbo" 
+                                           ItemsSource="{Binding Departments,UpdateSourceTrigger=PropertyChanged}"
+                                           DisplayMemberPath="DepName"
+                                           SelectedValue="{Binding SelectedDepartment,
+                                    Converter={conv:IdToIndexConverter},ConverterParameter={x:Type cor:Department},
+                                    UpdateSourceTrigger=PropertyChanged}"
+                                           SelectedValuePath="DepName"
+                                           SelectionChanged="EmpDepCbo_SelectionChanged"
+                                           HorizontalAlignment="Stretch"
+                                           MinWidth="120"
+                                           Margin="0 0 10 0">
+
+                                    <!--<ComboBox.ItemTemplate>
+                                        <DataTemplate >
+                                            <TextBlock Text="{Binding DepName}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>-->
+                                    
+                                </ComboBox>
+                                <Button Name="AddDepartment"
+                                        Command="{Binding ShowDepartment}"
+                                        CommandParameter="{x:Static nav:NavigatePrimativesType.MinDepartments}"
                                     Grid.Column="1"
-                                    Command="{Binding ShowDepartment }" CommandParameter="{x:Static model:NavigatePrimatives.MinDepartments}"
                                     Content="+"
                                     Height="30" Width="30"
                                     VerticalAlignment="Center"
@@ -189,26 +210,25 @@
                                     VerticalContentAlignment="Center"
                                     HorizontalContentAlignment="Center"
                                     FontSize="20"/>
-                        </Grid>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="المسمى الوظيفي" FontSize="16"/>
-                        <TextBox Grid.Row="1" Grid.Column="1"
+                            </Grid>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="المسمى الوظيفي" FontSize="16"/>
+                            <TextBox Grid.Row="1" Grid.Column="1"
                                  x:Name="EmpTitleTxt"
-                                 Text="{Binding Titel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding Titel,UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="تاريخ التعيين" />
-                        <DatePicker Grid.Row="2" Grid.Column="1" 
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="تاريخ التعيين" />
+                            <DatePicker Grid.Row="2" Grid.Column="1" 
                                     x:Name="EmpHeireDateDt" 
                                     VerticalAlignment="Center"
-                                    Text="{Binding HireDate
-                            ,Mode=TwoWay
-                            ,UpdateSourceTrigger=PropertyChanged
-                            ,ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}
-                            ,FallbackValue={x:Static sys:DateTime.UtcNow}}" />
+                                    SelectedDate="{Binding HireDate,
+                                UpdateSourceTrigger=PropertyChanged,
+                                Converter={conv:DateTimeToDateOnlyConverter},
+                                StringFormat={}{0:dd-MM-yyyy}}" />
 
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="المرتب"/>
-                        <exceed:ShortUpDown  Grid.Row="3" Grid.Column="1"
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="المرتب"/>
+                            <exceed:ShortUpDown  Grid.Row="3" Grid.Column="1"
                                              x:Name="EmpSalaryNum"
-                                             Value="{Binding Salary,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                 Text="{Binding Salary,UpdateSourceTrigger=PropertyChanged}"
                                              Increment="100"
                                              Watermark="2000"
                                              BorderThickness="1" 
@@ -217,64 +237,78 @@
                                              HorizontalContentAlignment="Stretch"
                                              VerticalContentAlignment="Center"
                                              />
-                        
-                        <TextBlock Grid.Row="4" Grid.Column="0" Text="المؤهلات" />
-                        <TextBox Grid.Row="4" Grid.Column="1" 
-                                 x:Name="EmpQualificationTxt"
-                                 Text="{Binding Qualifications,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <StackPanel Grid.Row="5"  Grid.RowSpan="3" Grid.ColumnSpan="2" 
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="المؤهلات" />
+                            <TextBox Grid.Row="4" Grid.Column="1" 
+                                 x:Name="EmpQualificationTxt"
+                                 Text="{Binding Qualifications,UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <StackPanel Grid.Row="5"  Grid.RowSpan="3" Grid.ColumnSpan="2" 
                                  Orientation="Horizontal">
 
 
-                            <Ellipse  Stroke="{StaticResource BackGrounMainTextBrush }"
+                                <Ellipse  Stroke="{StaticResource BackGrounMainTextBrush }"
                                       Width="150" Height="150" 
                                       StrokeThickness="2">
-                                <Ellipse.Fill >
-                                    <DrawingBrush  Stretch="Fill" >
-                                        <DrawingBrush.Drawing  >
-                                            <ImageDrawing ImageSource="{Binding Image,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                          Rect="0 0 150 150"
+                                    <Ellipse.Fill >
+                                        <DrawingBrush  Stretch="Fill" >
+                                            <DrawingBrush.Drawing  >
+                                                <ImageDrawing Rect="0 0 150 150"
+                                                              ImageSource="{Binding Photo,
+                                                    UpdateSourceTrigger=PropertyChanged,Converter= {conv:BytesToImageSourceConverter}}"
                                                           x:Name="EmpPhotoImg">
-                                            </ImageDrawing>
-                                        </DrawingBrush.Drawing>
-                                        <!--<DrawingBrush.RelativeTransform>
+                                                </ImageDrawing>
+                                            </DrawingBrush.Drawing>
+                                            <!--<DrawingBrush.RelativeTransform>
                                             <RotateTransform CenterX="0.5" CenterY="0.5" Angle="90"/>
                                         </DrawingBrush.RelativeTransform>-->
 
-                                    </DrawingBrush>
-                                </Ellipse.Fill>
-                            </Ellipse>
+                                        </DrawingBrush>
+                                    </Ellipse.Fill>
+                                </Ellipse>
 
-                            <Button Grid.Row="6" Grid.Column="1"
+                                <Button Grid.Row="6" Grid.Column="1"
                                     Content="..."
-                                    Command="{Binding AddPhoto}"
+                                        Command="{Binding AddPhoto}"
                                     Margin="50 0 0 0"
                                     Width="40"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center" 
                                     VerticalContentAlignment="Center"
                                     HorizontalContentAlignment="Center"/>
-                        </StackPanel>
-
-                    </Grid>
-                </Border>
-                
-                <Border Grid.Column="2" BorderBrush="{StaticResource BorderBrushBrush}"
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+                <Border x:Name="ListviewBorder" Grid.Column="2" BorderBrush="{StaticResource BorderBrushBrush}"
                         BorderThickness="2" Margin="10"
                         CornerRadius="10"
                         Padding="10">
-                    <Grid>
+                    <Grid x:Name="ListViewGrid"  DataContext="{Binding EmployeeListingViewModel}">
 
-                        <TreeView x:Name="EmpTreeView" ItemsSource="{Binding Departments}" >
-                            <TreeView.ItemTemplate>
-                                <HierarchicalDataTemplate ItemsSource="{Binding Employees}">
-                                    <TextBlock Text="{Binding Name}"/>
-                                </HierarchicalDataTemplate>
-                                
-                            </TreeView.ItemTemplate>
-                            
-                        </TreeView>
+                        <ListView x:Name="EmpTreeView" HorizontalContentAlignment="Stretch"
+                                  ItemsSource="{Binding EmployeeListingItemViewModel}" 
+                                  SelectedItem="{Binding SelectedEmployeeListingItemViewModel}"
+                                  SelectionChanged="EmpTreeView_SelectionChanged">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Padding="10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding EmpName}"/>
+                                            <exceed:DropDownButton Grid.Column="1" Margin="20 0 0 0">
+                                                <exceed:DropDownButton.DropDownContent>
+                                                    <Button Content="Add" Command="{Binding AddCommand}"/>
+                                                </exceed:DropDownButton.DropDownContent>
+                                            </exceed:DropDownButton>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </Grid>
                 </Border>
 
@@ -282,6 +316,7 @@
 
             <StackPanel Grid.Row="2" Grid.Column="0"
                         Orientation="Horizontal" 
+                        DataContext="{Binding EmployeeDetailsViewModel}"
                         Grid.ColumnSpan="2"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
@@ -289,12 +324,13 @@
                 <StackPanel.Resources>
                     <Style TargetType="Button" BasedOn="{StaticResource RoundedBTN}"/>
                 </StackPanel.Resources>
-                <Button Content="أضافة" Margin="10 0" Command="{Binding AddEmployee}"/>
-                <Button Content="تعديل" Margin="10 0" Command="{Binding EditEmployee}"/>
-                <Button Content="حذف" Margin="10 0" Command="{Binding DeleteEmployee}"/>
-                <Button Content="بحث" Margin="10 0" Command="{Binding AddEmployee}"/>
+                <Button Command="{Binding AddEmployee }" Content="أضافة" Margin="10 0" />
+                <Button Command="{Binding EditEmployee }" Content="تعديل" Margin="10 0" />
+                <Button Command="{Binding DeleteEmployee }" Content="حذف" Margin="10 0" />
+                <Button Command="" Content="بحث" Margin="10 0" />
             </StackPanel>
 
         </Grid>
+
     </Grid>
 </UserControl>

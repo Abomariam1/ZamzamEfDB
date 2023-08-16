@@ -8,11 +8,6 @@ namespace Zamzam.EF.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-
-            //builder.Property(x => x.Id)
-            //    .HasConversion(UlidToGuidValueConverter.ulidconverter)
-            //    .HasColumnType("uniqueidentifier");
-
             builder.HasKey(x => x.Id);
             builder.Property(n => n.UserName).HasMaxLength(50);
             builder.Property(n => n.Password).HasMaxLength(50);

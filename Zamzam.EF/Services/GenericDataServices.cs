@@ -23,22 +23,28 @@ namespace Zamzam.EF
             }
         }
 
-        public T Update(Guid id, T entity)
+        public T Update(int id, T entity)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
+                entity.Id = id;
                 context.Set<T>().Update(entity);
                 context.SaveChanges();
                 return entity;
             }
         }
-        public bool Delete(Guid id)
+        public bool Delete(int id)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
                 T? entity = context.Set<T>().FirstOrDefault(predicate: (e) => e.Id == id);
-                context.Set<T>().Remove(entity);
-                context.SaveChanges();
+                if (entity != null)
+                {
+                    entity.Id = id;
+                    context.Set<T>().Remove(entity);
+                    context.SaveChanges();
+                }
+
                 return true;
             }
         }
@@ -51,7 +57,7 @@ namespace Zamzam.EF
             }
         }
 
-        public T GetById(Guid id)
+        public T GetById(int id)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
@@ -66,7 +72,7 @@ namespace Zamzam.EF
         }
 
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(int id)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
@@ -97,7 +103,7 @@ namespace Zamzam.EF
             }
         }
 
-        public async Task<T> GetByIdAsync(Guid id)
+        public async Task<T> GetByIdAsync(int id)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
@@ -107,7 +113,7 @@ namespace Zamzam.EF
 
         }
 
-        public async Task<T> UpdateAsync(Guid id, T entity)
+        public async Task<T> UpdateAsync(int id, T entity)
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {

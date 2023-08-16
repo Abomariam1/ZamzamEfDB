@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using ZamzamCo.Controls;
 using ZamzamCo.Dialogs;
+using ZamzamCo.Navigations;
+using ZamzamCo.Stores;
 using ZamzamCo.VewModels;
 using ZamzamCo.VewModels.ViewViewModel;
 
@@ -12,19 +14,22 @@ namespace ZamzamCo
     public partial class App : Application
     {
 
+
+        private readonly INavigator _navigation;
+        private readonly SelectedEmployeeStore _selectedEmployeeStore;
         public App()
         {
+            _navigation = new MainNavigator();
             DialogService.RegisterDialog<MinDepartments, MinDepartmentsViewModel>();
+            _selectedEmployeeStore = new SelectedEmployeeStore();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            //IDataService<Item> itemService = new GenericDataServices<Item>(new ZamzamDbContextFactory());
-            //IDataService<Department> DepartmentService = new GenericDataServices<Department>(new ZamzamDbContextFactory());
-            //_ = itemService.Delete(1);
+            EmployeeViewModel viewModel = new(_selectedEmployeeStore);
             Window window = new MainWindow
             {
-                DataContext = new MainViewModel(),
+                DataContext = new MainViewModel(_navigation, viewModel),
                 MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight
             };
             //Window window = new SignIn
