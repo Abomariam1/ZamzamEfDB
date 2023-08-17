@@ -25,7 +25,7 @@ namespace ZamzamCo.Dialogs
         private void ShowDialogInternal(Type type, Action<string> callBack)
         {
             var dialog = new DialogWindow();
-            EventHandler closeEventHandler = null;
+            EventHandler closeEventHandler = (sender, e) => { };
             closeEventHandler = (sender, e) =>
             {
                 callBack(dialog.DialogResult.ToString());

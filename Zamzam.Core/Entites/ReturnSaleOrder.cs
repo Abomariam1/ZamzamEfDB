@@ -1,7 +1,10 @@
-﻿namespace Zamzam.Core
+﻿using Zamzam.Core.Entites;
+
+namespace Zamzam.Core
 {
-    public class ReturnSaleOrder : Order
+    public class ReturnSaleOrder : SaleOrder
     {
+        public string ReasonForReturn { get; set; }
 
     }
 }

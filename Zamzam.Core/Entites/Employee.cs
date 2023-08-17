@@ -1,4 +1,6 @@
-﻿namespace Zamzam.Core
+﻿using Zamzam.Core.Entites;
+
+namespace Zamzam.Core
 {
     public class Employee : BaseEntity
     {

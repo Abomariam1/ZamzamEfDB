@@ -7,6 +7,6 @@
         public decimal Value { get; set; }
         public int EmployeeId { get; set; }
         public virtual Employee Employee { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual InstallmentedSaleOrder InstallmentedSale { get; set; }
     }
 }

@@ -5,7 +5,6 @@ using Zamzam.Core.Entites;
 using Zamzam.EF;
 using Zamzam.EF.Services;
 using ZamzamCo.Navigations;
-using ZamzamCo.VewModels;
 
 namespace ZamzamCo
 {
@@ -15,7 +14,6 @@ namespace ZamzamCo
     public partial class SignIn : Window
     {
         readonly IDataService<User> userService = new UserDataService(new ZamzamDbContextFactory());
-        string pstext;
         public static INavigator Navigator => new MainNavigator();
         public SignIn()
         {

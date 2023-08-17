@@ -15,7 +15,7 @@ namespace Zamzam.EF
                 HasForeignKey(x => x.EmployeeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(s => s.Order)
+            builder.HasOne(s => s.SaleOrder)
                 .WithMany(x => x.Maintenances)
                 .HasForeignKey(x => x.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);

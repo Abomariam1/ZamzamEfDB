@@ -1,4 +1,4 @@
-﻿namespace Zamzam.Core
+﻿namespace Zamzam.Core.Entites
 {
     public class OrderDetail : BaseEntity, IOrderDetail
     {

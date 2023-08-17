@@ -38,7 +38,9 @@ namespace Zamzam.EF.Services
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
-                Item entity = await context.Set<Item>().FirstOrDefaultAsync(predicate: ((e) => e.Id == id));
+                Item? entity = await context.Set<Item>().FirstOrDefaultAsync(predicate: ((e) => e.Id == id));
+                if (entity == null)
+                    return false;
                 context.Set<Item>().Remove(entity);
                 await context.SaveChangesAsync();
                 return true;
@@ -82,7 +84,7 @@ namespace Zamzam.EF.Services
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
-                Item? entities = context.Set<Item>().FirstOrDefaultAsync((e) => e.Id == id).Result;
+                Item? entities = await context.Set<Item>().FirstOrDefaultAsync((e) => e.Id == id);
                 return entities;
             }
         }

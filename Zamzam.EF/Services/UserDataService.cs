@@ -37,7 +37,7 @@ namespace Zamzam.EF.Services
         {
             using (ZamzamDbContext context = _dbContextFactory.CreateDbContext())
             {
-                User? entitie = context.Set<User>().FirstOrDefaultAsync((e) => e.UserName == name).Result;
+                User? entitie = await context.Set<User>().FirstOrDefaultAsync((e) => e.UserName == name);
                 return entitie;
             }
         }

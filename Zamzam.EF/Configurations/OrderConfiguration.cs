@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Zamzam.Core;
+using Zamzam.Core.Entites;
 using Zamzam.Core.Types;
 
 namespace Zamzam.EF.Configurations
@@ -9,11 +9,17 @@ namespace Zamzam.EF.Configurations
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
-            builder.UseTphMappingStrategy();
+            builder.UseTptMappingStrategy();
 
             builder.HasKey(x => x.Id);
 
-            builder.HasDiscriminator<string>("OrderType");
+
+            builder.Property(x => x.OrderType)
+               .HasConversion(
+               x => x.ToString(),
+               x => (OrderType)Enum.Parse(typeof(OrderType), x)
+               )
+               .HasMaxLength(20);
 
             builder.Property(x => x.InvoiceType)
                 .HasConversion(
@@ -33,21 +39,17 @@ namespace Zamzam.EF.Configurations
             builder.Property(t => t.TotalPrice)
                 .HasPrecision(9, 2);
 
-            builder.Property(r => r.Remains)
-                .HasPrecision(9, 2);
-
-            builder.Property(s => s.TotalDiscount)
-                .HasPrecision(9, 2);
-
-            builder.Property(s => s.Payed)
-                .HasPrecision(9, 2);
-
-            builder.Property(s => s.InstallmentValue)
-                .HasPrecision(9, 2);
-
             builder.Property(s => s.NetPrice)
                 .HasPrecision(9, 2)
                 .HasComputedColumnSql("[TotalPrice] - [TotalDiscount]");
+
+            builder.Property(s => s.TotalDiscount)
+                .HasPrecision(9, 2);
+            builder.Property(s => s.Payed)
+                .HasPrecision(9, 2);
+
+            builder.Property(r => r.Remains)
+                .HasPrecision(9, 2);
         }
     }
 }

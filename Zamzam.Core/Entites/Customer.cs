@@ -1,4 +1,7 @@
-﻿namespace Zamzam.Core
+﻿using System.Collections.ObjectModel;
+using Zamzam.Core.Entites;
+
+namespace Zamzam.Core
 {
     public class Customer : BaseEntity
     {
@@ -11,8 +14,6 @@
         public bool IsProplem { get; set; } = false;
         public bool IsBlackList { get; set; } = false;
         public virtual required Area Area { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
-        //public virtual ICollection<ReturnSaleOrder> ReturnSaleOrders { get; set; }
-
+        public virtual Collection<SaleOrder> SaleOrders { get; set; }
     }
 }

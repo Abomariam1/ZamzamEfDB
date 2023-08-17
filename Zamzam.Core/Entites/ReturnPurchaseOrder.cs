@@ -1,7 +1,7 @@
 ﻿namespace Zamzam.Core
 {
-    public class ReturnPurchaseOrder : Order
+    public class ReturnPurchaseOrder : PurchaseOrder
     {
-
+        public string ReasonForReturn { get; set; }
     }
 }

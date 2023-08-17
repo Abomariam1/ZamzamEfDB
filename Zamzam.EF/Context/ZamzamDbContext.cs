@@ -18,13 +18,9 @@ namespace Zamzam.EF
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
-        public DbSet<PurchaseOrderDetail> PurchaseOrderLines { get; set; }
         public DbSet<ReturnPurchaseOrder> ReturnPurchaseOrders { get; set; }
-        public DbSet<ReturnPurchaseOrderDetailes> ReturnPurchaseOrderLines { get; set; }
         public DbSet<ReturnSaleOrder> ReturnSaleOrders { get; set; }
-        public DbSet<ReturnSaleOrderDetail> ReturnSaleOrderLines { get; set; }
-        public DbSet<SaleOrder> SaleOrders { get; set; }
-        public DbSet<SaleOrderDetail> SaleOrderLines { get; set; }
+        public DbSet<InstallmentedSaleOrder> SaleOrders { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<User> Users { get; set; }
 

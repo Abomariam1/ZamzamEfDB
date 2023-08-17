@@ -15,7 +15,7 @@ namespace Zamzam.EF
             builder.Property(d => d.PayedOn)
                 .HasDefaultValueSql("GETDATE()");
 
-            builder.HasOne(s => s.Order)
+            builder.HasOne(s => s.InstallmentedSale)
                 .WithMany(p => p.Installments)
                 .HasForeignKey(i => i.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);

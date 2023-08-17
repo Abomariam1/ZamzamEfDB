@@ -54,7 +54,7 @@
                    Foreground="{StaticResource ForgroundVeryLightBrush}"/>
         </Border>
 
-        <Grid x:Name="Parent" Grid.Row="1" >
+        <Grid x:Name="Grid1" Grid.Row="1" >
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
