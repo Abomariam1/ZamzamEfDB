@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Zamzam.Core.Entites
+namespace Zamzam.Domain.Entites
 {
     public class SaleOrder : Order
     {

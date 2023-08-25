@@ -1,17 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-
-namespace Zamzam.EF
+﻿namespace Zamzam.EF
 {
-    public class ZamzamDbContextFactory : IDesignTimeDbContextFactory<ZamzamDbContext>
-    {
-        public ZamzamDbContext CreateDbContext(string[] args = null)
-        {
-            var options = new DbContextOptionsBuilder<ZamzamDbContext>();
+    //public class ZamzamDbContextFactory : IDesignTimeDbContextFactory<ZamzamDbContext>
+    //{
+    //    public ZamzamDbContext CreateDbContext(string[] args = null)
+    //    {
+    //        var config = new ConfigurationBuilder()
+    //                            .AddJsonFile("appsettings.json")
+    //                            .Build();
+    //        var constr = config.GetConnectionString("DefaultConnection");
 
-            options.UseSqlServer("Data Source=.\\SQLEXPRESS;DataBase=ZamzamDb;Integrated Security=True;TrustServerCertificate=True");
+    //        var options = new DbContextOptionsBuilder<ZamzamDbContext>();
 
-            return new ZamzamDbContext(options.Options);
-        }
-    }
+    //        options.UseSqlServer(constr);
+    //        //options.UseSqlServer("Data Source=.\\SQLEXPRESS;DataBase=ZamzamDb;Integrated Security=True;TrustServerCertificate=True");
+
+    //        return new ZamzamDbContext(options.Options);
+    //    }
+    //}
 }

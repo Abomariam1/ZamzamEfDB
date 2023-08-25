@@ -1,6 +1,9 @@
-﻿namespace Zamzam.Core.Entites
+﻿using Zamzam.Domain.Common;
+using Zamzam.Domain.Common.Interfaces;
+
+namespace Zamzam.Domain
 {
-    public class OrderDetail : BaseEntity, IOrderDetail
+    public class OrderDetail : BaseAuditableEntity, IOrderDetail
     {
         public int OrderId { get; set; }
         public int ItemId { get; set; }

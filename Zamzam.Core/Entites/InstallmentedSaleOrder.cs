@@ -1,12 +1,13 @@
 ﻿using System.Collections.ObjectModel;
-using Zamzam.Core.Entites;
 
-namespace Zamzam.Core
+namespace Zamzam.Domain
 {
-    public class InstallmentedSaleOrder : SaleOrder
+    public class InstallmentedSaleOrder : Order
     {
         public decimal InstallmentValue { get; set; }
         public int InstallmentPeriodInMonths { get; set; }
+        public int CustomerId { get; set; }
+        public virtual Customer Customer { get; set; }
         public virtual Collection<Installment> Installments { get; set; }
 
     }

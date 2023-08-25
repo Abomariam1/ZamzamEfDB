@@ -1,4 +1,4 @@
-﻿namespace Zamzam.Core
+﻿namespace Zamzam.Domain
 {
     public interface IDataService<T> where T : class
     {

@@ -1,4 +1,4 @@
-﻿namespace Zamzam.Core.Services
+﻿namespace Zamzam.Domain.Services
 {
     public interface IItemService : IDataService<Item>
     {

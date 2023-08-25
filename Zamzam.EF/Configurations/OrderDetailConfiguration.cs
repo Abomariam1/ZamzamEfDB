@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Zamzam.Core.Entites;
+using Zamzam.Domain;
 
 namespace Zamzam.EF.Configurations
 {
@@ -8,6 +8,8 @@ namespace Zamzam.EF.Configurations
     {
         public void Configure(EntityTypeBuilder<OrderDetail> builder)
         {
+            //builder.UseTptMappingStrategy();
+
             builder.HasKey(x => x.Id);
             //builder.HasKey(x => new { x.OrderId, x.ItemId });
 

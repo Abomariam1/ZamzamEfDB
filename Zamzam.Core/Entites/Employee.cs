@@ -1,8 +1,9 @@
-﻿using Zamzam.Core.Entites;
+﻿using Zamzam.Domain.Common;
 
-namespace Zamzam.Core
+namespace Zamzam.Domain
+
 {
-    public class Employee : BaseEntity
+    public class Employee : BaseAuditableEntity
     {
         public string Name { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
@@ -22,7 +23,6 @@ namespace Zamzam.Core
         public virtual Department Department { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Installment> Installments { get; set; }
-        public virtual ICollection<Maintenance> Maintenances { get; set; }
         //public virtual ICollection<PurchaseOrder> Purchases { get; set; }
         //public virtual ICollection<ReturnSaleOrder> ReturnSales { get; set; }
         //public virtual ICollection<ReturnPurchaseOrder> ReturnPurchases { get; set; }

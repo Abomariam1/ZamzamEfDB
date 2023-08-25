@@ -1,8 +1,8 @@
-﻿using Zamzam.Core.Entites;
+﻿using Zamzam.Domain.Common;
 
-namespace Zamzam.Core
+namespace Zamzam.Domain
 {
-    public class Item : BaseEntity
+    public class Item : BaseAuditableEntity
     {
         public string Name { get; set; }
         public decimal PurchasingPrice { get; set; }
@@ -10,7 +10,6 @@ namespace Zamzam.Core
         public decimal InstallmentPrice { get; set; }
         public int Balance { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-        public virtual ICollection<MaintenanceDetail> MaintenanceDetails { get; set; }
 
     }
 }

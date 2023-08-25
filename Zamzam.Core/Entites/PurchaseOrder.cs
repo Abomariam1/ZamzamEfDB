@@ -1,6 +1,6 @@
-﻿using Zamzam.Core.Entites;
+﻿using Zamzam.Domain.Entites;
 
-namespace Zamzam.Core
+namespace Zamzam.Domain
 {
     public class PurchaseOrder : Order
     {

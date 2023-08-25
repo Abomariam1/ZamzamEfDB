@@ -1,6 +1,8 @@
-﻿namespace Zamzam.Core
+﻿using Zamzam.Domain.Common;
+
+namespace Zamzam.Domain
 {
-    public class Supplier : BaseEntity
+    public class Supplier : BaseAuditableEntity
     {
         public string Name { get; set; }
         public string Phone { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace Zamzam.Core.Types
+﻿namespace Zamzam.Domain.Types
 {
     public enum InvoiceType
     {

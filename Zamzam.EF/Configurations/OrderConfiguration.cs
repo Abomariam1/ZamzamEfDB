@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Zamzam.Core.Entites;
-using Zamzam.Core.Types;
+using Zamzam.Domain;
+using Zamzam.Domain.Types;
 
 namespace Zamzam.EF.Configurations
 {

@@ -1,6 +1,8 @@
-﻿namespace Zamzam.Core
+﻿using Zamzam.Domain.Common;
+
+namespace Zamzam.Domain
 {
-    public class Area : BaseEntity
+    public class Area : BaseAuditableEntity
     {
         public required string Name { get; set; } = string.Empty;
         public required string Station { get; set; } = string.Empty;

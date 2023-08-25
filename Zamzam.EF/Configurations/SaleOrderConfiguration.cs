@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Zamzam.Core.Entites;
+using Zamzam.Domain.Entites;
 
 namespace Zamzam.EF.Configurations
 {
@@ -12,8 +12,6 @@ namespace Zamzam.EF.Configurations
                 .WithMany(c => c.SaleOrders)
                 .HasForeignKey(c => c.CustomerId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-
         }
     }
 }

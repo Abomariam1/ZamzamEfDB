@@ -1,6 +1,8 @@
-﻿namespace Zamzam.Core
+﻿using Zamzam.Domain.Common;
+
+namespace Zamzam.Domain
 {
-    public class Installment : BaseEntity
+    public class Installment : BaseAuditableEntity
     {
         public int OrderId { get; set; }
         public DateOnly PayedOn { get; set; }

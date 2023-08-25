@@ -1,10 +1,11 @@
-﻿namespace Zamzam.Core.Types
+﻿namespace Zamzam.Domain.Types
 {
     public enum OrderType
     {
         Purchase,
         Sell,
         PurchasReturns,
-        SellReturns
+        SellReturns,
+        Maintenance
     }
 }

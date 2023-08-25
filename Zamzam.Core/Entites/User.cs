@@ -1,6 +1,8 @@
-﻿namespace Zamzam.Core.Entites
+﻿using Zamzam.Domain.Common;
+
+namespace Zamzam.Domain.Entites
 {
-    public class User : BaseEntity
+    public class User : BaseAuditableEntity
     {
         public required string UserName { get; set; }
         public required string Password { get; set; }

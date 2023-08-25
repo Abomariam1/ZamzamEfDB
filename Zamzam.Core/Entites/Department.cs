@@ -1,6 +1,8 @@
-﻿namespace Zamzam.Core
+﻿using Zamzam.Domain.Common;
+
+namespace Zamzam.Domain
 {
-    public class Department : BaseEntity
+    public class Department : BaseAuditableEntity
     {
 
         public string DepName { get; set; } = string.Empty;

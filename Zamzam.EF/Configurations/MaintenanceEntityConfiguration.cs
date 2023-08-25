@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Zamzam.Core;
+using Zamzam.Domain;
 
 namespace Zamzam.EF
 {
@@ -8,16 +8,11 @@ namespace Zamzam.EF
     {
         public void Configure(EntityTypeBuilder<Maintenance> builder)
         {
-            builder.HasKey(x => x.Id);
 
-            builder.HasOne(e => e.Employee)
-                .WithMany(x => x.Maintenances).
-                HasForeignKey(x => x.EmployeeId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(s => s.SaleOrder)
                 .WithMany(x => x.Maintenances)
-                .HasForeignKey(x => x.OrderId)
+                .HasForeignKey(x => x.SaleOrderId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

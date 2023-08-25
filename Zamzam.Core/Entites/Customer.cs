@@ -1,9 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using Zamzam.Core.Entites;
+using Zamzam.Domain.Common;
+using Zamzam.Domain.Entites;
 
-namespace Zamzam.Core
+namespace Zamzam.Domain
 {
-    public class Customer : BaseEntity
+    public class Customer : BaseAuditableEntity
     {
         public string Name { get; set; } = "عميل افتراضي";
         public string? Phone { get; set; } = string.Empty;
@@ -15,5 +16,6 @@ namespace Zamzam.Core
         public bool IsBlackList { get; set; } = false;
         public virtual required Area Area { get; set; }
         public virtual Collection<SaleOrder> SaleOrders { get; set; }
+        public virtual Collection<InstallmentedSaleOrder> InstallmentedSaleOrders { get; set; }
     }
 }

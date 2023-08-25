@@ -1,10 +1,12 @@
 ﻿using System.Collections.ObjectModel;
-using Zamzam.Core.Types;
+using Zamzam.Domain.Common;
+using Zamzam.Domain.Common.Interfaces;
+using Zamzam.Domain.Types;
 
-namespace Zamzam.Core.Entites
+namespace Zamzam.Domain
 {
 
-    public class Order : BaseEntity, IOrder
+    public class Order : BaseAuditableEntity, IOrder
     {
         public DateOnly OrderDate { get; set; }
         public decimal TotalPrice { get; set; }
