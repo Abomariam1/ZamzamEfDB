@@ -17,6 +17,7 @@ namespace Zamzam.Domain.Common
             foreach (var entity in entitiesWithEvents)
             {
                 var events = entity.DomainEvents.ToArray();
+                entity.ClearDomainEvents();
                 foreach (var domainEvent in events)
                 {
                     await _mediator.Publish(domainEvent).ConfigureAwait(false);

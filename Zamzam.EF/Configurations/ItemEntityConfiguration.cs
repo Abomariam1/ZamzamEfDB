@@ -14,7 +14,7 @@ namespace Zamzam.EF
             builder.Property(p => p.PurchasingPrice)
                 .HasDefaultValue(0)
                 .HasPrecision(9, 2);
-            builder.Property(s => s.sellingCashPrice)
+            builder.Property(s => s.SellingCashPrice)
                 .HasDefaultValue(0)
                 .HasPrecision(9, 2);
             builder.Property(i => i.InstallmentPrice)

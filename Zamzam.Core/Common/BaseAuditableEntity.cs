@@ -2,7 +2,7 @@
 
 namespace Zamzam.Domain.Common
 {
-    public class BaseAuditableEntity : BaseEntity, IAuditableEntity
+    public abstract class BaseAuditableEntity : BaseEntity, IAuditableEntity
     {
         public int? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }

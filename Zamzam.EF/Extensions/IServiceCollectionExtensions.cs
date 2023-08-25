@@ -17,14 +17,14 @@ namespace Zamzam.EF.Extensions
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<ZamzamDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(connectionString,
-                   builder => builder.MigrationsAssembly(typeof(ZamzamDbContext).Assembly.FullName)));
+                   builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
         }
         private static void AddRepositories(this IServiceCollection services)
         {
             services
-                .AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork))
+                .AddTransient<IUnitOfWork, UnitOfWork>()
                 .AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         }
     }

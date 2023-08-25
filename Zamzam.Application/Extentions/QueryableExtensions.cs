@@ -14,7 +14,7 @@ namespace Zamzam.Application.Extentions
             if (source == null)
                 return null;
             pageNumber = pageNumber <= 0 ? 1 : pageNumber;
-            pageSize = pageSize == 0 ? 1 : pageSize;
+            pageSize = pageSize == 0 ? 10 : pageSize;
             int count = await source.CountAsync(cancellationToken);
             List<T> itmes = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
             return PaginatedResult<T>.Create(itmes, count, pageNumber, pageSize);

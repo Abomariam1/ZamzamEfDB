@@ -1,14 +1,12 @@
-﻿namespace Zamzam.Application.Exceptions
+﻿namespace Zamzam.Application.Common.Exceptions
 {
     public class BadRequestException : Exception
     {
         public string[] Errors { get; set; }
 
-        public BadRequestException()
-            : base() { }
+        public BadRequestException() : base() { }
 
-        public BadRequestException(string message)
-            : base(message) { }
+        public BadRequestException(string message) : base(message) { }
 
         public BadRequestException(string message, Exception innerException)
             : base(message, innerException) { }

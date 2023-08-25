@@ -1,19 +1,19 @@
 ﻿using AutoMapper;
 using System.Reflection;
 
-namespace Zamzam.Application.Mappings
+namespace Zamzam.Application.Common.Mappings
 {
     public class MappingProfile : Profile
     {
         public MappingProfile()
         {
-            ApplymappingFromAssemply(Assembly.GetExecutingAssembly());
+            ApplymappingsFromAssemply(Assembly.GetExecutingAssembly());
         }
-        private void ApplymappingFromAssemply(Assembly assembly)
+        private void ApplymappingsFromAssemply(Assembly assembly)
         {
             var mapFromType = typeof(IMapFrom<>);
             var mappingMethodname = nameof(IMapFrom<object>.Mapping);
-            bool HaseInterface(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == mapFromType;
+            bool HaseInterface(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == mapFromType;
             var types = assembly.GetExportedTypes().Where(t => t.GetInterfaces().Any(HaseInterface)).ToList();
             var argumentType = new Type[] { typeof(Profile) };
             foreach (var type in types)

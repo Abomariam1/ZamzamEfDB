@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Zamzam.Application.Common.Mappings;
 using Zamzam.Application.Interfaces.Repositories;
-using Zamzam.Application.Mappings;
 using Zamzam.Domain;
 using Zamzam.Shared;
 

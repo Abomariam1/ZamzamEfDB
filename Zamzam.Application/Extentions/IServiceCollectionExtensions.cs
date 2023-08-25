@@ -8,22 +8,25 @@ namespace Zamzam.Application.Extentions
     {
         public static void AddApplicationLayer(this IServiceCollection services)
         {
-            services.AddAutoMapperٍ(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper();
             services.AddMediator();
             services.AddValidators();
         }
-        private static void AddAutoMapperٍ(this IServiceCollection services, Assembly assembly)
+        private static void AddAutoMapper(this IServiceCollection services)
         {
-            services.AddAutoMapperٍ(assembly);
+            ArgumentNullException.ThrowIfNull(services);
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
         private static void AddMediator(this IServiceCollection services)
         {
+            ArgumentNullException.ThrowIfNull(services);
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         }
 
         private static void AddValidators(this IServiceCollection services)
         {
+            ArgumentNullException.ThrowIfNull(services);
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }

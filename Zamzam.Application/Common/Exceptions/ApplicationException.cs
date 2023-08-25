@@ -1,15 +1,11 @@
 ﻿using System.Globalization;
 
-namespace Zamzam.Application.Exceptions
+namespace Zamzam.Application.Common.Exceptions
 {
     public class ApplicationException : Exception
     {
-        public ApplicationException() :
-            base()
-        { }
-        public ApplicationException(string message) :
-            base(message)
-        { }
+        public ApplicationException() : base() { }
+        public ApplicationException(string message) : base(message) { }
         public ApplicationException(string message, Exception innerException) :
             base(message, innerException)
         { }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Zamzam.Application.Common.Mappings;
 using Zamzam.Application.Interfaces.Repositories;
-using Zamzam.Application.Mappings;
 using Zamzam.Domain;
 using Zamzam.Shared;
 
@@ -9,8 +9,8 @@ namespace Zamzam.Application.Features.Areas.Commands.CreateArea
 {
     public record CreateAreaCommand : IRequest<Result<int>>, IMapFrom<Area>
     {
-        public required string Name { get; set; } = string.Empty;
-        public required string Station { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Station { get; set; } = string.Empty;
         public string? Location { get; set; } = string.Empty;
     }
     internal class CreateAreaCommandHandler : IRequestHandler<CreateAreaCommand, Result<int>>

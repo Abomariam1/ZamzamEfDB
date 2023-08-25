@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Zamzam.Application.Mappings
+namespace Zamzam.Application.Common.Mappings
 {
     public interface IMapFrom<T>
     {

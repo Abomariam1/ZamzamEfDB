@@ -6,9 +6,9 @@ namespace Zamzam.EF.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseAuditableEntity
     {
-        private readonly ZamzamDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
 
-        public GenericRepository(ZamzamDbContext dbContext)
+        public GenericRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }

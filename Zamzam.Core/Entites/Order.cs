@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Zamzam.Domain.Common;
+﻿using Zamzam.Domain.Common;
 using Zamzam.Domain.Common.Interfaces;
 using Zamzam.Domain.Types;
 
@@ -18,7 +17,7 @@ namespace Zamzam.Domain
         public InvoiceType InvoiceType { get; set; }
         public int EmployeeId { get; set; }
         public virtual Employee Employee { get; set; }
-        public virtual Collection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 
     }
 }
