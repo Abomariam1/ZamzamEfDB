@@ -7,7 +7,7 @@ namespace Zamzam.Domain
 
     public class Order : BaseAuditableEntity, IOrder
     {
-        public DateOnly OrderDate { get; set; }
+        public DateTime OrderDate { get; set; }
         public decimal TotalPrice { get; set; }
         public decimal TotalDiscount { get; set; }
         public decimal NetPrice { get; set; }

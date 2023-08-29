@@ -13,7 +13,7 @@ namespace Zamzam.EF.Extensions
             services.AddDbContext(configuration);
             services.AddRepositories();
         }
-        public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
+        private static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
@@ -24,7 +24,7 @@ namespace Zamzam.EF.Extensions
         private static void AddRepositories(this IServiceCollection services)
         {
             services
-                .AddTransient<IUnitOfWork, UnitOfWork>()
+                .AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork))
                 .AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         }
     }

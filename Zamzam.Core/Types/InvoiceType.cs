@@ -3,6 +3,8 @@
     public enum InvoiceType
     {
         Cash,
-        Installment
+        Installment,
+        Maintainence,
+        Purchases
     }
 }

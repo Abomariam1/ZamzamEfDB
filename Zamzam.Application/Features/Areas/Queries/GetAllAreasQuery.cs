@@ -8,8 +8,9 @@ using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.Areas.Queries
 {
-    public record GetAllAreasQuery : IRequest<Result<List<GetAllAreaDto>>>;
-    internal class GetAllAreasQueryHandler : IRequestHandler<GetAllAreasQuery, Result<List<GetAllAreaDto>>>
+    public record GetAllAreasQuery : IRequest<Result<List<GetAllAreasDto>>>;
+
+    internal class GetAllAreasQueryHandler : IRequestHandler<GetAllAreasQuery, Result<List<GetAllAreasDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -20,12 +21,12 @@ namespace Zamzam.Application.Features.Areas.Queries
             _mapper = mapper;
         }
 
-        public async Task<Result<List<GetAllAreaDto>>> Handle(GetAllAreasQuery query, CancellationToken cancellationToken)
+        public async Task<Result<List<GetAllAreasDto>>> Handle(GetAllAreasQuery query, CancellationToken cancellationToken)
         {
             var areas = await _unitOfWork.Repository<Area>().Entities
-                .ProjectTo<GetAllAreaDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<GetAllAreasDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
-            return await Result<List<GetAllAreaDto>>.SuccessAsync(areas);
+            return await Result<List<GetAllAreasDto>>.SuccessAsync(areas);
         }
     }
 }

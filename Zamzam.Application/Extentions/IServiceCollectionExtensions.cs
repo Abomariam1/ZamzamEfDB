@@ -15,19 +15,19 @@ namespace Zamzam.Application.Extentions
         private static void AddAutoMapper(this IServiceCollection services)
         {
             ArgumentNullException.ThrowIfNull(services);
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            _ = services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
         private static void AddMediator(this IServiceCollection services)
         {
             ArgumentNullException.ThrowIfNull(services);
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            _ = services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         }
 
         private static void AddValidators(this IServiceCollection services)
         {
             ArgumentNullException.ThrowIfNull(services);
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            _ = services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

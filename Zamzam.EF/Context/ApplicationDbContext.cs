@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using Zamzam.Domain;
 using Zamzam.Domain.Common;
 using Zamzam.Domain.Common.Interfaces;
@@ -9,6 +10,11 @@ namespace Zamzam.EF
     public class ApplicationDbContext : DbContext
     {
         private readonly IDomainEventDispatcher _dispatcher;
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IDomainEventDispatcher dispatcher)
+            : base(options)
+        {
+            _dispatcher = dispatcher;
+        }
 
         public DbSet<Area> Areas => Set<Area>();
         public DbSet<Customer> Customers => Set<Customer>();
@@ -29,16 +35,11 @@ namespace Zamzam.EF
 
         //public ZamzamDbContext(DbContextOptions options) : base(options) { }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IDomainEventDispatcher dispatcher)
-            : base(options)
-        {
-            _dispatcher = dispatcher;
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
         {

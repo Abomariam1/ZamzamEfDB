@@ -10,6 +10,10 @@ namespace Zamzam.Application.Features.Areas.Commands.DeleteArea
     public record DeleteAreaCommand : IRequest<Result<int>>, IMapFrom<Area>
     {
         public int Id { get; }
+        public DeleteAreaCommand()
+        {
+
+        }
         public DeleteAreaCommand(int id)
         {
             Id = id;

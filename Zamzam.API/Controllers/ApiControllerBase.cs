@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Zamzam.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class ApiControllerBase : ControllerBase
+    [Route("api/[controller]")]
+    public abstract class ApiControllerBase : ControllerBase
     {
     }
 }

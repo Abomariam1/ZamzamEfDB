@@ -17,8 +17,7 @@ namespace Zamzam.EF.Repositories
 
         public IGenericRepository<T> Repository<T>() where T : BaseAuditableEntity
         {
-            if (_repositories == null)
-                _repositories = new Hashtable();
+            _repositories ??= new Hashtable();
 
             var type = typeof(T).Name;
 

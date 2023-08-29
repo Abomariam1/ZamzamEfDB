@@ -1,4 +1,5 @@
 ﻿using Zamzam.Domain.Common;
+using Zamzam.Domain.Entites;
 
 namespace Zamzam.Domain
 {
@@ -13,7 +14,7 @@ namespace Zamzam.Domain
         public bool IsBlackList { get; set; } = false;
         public int AreaId { get; set; }
         public virtual required Area Area { get; set; }
-        //public virtual Collection<SaleOrder> SaleOrders { get; set; }
+        public virtual ICollection<SaleOrder> Orders { get; set; }
         //public virtual Collection<InstallmentedSaleOrder> InstallmentedSaleOrders { get; set; }
     }
 }

@@ -4,7 +4,7 @@ namespace Zamzam.Domain.Common.Interfaces
 {
     internal interface IOrder : IEntity
     {
-        public DateOnly OrderDate { get; set; }
+        public DateTime OrderDate { get; set; }
         public decimal TotalPrice { get; set; }
         public decimal Payed { get; set; }
         public decimal TotalDiscount { get; set; }
