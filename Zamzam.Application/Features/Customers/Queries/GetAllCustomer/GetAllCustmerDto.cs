@@ -1,9 +1,9 @@
-﻿using Zamzam.Domain.Common;
-using Zamzam.Domain.Entites;
+﻿using Zamzam.Application.Common.Mappings;
+using Zamzam.Domain;
 
-namespace Zamzam.Domain
+namespace Zamzam.Application.Features.Customers.Queries.GetAllCustomer
 {
-    public class Customer : BaseAuditableEntity
+    public class GetAllCustmerDto : IMapFrom<Customer>
     {
         public string Name { get; set; } = "عميل افتراضي";
         public string? Phone { get; set; } = string.Empty;
@@ -13,8 +13,5 @@ namespace Zamzam.Domain
         public bool IsProplem { get; set; } = false;
         public bool IsBlackList { get; set; } = false;
         public int AreaId { get; set; }
-        public virtual Area Area { get; set; }
-        public virtual ICollection<SaleOrder> Orders { get; set; }
-        //public virtual Collection<InstallmentedSaleOrder> InstallmentedSaleOrders { get; set; }
     }
 }

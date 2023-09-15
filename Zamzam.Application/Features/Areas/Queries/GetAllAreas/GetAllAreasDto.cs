@@ -1,7 +1,7 @@
 ﻿using Zamzam.Application.Common.Mappings;
 using Zamzam.Domain;
 
-namespace Zamzam.Application.Features.Areas.Queries
+namespace Zamzam.Application.Features.Areas.Queries.GetAllAreas
 {
     public class GetAllAreasDto : IMapFrom<Area>
     {

@@ -21,9 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zamzam.API", "Zamzam.API\Za
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{1887879D-A356-4F36-80CF-7813435A0BAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zamzam.Shared", "Zamzam.Shared\Zamzam.Shared.csproj", "{9A6ADFFA-3BA4-4C2E-BFDB-B75CF257A04F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zamzam.Shared", "Zamzam.Shared\Zamzam.Shared.csproj", "{9A6ADFFA-3BA4-4C2E-BFDB-B75CF257A04F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zamzam.Infrastructure", "Zamzam.Infrastructure\Zamzam.Infrastructure.csproj", "{0420BBBD-0390-4934-9A21-5BCF73FDE1BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zamzam.Infrastructure", "Zamzam.Infrastructure\Zamzam.Infrastructure.csproj", "{0420BBBD-0390-4934-9A21-5BCF73FDE1BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zamzam.Contracts", "Zamzam.Contracts\Zamzam.Contracts.csproj", "{BE8C9E24-46B7-41B7-9D9E-0433EA82D5F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,14 @@ Global
 		{0420BBBD-0390-4934-9A21-5BCF73FDE1BE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0420BBBD-0390-4934-9A21-5BCF73FDE1BE}.Release|x86.ActiveCfg = Release|Any CPU
 		{0420BBBD-0390-4934-9A21-5BCF73FDE1BE}.Release|x86.Build.0 = Release|Any CPU
+		{BE8C9E24-46B7-41B7-9D9E-0433EA82D5F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE8C9E24-46B7-41B7-9D9E-0433EA82D5F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE8C9E24-46B7-41B7-9D9E-0433EA82D5F8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BE8C9E24-46B7-41B7-9D9E-0433EA82D5F8}.Debug|x86.Build.0 = Debug|Any CPU
+		{BE8C9E24-46B7-41B7-9D9E-0433EA82D5F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE8C9E24-46B7-41B7-9D9E-0433EA82D5F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE8C9E24-46B7-41B7-9D9E-0433EA82D5F8}.Release|x86.ActiveCfg = Release|Any CPU
+		{BE8C9E24-46B7-41B7-9D9E-0433EA82D5F8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +111,7 @@ Global
 		{05486E05-7F06-498E-9990-4944DBA83092} = {F895CF5E-A4BA-4B32-9F2B-2F03A92844F8}
 		{9A6ADFFA-3BA4-4C2E-BFDB-B75CF257A04F} = {1887879D-A356-4F36-80CF-7813435A0BAA}
 		{0420BBBD-0390-4934-9A21-5BCF73FDE1BE} = {F62BA9D5-9036-43E8-89EA-412F5EA1C6C6}
+		{BE8C9E24-46B7-41B7-9D9E-0433EA82D5F8} = {F895CF5E-A4BA-4B32-9F2B-2F03A92844F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1642FFE-55B5-4430-AE94-040B024A7BCB}

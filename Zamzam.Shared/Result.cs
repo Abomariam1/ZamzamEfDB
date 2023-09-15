@@ -29,6 +29,7 @@ namespace Zamzam.Shared
         };
         public static Result<T> Success(T data, string message) => new()
         {
+            Succeeded = true,
             Data = data,
             Message = new List<string> { message }
         };

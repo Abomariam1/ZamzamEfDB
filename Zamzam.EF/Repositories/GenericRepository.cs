@@ -21,17 +21,19 @@ namespace Zamzam.EF.Repositories
             return entity;
         }
 
-        public Task UpdateAsync(T entity)
+
+        public async Task<T> UpdateAsync(T entity)
         {
-            T exist = _dbContext.Set<T>().Find(entity.Id);
+            T exist = await _dbContext.Set<T>().FindAsync(entity.Id);
             _dbContext.Entry(exist).CurrentValues.SetValues(entity);
-            return Task.CompletedTask;
+            return exist;
         }
 
-        public Task DeleteAsync(T entity)
+        public async Task<T> DeleteAsync(int id)
         {
+            T entity = await _dbContext.Set<T>().FindAsync(id);
             _dbContext.Set<T>().Remove(entity);
-            return Task.CompletedTask;
+            return entity;
         }
 
         public async Task<List<T>> GetAllAsync()
@@ -46,19 +48,19 @@ namespace Zamzam.EF.Repositories
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public Task<T> GetByNameAsync(string name)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<T> GetByNameAsync(string name) =>
+            await _dbContext.Set<T>().FindAsync(name);
 
-        Task IGenericRepository<T>.AddAsync(T entity)
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task<T> AddAsync(T entity)
+        //{
+        //    await _dbContext.Set<T>().AddAsync(entity);
+        //}
 
-        public Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task<int> DeleteAsync(int id)
+        //{
+        //    var entity = await _dbContext.Set<T>().FindAsync(id);
+        //    _dbContext.Set<T>().Remove(entity);
+        //    return entity.Id;
+        //}
     }
 }

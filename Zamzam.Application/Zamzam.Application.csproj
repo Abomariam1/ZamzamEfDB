@@ -21,14 +21,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Customers\Commands\" />
-    <Folder Include="Features\Customers\Queries\" />
-    <Folder Include="Features\Departments\Commands\" />
+    <Folder Include="Features\Departments\Commands\Create\" />
+    <Folder Include="Features\Departments\Commands\Delete\" />
+    <Folder Include="Features\Departments\Commands\Update\" />
     <Folder Include="Features\Departments\Queries\" />
-    <Folder Include="Features\Employees\Commands\" />
+    <Folder Include="Features\Employees\Commands\Create\" />
+    <Folder Include="Features\Employees\Commands\Delete\" />
+    <Folder Include="Features\Employees\Commands\Update\" />
     <Folder Include="Features\Employees\Queries\" />
-    <Folder Include="Features\Items\Commands\" />
+    <Folder Include="Features\Items\Commands\Create\" />
+    <Folder Include="Features\Items\Commands\Delete\" />
+    <Folder Include="Features\Items\Commands\Update\" />
     <Folder Include="Features\Items\Queries\" />
+    <Folder Include="Features\Maintainences\Commands\Create\" />
+    <Folder Include="Features\Maintainences\Commands\Delete\" />
+    <Folder Include="Features\Maintainences\Commands\Update\" />
+    <Folder Include="Features\Maintainences\Queries\" />
+    <Folder Include="Features\Orders\Commands\Create\" />
+    <Folder Include="Features\Orders\Commands\Delete\" />
+    <Folder Include="Features\Orders\Commands\Update\" />
+    <Folder Include="Features\Orders\Queries\" />
   </ItemGroup>
 
 </Project>

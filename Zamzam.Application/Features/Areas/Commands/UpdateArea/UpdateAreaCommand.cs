@@ -13,6 +13,8 @@ namespace Zamzam.Application.Features.Areas.Commands.UpdateArea
         public string Name { get; set; }
         public string Station { get; set; }
         public string Location { get; set; }
+        public int? UpdatedBy { get; set; } = 1;
+        public DateTime? UpdatedDate { get; set; } = DateTime.Now;
     }
     internal class UpdateAreaCommandHandler : IRequestHandler<UpdateAreaCommand, Result<int>>
     {
@@ -35,6 +37,8 @@ namespace Zamzam.Application.Features.Areas.Commands.UpdateArea
                 area.Name = command.Name;
                 area.Location = command.Location;
                 area.Station = command.Station;
+                area.UpdatedBy = command.UpdatedBy;
+                area.UpdatedDate = command.UpdatedDate;
                 await _unitOfWork.Repository<Area>().UpdateAsync(area);
                 area.AddDomainEvent(new UpdatedAreaEvent(area));
                 await _unitOfWork.Save(cancellationToken);

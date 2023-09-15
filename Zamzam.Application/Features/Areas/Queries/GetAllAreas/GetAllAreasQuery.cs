@@ -6,7 +6,7 @@ using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.Domain;
 using Zamzam.Shared;
 
-namespace Zamzam.Application.Features.Areas.Queries
+namespace Zamzam.Application.Features.Areas.Queries.GetAllAreas
 {
     public record GetAllAreasQuery : IRequest<Result<List<GetAllAreasDto>>>;
 
