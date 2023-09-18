@@ -11,23 +11,28 @@ namespace Zamzam.Application.Extentions
             services.AddAutoMapper();
             services.AddMediator();
             services.AddValidators();
+            //services.AddIdentity();
         }
         private static void AddAutoMapper(this IServiceCollection services)
         {
             ArgumentNullException.ThrowIfNull(services);
-            _ = services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
         private static void AddMediator(this IServiceCollection services)
         {
             ArgumentNullException.ThrowIfNull(services);
-            _ = services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         }
 
         private static void AddValidators(this IServiceCollection services)
         {
             ArgumentNullException.ThrowIfNull(services);
-            _ = services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         }
+        //private static void AddIdentity(this IServiceCollection services)
+        //{
+        //    services.AddIdentity<ApplicationUser, IdentityRole>();
+        //}
     }
 }

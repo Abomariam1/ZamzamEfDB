@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Zamzam.Application.Features.Areas.Commands.CreateArea;
 using Zamzam.Application.Features.Areas.Commands.DeleteArea;
@@ -16,6 +17,7 @@ namespace Zamzam.API.Controllers
         {
             _mediator = mediator;
         }
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<Result<List<GetAllAreasDto>>>> Get() =>
             await _mediator.Send(new GetAllAreasQuery());

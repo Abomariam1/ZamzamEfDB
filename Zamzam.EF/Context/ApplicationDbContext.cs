@@ -1,13 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using Zamzam.Application;
 using Zamzam.Domain;
 using Zamzam.Domain.Common;
 using Zamzam.Domain.Common.Interfaces;
-using Zamzam.Domain.Entites;
 
 namespace Zamzam.EF
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         private readonly IDomainEventDispatcher _dispatcher;
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IDomainEventDispatcher dispatcher)
@@ -20,18 +21,8 @@ namespace Zamzam.EF
         public DbSet<Customer> Customers => Set<Customer>();
         public DbSet<Department> Departments => Set<Department>();
         public DbSet<Employee> Employees => Set<Employee>();
-        //public DbSet<Installment> Installments { get; set; }
-        //public DbSet<InstallmentedSaleOrder> InstallmentedSaleOrders { get; set; }
         public DbSet<Item> Items => Set<Item>();
-        //public DbSet<Maintenance> Maintenances { get; set; }
-        //public DbSet<Order> Orders { get; set; }
-        //public DbSet<OrderDetail> OrderDetails { get; set; }
-        //public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
-        //public DbSet<ReturnPurchaseOrder> ReturnPurchaseOrders { get; set; }
-        //public DbSet<ReturnSaleOrder> ReturnSaleOrders { get; set; }
-        //public DbSet<InstallmentedSaleOrder> SaleOrders { get; set; }
         public DbSet<Supplier> Suppliers => Set<Supplier>();
-        public DbSet<User> Users => Set<User>();
 
         //public ZamzamDbContext(DbContextOptions options) : base(options) { }
 
