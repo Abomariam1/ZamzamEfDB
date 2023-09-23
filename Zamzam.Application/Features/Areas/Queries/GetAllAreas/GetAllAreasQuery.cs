@@ -24,6 +24,7 @@ namespace Zamzam.Application.Features.Areas.Queries.GetAllAreas
         public async Task<Result<List<GetAllAreasDto>>> Handle(GetAllAreasQuery query, CancellationToken cancellationToken)
         {
             var areas = await _unitOfWork.Repository<Area>().Entities
+                .Where(x => x.IsDeleted != true)
                 .ProjectTo<GetAllAreasDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
             return await Result<List<GetAllAreasDto>>.SuccessAsync(areas);

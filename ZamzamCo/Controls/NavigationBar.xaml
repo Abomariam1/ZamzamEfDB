@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="ZamzamCo.Controls.NavigationBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ZamzamCo.Controls"
+             xmlns:nav="clr-namespace:ZamzamCo.Navigations"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Background="{StaticResource PraimaryLinearGraniantBrush}">
+            <StackPanel.Resources>
+                <Style TargetType="RadioButton" BasedOn="{StaticResource TextblockNavbar}"/>
+            </StackPanel.Resources>
+            <RadioButton Content="الرئيسية" Command="{Binding UpdateCurrentSubViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Home}"/>
+            <RadioButton Content="الاصناف" Command="{Binding UpdateCurrentSubViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Items}"/>
+            <RadioButton Content="الاقسام" Command="{Binding UpdateCurrentSubViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Employee}"/>
+            <RadioButton Content="الموظفين" Command="{Binding UpdateCurrentSubViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Employee}"/>
+            <RadioButton Content="مشتريات" Command="{Binding UpdateCurrentSubViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Purchases}"/>
+            <RadioButton Content="مبيعات" Command="{Binding UpdateCurrentSubViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Sales}"/>
+            <RadioButton Content="التحصيل" Command="{Binding UpdateCurrentSubViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Installments}"/>
+            <RadioButton Content="صيانة" Command="{Binding UpdateCurrentSubViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Maintenance}"/>
+            <RadioButton Content="المخزن" Command="{Binding UpdateCurrentSubViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Items}"/>
+            <RadioButton Content="الخزنة"/>
+            <RadioButton Content="حول البرنامج" Command="{Binding UpdateCurrentSubViewModelCommand}" CommandParameter="{x:Static nav:ViewType.About}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

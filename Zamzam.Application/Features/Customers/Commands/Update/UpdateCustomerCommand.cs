@@ -18,7 +18,7 @@ namespace Zamzam.Application.Features.Customers.Commands.Update
         public bool IsProplem { get; set; } = false;
         public bool IsBlackList { get; set; } = false;
         public int AreaId { get; set; }
-        public int UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; } = DateTime.UtcNow;
     }
     internal class UpdateCustomerCommanHandler : IRequestHandler<UpdateCustomerCommand, Result<int>>

@@ -1,12 +1,15 @@
-﻿using Zamzam.Domain.Common.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
+using Zamzam.Domain.Common.Interfaces;
 
 namespace Zamzam.Domain.Common
 {
     public abstract class BaseAuditableEntity : BaseEntity, IAuditableEntity
     {
-        public int? CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public int? UpdatedBy { get; set; }
-        public DateTime? UpdatedDate { get; set; }
+        [MaxLength(100)]
+        public string? CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; } = DateTime.Now;
+        [MaxLength(100)]
+        public string? UpdatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; } = DateTime.Now;
     }
 }

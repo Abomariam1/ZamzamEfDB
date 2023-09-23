@@ -9,5 +9,7 @@ namespace Zamzam.Application.Features.Areas.Queries.GetAllAreas
         public string Name { get; set; }
         public string Station { get; set; }
         public string? Location { get; set; }
+        public string CollectorName { get; set; }
+
     }
 }

@@ -9,16 +9,16 @@ namespace Zamzam.Application.Features.Areas.Commands.DeleteArea
 {
     public record DeleteAreaCommand : IRequest<Result<int>>, IMapFrom<Area>
     {
-        public int Id { get; }
+        public int Id { get; set; }
         public DeleteAreaCommand()
         {
 
         }
+
         public DeleteAreaCommand(int id)
         {
             Id = id;
         }
-
     }
     internal class DeletedAreaCommandHandler : IRequestHandler<DeleteAreaCommand, Result<int>>
     {
@@ -36,10 +36,10 @@ namespace Zamzam.Application.Features.Areas.Commands.DeleteArea
             Area area = await _unitOfWork.Repository<Area>().GetByIdAsync(command.Id);
             if (area != null)
             {
-                await _unitOfWork.Repository<Area>().DeleteAsync(command.Id);
+                Area? ar = await _unitOfWork.Repository<Area>().DeleteAsync(area.Id);
                 area.AddDomainEvent(new DeletedAreaEvent(area));
                 await _unitOfWork.Save(cancellationToken);
-                return await Result<int>.SuccessAsync(area.Id, "Area Deleted.");
+                return await Result<int>.SuccessAsync(area.Id, $" {ar.Name} Deleted.");
             }
             else
                 return Result<int>.Failure("Area Not Found");

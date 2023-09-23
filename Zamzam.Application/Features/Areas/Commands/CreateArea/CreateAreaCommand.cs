@@ -12,7 +12,8 @@ namespace Zamzam.Application.Features.Areas.Commands.CreateArea
         public string Name { get; set; } = string.Empty;
         public string Station { get; set; } = string.Empty;
         public string? Location { get; set; } = string.Empty;
-        public int? CreatedBy { get; set; } = 1;
+        public int CollectorId { get; set; }
+        public string? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; } = DateTime.Now;
     }
     internal class CreateAreaCommandHandler : IRequestHandler<CreateAreaCommand, Result<int>>
@@ -33,6 +34,7 @@ namespace Zamzam.Application.Features.Areas.Commands.CreateArea
                 Name = request.Name,
                 Station = request.Station,
                 Location = request.Location,
+                EmployeeId = request.CollectorId,
                 CreatedBy = request.CreatedBy,
                 CreatedDate = request.CreatedDate,
             };

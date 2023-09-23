@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.Domain.Common;
 
@@ -24,43 +25,25 @@ namespace Zamzam.EF.Repositories
 
         public async Task<T> UpdateAsync(T entity)
         {
-            T exist = await _dbContext.Set<T>().FindAsync(entity.Id);
-            _dbContext.Entry(exist).CurrentValues.SetValues(entity);
-            return exist;
+            T exist = await _dbContext.Set<T>().FindAsync(entity.Id) ?? throw new ArgumentException();
+
+            EntityEntry<T>? updated = _dbContext.Set<T>().Update(entity);
+
+            return updated.Entity;
         }
 
         public async Task<T> DeleteAsync(int id)
         {
-            T entity = await _dbContext.Set<T>().FindAsync(id);
-            _dbContext.Set<T>().Remove(entity);
-            return entity;
+            T exist = await _dbContext.Set<T>().FindAsync(id) ?? throw new ArgumentException();
+            exist.IsDeleted = true;
+            EntityEntry<T>? updated = _dbContext.Set<T>().Update(exist);
+            return updated.Entity;
         }
 
-        public async Task<List<T>> GetAllAsync()
-        {
-            return await _dbContext
-                .Set<T>()
-                .ToListAsync();
-        }
+        public async Task<List<T>> GetAllAsync() => await _dbContext.Set<T>().ToListAsync();
 
-        public async Task<T> GetByIdAsync(int id)
-        {
-            return await _dbContext.Set<T>().FindAsync(id);
-        }
+        public async Task<T> GetByIdAsync(int id) => await _dbContext.Set<T>().FindAsync(id);
 
-        public async Task<T> GetByNameAsync(string name) =>
-            await _dbContext.Set<T>().FindAsync(name);
-
-        //public async Task<T> AddAsync(T entity)
-        //{
-        //    await _dbContext.Set<T>().AddAsync(entity);
-        //}
-
-        //public async Task<int> DeleteAsync(int id)
-        //{
-        //    var entity = await _dbContext.Set<T>().FindAsync(id);
-        //    _dbContext.Set<T>().Remove(entity);
-        //    return entity.Id;
-        //}
+        public async Task<T> GetByNameAsync(string name) => await _dbContext.Set<T>().FindAsync(name);
     }
 }

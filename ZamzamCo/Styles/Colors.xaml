@@ -1,0 +1,74 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--General-->
+    <Color x:Key="BackgrounLight" >#efefef</Color>
+    <SolidColorBrush x:Key="BackgrounLightBrush" Color="{StaticResource BackgrounLight}"/>
+    
+    <Color x:Key="PrimaryColor">#FF19253F</Color>
+    <SolidColorBrush x:Key="PrimaryColorBrush" Color="{StaticResource PrimaryColor}"/>
+
+    <Color x:Key="SocendryColor">#FF3C4959</Color>
+    <SolidColorBrush x:Key="SocendryColorBrush" Color="{StaticResource SocendryColor}"/>
+    
+    <!--LinearGrageint-->
+    <LinearGradientBrush x:Key="PraimaryLinearGraniantBrush" StartPoint="0 1" EndPoint="1 0">
+        <GradientStop Color="{StaticResource PrimaryColor}" Offset="0.0"/>
+        <GradientStop Color="{StaticResource SocendryColor}" Offset="0.1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="MenuLinearGraniantBrush" StartPoint="0 0" EndPoint="1 1">
+        <GradientStop Color="{StaticResource PrimaryColor}" Offset="0.0"/>
+        <GradientStop Color="{StaticResource SocendryColor}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource SocendryColor}" Offset="0.1"/>
+    </LinearGradientBrush>
+    
+    <!--Danger-->
+    <Color x:Key="Danger" >#FFED8554</Color>
+    <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource Danger}"/>
+    
+    <Color x:Key="BackgrounVeryLight" >#fafafa</Color>
+    <SolidColorBrush x:Key="BackgrounVeryLightBrush" Color="{StaticResource BackgrounVeryLight}"/>
+    
+    <Color x:Key="BackGrounMainText" >#FF131719</Color>
+    <SolidColorBrush x:Key="BackGrounMainTextBrush" Color="{StaticResource BackGrounMainText}"/>
+    
+    <Color x:Key="BackGroundOverColer" >#FF131719</Color>
+    <SolidColorBrush x:Key="BackGroundOverColerBrush" Color="{StaticResource BackGroundOverColer}"/>
+    
+    
+    <!--ForGround-->
+    <Color x:Key="ForgrounMain" >#686868</Color>
+    <SolidColorBrush x:Key="ForgrounMainBrush" Color="{StaticResource ForgrounMain}"/>
+    
+    <Color x:Key="ForgroundVeryDark" >#000000</Color>
+    <SolidColorBrush x:Key="ForgroundVeryDarkBrush" Color="{StaticResource ForgroundVeryDark}"/>
+
+    <Color x:Key="ForgroundVeryLight" >#ffffff</Color>
+    <SolidColorBrush x:Key="ForgroundVeryLightBrush" Color="{StaticResource ForgroundVeryLight}"/>
+
+    <Color x:Key="ForgroundMainText" >#FFFFEBCD</Color>
+    <SolidColorBrush x:Key="ForgroundMainTextBrush" Color="{StaticResource ForgroundMainText}"/>
+
+    <Color x:Key="ForgroundNavText" >#FFA5B0BD</Color>
+    <SolidColorBrush x:Key="ForgroundNavTextBrush" Color="{StaticResource ForgroundNavText}"/>
+
+    <!--BorderBrush-->
+    <Color x:Key="BorderBrushColore" >#FF5599EA</Color>
+    <SolidColorBrush x:Key="BorderBrushBrush" Color="{StaticResource BorderBrushColore}"/>
+    
+    <!--Buttons-->
+    <Color x:Key="BackgrounMainButton" >#FFFFEBCD</Color>
+    <SolidColorBrush x:Key="BackgrounMainButtonBrush" Color="{StaticResource BackgrounMainButton}"/>
+    
+    <!--Buttons-->
+    <Color x:Key="BackgrounoverButton" >#FFA28500</Color>
+    <SolidColorBrush x:Key="BackgrounoverButtonBrush" Color="{StaticResource BackgrounoverButton}"/>
+    
+    <!--Default-->
+    <Color x:Key="MainColor1" >#FF192931</Color>
+    <SolidColorBrush x:Key="MainColor1Brush" Color="{StaticResource MainColor1}"/>
+
+    <SolidColorBrush x:Key="test" Color="#FF5599EA"/>
+
+   
+    
+</ResourceDictionary>

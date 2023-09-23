@@ -1,0 +1,224 @@
+﻿<UserControl x:Class="ZamzamCo.Views.SalesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ZamzamCo.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1100">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="5 0"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Height" Value="25"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Height" Value="25"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+
+        </Grid.RowDefinitions>
+        <Border Background="{StaticResource PraimaryLinearGraniantBrush}"
+                CornerRadius="40"
+                Margin="10">
+            <TextBlock Text="شاشة المبيعات"
+                   Grid.Row="0"
+                   FontSize="28"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Stretch"
+                   TextAlignment="Center"
+                   Foreground="{StaticResource ForgroundVeryLightBrush}"/>
+        </Border>
+        <Border Grid.Row="1" 
+                BorderThickness="2" 
+                CornerRadius="10"
+                BorderBrush="{StaticResource PraimaryLinearGraniantBrush}"
+                Margin="10" Padding="10">
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0" Margin="0 0 50 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"  Grid.Column="0" 
+                           Text="تاريخ الفاتورة"
+                               />
+                    <DatePicker  Grid.Column="1" Grid.Row="0"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Center"/>
+
+                    <TextBlock Grid.Row="1"  Grid.Column="0" Text="اسم البائع"/>
+                    <ComboBox  Grid.Column="1" Grid.Row="1"
+                               Margin="0 10 "
+                                 HorizontalAlignment="Stretch"
+                               VerticalAlignment="Center"
+                               VerticalContentAlignment="Center">
+                        <ComboBoxItem Content="عبدالفتاح خالد"/>
+                        <ComboBoxItem Content="كساب"/>
+                        <ComboBoxItem Content="محمد"/>
+                    </ComboBox>
+                </Grid>
+
+                <Grid Grid.Column="1" Margin="30 0 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0"
+                           Text="طريقة الدفع"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1" 
+                              HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="اجل"/>
+                        <ComboBoxItem Content="نقدي"/>
+                    </ComboBox>
+
+                    <TextBlock Grid.Column="0" Grid.Row="1"
+                           Text="المناديب"/>
+                    <Grid Grid.Column="1" Grid.Row="1" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" HorizontalAlignment="Stretch"/>
+                        <Button Grid.Column="1" Content="+" 
+                                FontSize="20"
+                                Width="30" Height="30" 
+                                HorizontalAlignment="Right"/>
+                    </Grid>
+                    <!--<ListBox Grid.Row="1" Grid.Column="1"
+                             Margin="0 10"
+                              HorizontalAlignment="Stretch">
+                        <ListBoxItem Content="هند"/>
+                        <ListBoxItem Content="ايه"/>
+                        <ListBoxItem Content="نجلاء"/>
+                        <ListBoxItem Content="امنية"/>
+                    </ListBox>-->
+                </Grid>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" BorderThickness="2" 
+                CornerRadius="10"
+                BorderBrush="{StaticResource PraimaryLinearGraniantBrush}"
+                Margin="10" Padding="10">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="اسم العميل:" Margin="0 10"/>
+                <TextBox Grid.Column="1" Grid.Row="0"/>
+                
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="الرقم القومي:"/>
+                <TextBox Grid.Column="1" Grid.Row="1"/>
+
+                <TextBlock Text="الهاتف:" Grid.Column="2" Grid.Row="0" />
+                <TextBox Grid.Column="3" Grid.Row="0" />
+
+
+                <TextBlock Text="قرية\مدينة" Grid.Column="2" Grid.Row="1"/>
+                <TextBox Grid.Column="3" Grid.Row="1" />
+             
+
+                <TextBlock Grid.Row="0" Grid.Column="4" Text="العنوان:"/>
+                <TextBox Grid.Row="0" Grid.Column="5"/>
+                <Grid Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2">
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                            
+                        <TextBlock Grid.Column="0" Text="المركز:" HorizontalAlignment="Right"/>
+                        <TextBox  Grid.Column="1"/>
+
+                        <TextBlock Grid.Column="2" Text="المحافظة:" HorizontalAlignment="Right"/>
+                        <TextBox Grid.Column="3"/>
+
+                    </Grid>
+
+                </Grid>
+
+
+
+            </Grid>
+        </Border>
+        <DataGrid Grid.Row="3" Height="200"/>
+        <Border Grid.Row="4" Margin="5 20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <TextBlock Text="اجمالي الفاتورة:"/>
+                    <TextBlock Text="5000"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock Text="خصم اضافي:"/>
+                    <TextBox Text="5000" 
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Center"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <TextBlock Text="صافي الفاتورة:"/>
+                    <TextBlock Text="5000"/>
+                </StackPanel>
+                <StackPanel Grid.Column="3" Orientation="Horizontal">
+                    <TextBlock Text="اجاملي قيمة القسط:"/>
+                    <TextBlock Text="5000"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Border Grid.Row="5" Margin="5 20">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                <Button Margin="20 0" Content="اضافة"/>
+                <Button Margin="20 0" Content="تعديل"/>
+                <Button Margin="20 0" Content="حذف"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

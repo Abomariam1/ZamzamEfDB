@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <FontFamily x:Key="LatoRegular">pack://application:,,,/Fonts/#Lato Regular</FontFamily>
+    <FontFamily x:Key="LatoThin">pack://application:,,,/Fonts/#Lato Thin</FontFamily>
+    <FontFamily x:Key="MetropolisThin">pack://application:,,,/Fonts/#Metropolis Thin</FontFamily>
+    <FontFamily x:Key="FA_Brands_Regular">pack://application:,,,/Fonts/#Font Awesome 6 Brands Regular</FontFamily>
+    <FontFamily x:Key="FA_Free_Regular">pack://application:,,,/Fonts/#Font Awesome 6 Free Regular</FontFamily>
+    <FontFamily x:Key="FA_Free_Solid">pack://application:,,,/Fonts/#Font Awesome 6 Free Solid</FontFamily>
+    <FontFamily x:Key="Tajawal">pack://application:,,,/Fonts/#Tajawal</FontFamily>
+    <FontFamily x:Key="Tajawal_Light">pack://application:,,,/Fonts/#Tajawal Light</FontFamily>
+    <FontFamily x:Key="Tajawal-Medium">pack://application:,,,/Fonts/#Tajawal Medium</FontFamily>
+    <FontFamily x:Key="NotoNaskhArabic">pack://application:,,,/Fonts/#Noto Naskh Arabic</FontFamily>
+    <FontFamily x:Key="ArefRuqaa">pack://application:,,,/Fonts/#Aref Ruqaa Ink</FontFamily>
+    <Style x:Key="BaseStyle" TargetType="Control" >
+        <Setter Property="FontFamily" Value="{StaticResource NotoNaskhArabic}" />
+    </Style>
+
+    <Style x:Key="BaseTextBlockStyle" TargetType="TextBlock" >
+        <Setter Property="FontFamily" Value="{StaticResource NotoNaskhArabic}" />
+    </Style>
+    <Style TargetType="Button" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="Label" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="TextBox" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="ListView" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource NotoNaskhArabic}"/>
+    </Style>
+</ResourceDictionary>
