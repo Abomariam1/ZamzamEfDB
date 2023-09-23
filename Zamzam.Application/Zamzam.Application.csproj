@@ -22,12 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Employees\Commands\Delete\" />
-    <Folder Include="Features\Employees\Commands\Update\" />
     <Folder Include="Features\Employees\Queries\" />
-    <Folder Include="Features\Items\Commands\Create\" />
-    <Folder Include="Features\Items\Commands\Delete\" />
-    <Folder Include="Features\Items\Commands\Update\" />
     <Folder Include="Features\Items\Queries\" />
     <Folder Include="Features\LogIn\Queries\" />
     <Folder Include="Features\Maintainences\Commands\Create\" />
