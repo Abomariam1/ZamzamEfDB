@@ -17,7 +17,7 @@ namespace Zamzam.Application.Features.Items.Commands.Update
         public string? UpdatedBy { get; set; }
     }
 
-    public class ItemUpdateCommandHandler : IRequestHandler<ItemUpdateCommand, Result<int>>
+    internal class ItemUpdateCommandHandler : IRequestHandler<ItemUpdateCommand, Result<int>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;

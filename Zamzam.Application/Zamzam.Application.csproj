@@ -32,10 +32,21 @@
     <Folder Include="Features\Members\Commands\Delete\" />
     <Folder Include="Features\Members\Commands\Update\" />
     <Folder Include="Features\Members\Queries\" />
-    <Folder Include="Features\Orders\Commands\Create\" />
-    <Folder Include="Features\Orders\Commands\Delete\" />
-    <Folder Include="Features\Orders\Commands\Update\" />
-    <Folder Include="Features\Orders\Queries\" />
+    <Folder Include="Features\Purchases\Commands\Create\" />
+    <Folder Include="Features\Purchases\Commands\Delete\" />
+    <Folder Include="Features\Purchases\Commands\Update\" />
+    <Folder Include="Features\Purchases\Queries\" />
+    <Folder Include="Features\ReturnSales\Commands\Create\" />
+    <Folder Include="Features\ReturnSales\Commands\Delete\" />
+    <Folder Include="Features\ReturnSales\Commands\Update\" />
+    <Folder Include="Features\ReturnSales\Queries\" />
+    <Folder Include="Features\ReturnPurchases\Commands\Create\" />
+    <Folder Include="Features\ReturnPurchases\Commands\Delete\" />
+    <Folder Include="Features\ReturnPurchases\Commands\Update\" />
+    <Folder Include="Features\ReturnPurchases\Queries\" />
+    <Folder Include="Features\Sales\Commands\Delete\" />
+    <Folder Include="Features\Sales\Commands\Update\" />
+    <Folder Include="Features\Sales\Queries\" />
   </ItemGroup>
 
 </Project>

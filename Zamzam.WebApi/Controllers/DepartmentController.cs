@@ -21,12 +21,12 @@ namespace Zamzam.API.Controllers
         [HttpPost]
         public async Task<Result<int>> Create(DepartmentCreateCommand command)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                command.CreatedBy = HttpContext.User.Identity.Name;
-                return await _mediator.Send(command);
+                return await Result<int>.FailureAsync(0, "Fail to create Department...");
             }
-            return await Result<int>.FailureAsync(0, "Fail to create Department...");
+            command.CreatedBy = HttpContext.User.Identity.Name;
+            return await _mediator.Send(command);
         }
 
         [HttpPut]

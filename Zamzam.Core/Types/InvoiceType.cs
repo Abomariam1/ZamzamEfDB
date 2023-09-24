@@ -4,7 +4,5 @@
     {
         Cash,
         Installment,
-        Maintainence,
-        Purchases
     }
 }

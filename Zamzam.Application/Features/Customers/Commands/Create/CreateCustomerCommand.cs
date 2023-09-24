@@ -14,9 +14,7 @@ namespace Zamzam.Application.Features.Customers.Commands.Create
         public string? Address { get; set; } = string.Empty;
         public long NationalCardId { get; set; } = 0;
         public string? Notes { get; set; } = string.Empty;
-        public bool IsProplem { get; set; } = false;
-        public bool IsBlackList { get; set; } = false;
-        public int CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         public int AreaId { get; set; }
     }
@@ -40,9 +38,8 @@ namespace Zamzam.Application.Features.Customers.Commands.Create
                 Address = request.Address,
                 NationalCardId = request.NationalCardId,
                 Notes = request.Notes,
-                IsProplem = request.IsProplem,
-                IsBlackList = request.IsBlackList,
-                AreaId = request.AreaId
+                AreaId = request.AreaId,
+                CreatedBy = request.CreatedBy
             };
             await _unitOfWork.Repository<Customer>().AddAsync(cust);
             cust.AddDomainEvent(new CreatedCustomerEvent(cust));

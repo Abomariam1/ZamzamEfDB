@@ -7,7 +7,7 @@ using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.Employees.Commands.Update
 {
-    public record EmployeeUpdateCommand : IRequest<Result<EmployeeUpdateCommand>>, IMapFrom<Employee>
+    public record EmployeeUpdateCommand : IRequest<Result<int>>, IMapFrom<Employee>
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -28,7 +28,7 @@ namespace Zamzam.Application.Features.Employees.Commands.Update
         public string UpdatedBy { get; set; }
     }
 
-    internal class EmployeeUpdateCommandHandler : IRequestHandler<EmployeeUpdateCommand, Result<EmployeeUpdateCommand>>
+    internal class EmployeeUpdateCommandHandler : IRequestHandler<EmployeeUpdateCommand, Result<int>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -39,11 +39,11 @@ namespace Zamzam.Application.Features.Employees.Commands.Update
             _mapper = mapper;
         }
 
-        public async Task<Result<EmployeeUpdateCommand>> Handle(EmployeeUpdateCommand request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(EmployeeUpdateCommand request, CancellationToken cancellationToken)
         {
             Employee employee = await _unitOfWork.Repository<Employee>().GetByIdAsync(request.Id);
             if (employee == null)
-                return Result<EmployeeUpdateCommand>.Failure("The Employee not found");
+                return Result<int>.Failure(0, "The Employee not found");
             employee.Name = request.Name;
             employee.Phone = request.Phone;
             employee.Address = request.Address;
@@ -64,7 +64,7 @@ namespace Zamzam.Application.Features.Employees.Commands.Update
             var result = await _unitOfWork.Repository<Employee>().UpdateAsync(employee);
             result.AddDomainEvent(new EmployeeUpdateEvent(result));
             await _unitOfWork.Save(cancellationToken);
-            return Result<EmployeeUpdateCommand>.Success(request, $"تم تعديل العميل {request.Name}...");
+            return Result<int>.Success(request.Id, $"تم تعديل العميل {request.Name}...");
         }
     }
 }
