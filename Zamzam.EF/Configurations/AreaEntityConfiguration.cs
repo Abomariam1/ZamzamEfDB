@@ -13,8 +13,7 @@ namespace Zamzam.EF
             //    .HasColumnType("uniqueidentifier");
             builder.HasOne(x => x.Employee)
                 .WithMany(x => x.Areas)
-                .HasForeignKey(x => x.EmployeeId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(x => x.EmployeeId);
             builder.HasKey(x => x.Id);
             builder.Property(a => a.Name).IsRequired()
                 .HasMaxLength(100);

@@ -66,12 +66,12 @@ namespace Zamzam.Application.Features.InstallmentSaleOrders.Commands.Create
                     TotalDiscount = request.TotalDiscount,
                     OrderType = OrderType.Sell,
                     InvoiceType = InvoiceType.Installment,
-                    Employee = emp,
+                    EmployeeId = emp.Id,
                     Payed = request.Payed,
                     Remains = request.Remain,
                     InstallmentValue = request.InstallmentValue,
                     InstallmentPeriodInMonths = request.InstallmentPeriodInMonths,
-                    Customer = cust,
+                    CustomerId = cust.Id,
                     CreatedBy = request.CreatedBy,
                 };
 
@@ -80,7 +80,7 @@ namespace Zamzam.Application.Features.InstallmentSaleOrders.Commands.Create
                 {
                     ordt.Add(new()
                     {
-                        Order = instlmentSaleOrder,
+                        OrderId = instlmentSaleOrder.Id,
                         ItemId = item.ItemId,
                         Quantity = item.Quantity,
                         Price = item.Price,

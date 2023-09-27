@@ -8,10 +8,10 @@ namespace Zamzam.EF.Configurations
     {
         public void Configure(EntityTypeBuilder<InstallmentedSaleOrder> builder)
         {
+
             builder.HasOne(x => x.Customer)
                 .WithMany(x => x.InstallmentedSaleOrders)
-                .HasForeignKey(x => x.CustomerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(x => x.CustomerId);
 
             builder.Property(r => r.InstallmentValue)
                 .HasPrecision(9, 2);

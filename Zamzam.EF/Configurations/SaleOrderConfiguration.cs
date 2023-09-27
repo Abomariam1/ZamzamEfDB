@@ -10,8 +10,7 @@ namespace Zamzam.EF.Configurations
         {
             builder.HasOne(c => c.Customer)
                 .WithMany(c => c.Orders)
-                .HasForeignKey(c => c.CustomerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(c => c.CustomerId);
         }
     }
 }

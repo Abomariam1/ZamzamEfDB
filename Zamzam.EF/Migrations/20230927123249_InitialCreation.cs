@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Zamzam.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class InitalCreation : Migration
+    public partial class InitialCreation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -272,7 +271,7 @@ namespace Zamzam.EF.Migrations
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -299,7 +298,7 @@ namespace Zamzam.EF.Migrations
                         column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -312,6 +311,7 @@ namespace Zamzam.EF.Migrations
                     TotalPrice = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
                     TotalDiscount = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
                     NetPrice = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false, computedColumnSql: "[TotalPrice] - [TotalDiscount]"),
+                    OrderType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     InvoiceType = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -328,7 +328,7 @@ namespace Zamzam.EF.Migrations
                         column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -359,11 +359,11 @@ namespace Zamzam.EF.Migrations
                         column: x => x.AreaId,
                         principalTable: "Areas",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderDetail",
+                name: "OrderDetails",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -382,19 +382,19 @@ namespace Zamzam.EF.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDetail", x => x.Id);
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderDetail_Items_ItemId",
+                        name: "FK_OrderDetails_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderDetail_Orders_OrderId",
+                        name: "FK_OrderDetails_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -458,7 +458,7 @@ namespace Zamzam.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "InstallmentedSaleOrder",
+                name: "InstallmentSaleOrders",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
@@ -470,19 +470,19 @@ namespace Zamzam.EF.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InstallmentedSaleOrder", x => x.Id);
+                    table.PrimaryKey("PK_InstallmentSaleOrders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_InstallmentedSaleOrder_Customers_CustomerId",
+                        name: "FK_InstallmentSaleOrders_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_InstallmentedSaleOrder_Orders_Id",
+                        name: "FK_InstallmentSaleOrders_Orders_Id",
                         column: x => x.Id,
                         principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -500,17 +500,17 @@ namespace Zamzam.EF.Migrations
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SaleOrders_Orders_Id",
                         column: x => x.Id,
                         principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Installment",
+                name: "Installments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -527,23 +527,23 @@ namespace Zamzam.EF.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Installment", x => x.Id);
+                    table.PrimaryKey("PK_Installments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Installment_Employees_EmployeeId",
+                        name: "FK_Installments_Employees_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Installment_InstallmentedSaleOrder_OrderId",
+                        name: "FK_Installments_InstallmentSaleOrders_OrderId",
                         column: x => x.OrderId,
-                        principalTable: "InstallmentedSaleOrder",
+                        principalTable: "InstallmentSaleOrders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Maintenance",
+                name: "Maintenances",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
@@ -554,19 +554,19 @@ namespace Zamzam.EF.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Maintenance", x => x.Id);
+                    table.PrimaryKey("PK_Maintenances", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Maintenance_Orders_Id",
+                        name: "FK_Maintenances_Orders_Id",
                         column: x => x.Id,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Maintenance_SaleOrders_SaleOrderId",
+                        name: "FK_Maintenances_SaleOrders_SaleOrderId",
                         column: x => x.SaleOrderId,
                         principalTable: "SaleOrders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
@@ -624,33 +624,33 @@ namespace Zamzam.EF.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Installment_EmployeeId",
-                table: "Installment",
+                name: "IX_Installments_EmployeeId",
+                table: "Installments",
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Installment_OrderId",
-                table: "Installment",
+                name: "IX_Installments_OrderId",
+                table: "Installments",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InstallmentedSaleOrder_CustomerId",
-                table: "InstallmentedSaleOrder",
+                name: "IX_InstallmentSaleOrders_CustomerId",
+                table: "InstallmentSaleOrders",
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Maintenance_SaleOrderId",
-                table: "Maintenance",
+                name: "IX_Maintenances_SaleOrderId",
+                table: "Maintenances",
                 column: "SaleOrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetail_ItemId",
-                table: "OrderDetail",
+                name: "IX_OrderDetails_ItemId",
+                table: "OrderDetails",
                 column: "ItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetail_OrderId",
-                table: "OrderDetail",
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
@@ -688,13 +688,13 @@ namespace Zamzam.EF.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Installment");
+                name: "Installments");
 
             migrationBuilder.DropTable(
-                name: "Maintenance");
+                name: "Maintenances");
 
             migrationBuilder.DropTable(
-                name: "OrderDetail");
+                name: "OrderDetails");
 
             migrationBuilder.DropTable(
                 name: "PurchaseOrders");
@@ -715,7 +715,7 @@ namespace Zamzam.EF.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "InstallmentedSaleOrder");
+                name: "InstallmentSaleOrders");
 
             migrationBuilder.DropTable(
                 name: "SaleOrders");

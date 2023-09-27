@@ -5,16 +5,16 @@
 namespace Zamzam.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class FixOrderType : Migration
+    public partial class addInstallmentNotes : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "OrderType",
-                table: "Orders",
-                type: "nvarchar(20)",
-                maxLength: 20,
+                name: "Notes",
+                table: "Installments",
+                type: "nvarchar(100)",
+                maxLength: 100,
                 nullable: false,
                 defaultValue: "");
         }
@@ -23,8 +23,8 @@ namespace Zamzam.EF.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "OrderType",
-                table: "Orders");
+                name: "Notes",
+                table: "Installments");
         }
     }
 }

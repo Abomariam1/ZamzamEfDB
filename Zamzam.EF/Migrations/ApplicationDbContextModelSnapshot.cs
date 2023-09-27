@@ -530,6 +530,11 @@ namespace Zamzam.EF.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
@@ -934,7 +939,7 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Employee", "Employee")
                         .WithMany("Areas")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -945,7 +950,7 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Area", "Area")
                         .WithMany("Customers")
                         .HasForeignKey("AreaId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Area");
@@ -956,7 +961,7 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Department", "Department")
                         .WithMany("Employees")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Department");
@@ -967,13 +972,13 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Employee", "Employee")
                         .WithMany("Installments")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Zamzam.Domain.InstallmentedSaleOrder", "InstallmentedSale")
                         .WithMany("Installments")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -986,7 +991,7 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Employee", "Employee")
                         .WithMany("Orders")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -997,13 +1002,13 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Item", "Item")
                         .WithMany("OrderDetails")
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Zamzam.Domain.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Item");
@@ -1016,7 +1021,7 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Zamzam.Domain.Order", null)
@@ -1033,7 +1038,7 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Customer", "Customer")
                         .WithMany("InstallmentedSaleOrders")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Zamzam.Domain.Order", null)
@@ -1056,7 +1061,7 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Entites.SaleOrder", "SaleOrder")
                         .WithMany("Maintenances")
                         .HasForeignKey("SaleOrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("SaleOrder");
