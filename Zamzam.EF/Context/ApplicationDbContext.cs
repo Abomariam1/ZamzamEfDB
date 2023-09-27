@@ -5,6 +5,7 @@ using Zamzam.Application;
 using Zamzam.Domain;
 using Zamzam.Domain.Common;
 using Zamzam.Domain.Common.Interfaces;
+using Zamzam.Domain.Entites;
 
 namespace Zamzam.EF
 {
@@ -22,7 +23,19 @@ namespace Zamzam.EF
         public DbSet<Department> Departments => Set<Department>();
         public DbSet<Employee> Employees => Set<Employee>();
         public DbSet<Item> Items => Set<Item>();
+        public DbSet<Installment> Installments => Set<Installment>();
         public DbSet<Supplier> Suppliers => Set<Supplier>();
+        public DbSet<Order> Orders => Set<Order>();
+        public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
+        public DbSet<SaleOrder> SaleOrders => Set<SaleOrder>();
+        public DbSet<PurchaseOrder> PurchaseOrders => Set<PurchaseOrder>();
+        public DbSet<ReturnSaleOrder> ReturnSaleOrders => Set<ReturnSaleOrder>();
+        public DbSet<ReturnPurchaseOrder> ReturnPurchaseOrders => Set<ReturnPurchaseOrder>();
+        public DbSet<InstallmentedSaleOrder> InstallmentSaleOrders => Set<InstallmentedSaleOrder>();
+        public DbSet<Maintenance> Maintenances => Set<Maintenance>();
+
+
+
 
         //public ZamzamDbContext(DbContextOptions options) : base(options) { }
 

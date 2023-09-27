@@ -22,10 +22,10 @@ namespace Zamzam.Application.Features.Employees.Commands.Update
         public DateTime HireDate { get; set; }
         public DateTime BirthDate { get; set; }
         public decimal Salary { get; set; }
-        public string Qualification { get; set; } = string.Empty;
-        public byte[]? Photo { get; set; }
+        public string? Qualification { get; set; } = string.Empty;
+        public string? Photo { get; set; }
         public int DepartmentId { get; set; }
-        public string UpdatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
     }
 
     internal class EmployeeUpdateCommandHandler : IRequestHandler<EmployeeUpdateCommand, Result<int>>
@@ -57,7 +57,7 @@ namespace Zamzam.Application.Features.Employees.Commands.Update
             employee.BirthDate = request.BirthDate;
             employee.Salary = request.Salary;
             employee.Qualification = request.Qualification;
-            employee.Photo = request.Photo;
+            employee.Photo = Convert.FromBase64String(request.Photo) ?? ""u8.ToArray();
             employee.DepartmentId = request.DepartmentId;
             employee.UpdatedBy = request.UpdatedBy;
             employee.UpdatedDate = DateTime.Now;

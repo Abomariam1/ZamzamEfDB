@@ -26,6 +26,7 @@ namespace Zamzam.Application.Features.Departments.Commands.Create
 
         public async Task<Result<int>> Handle(DepartmentCreateCommand request, CancellationToken cancellationToken)
         {
+            //_unitOfWork.RecreateCleanDatabase();
             if (request == null) throw new ArgumentNullException(nameof(request));
             Department dep = new()
             {

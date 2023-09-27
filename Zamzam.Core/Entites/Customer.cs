@@ -15,6 +15,6 @@ namespace Zamzam.Domain
         public int AreaId { get; set; }
         public virtual Area Area { get; set; }
         public virtual ICollection<SaleOrder> Orders { get; set; }
-        //public virtual Collection<InstallmentedSaleOrder> InstallmentedSaleOrders { get; set; }
+        public virtual ICollection<InstallmentedSaleOrder> InstallmentedSaleOrders { get; set; }
     }
 }

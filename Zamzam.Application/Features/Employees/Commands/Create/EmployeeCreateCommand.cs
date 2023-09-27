@@ -21,10 +21,10 @@ namespace Zamzam.Application.Features.Employees.Commands.Create
         public DateTime HireDate { get; set; }
         public DateTime BirthDate { get; set; }
         public decimal Salary { get; set; }
-        public string Qualification { get; set; } = string.Empty;
-        public byte[]? Photo { get; set; }
+        public string? Qualification { get; set; } = string.Empty;
+        public string? Photo { get; set; }
         public int DepartmentId { get; set; }
-        public string CreatedBy { get; set; }
+        public string? CreatedBy { get; set; }
     }
     internal class EmployeeCreateCommandHandler : IRequestHandler<EmployeeCreateCommand, Result<int>>
     {
@@ -54,7 +54,7 @@ namespace Zamzam.Application.Features.Employees.Commands.Create
                 BirthDate = request.BirthDate,
                 Salary = request.Salary,
                 Qualification = request.Qualification,
-                Photo = request.Photo,
+                Photo = Convert.FromBase64String(request.Photo),
                 DepartmentId = request.DepartmentId,
                 CreatedBy = request.CreatedBy,
                 CreatedDate = DateTime.Now

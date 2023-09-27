@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Zamzam.API.Controllers;
 using Zamzam.Application.Features.Items.Commands.Create;
@@ -8,7 +9,7 @@ using Zamzam.Shared;
 
 namespace Zamzam.WebApi.Controllers
 {
-
+    [Authorize]
     public class ItemController : ApiControllerBase
     {
         private readonly IMediator _mediator;

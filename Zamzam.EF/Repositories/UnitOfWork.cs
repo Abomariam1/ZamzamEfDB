@@ -59,7 +59,11 @@ namespace Zamzam.EF.Repositories
         {
             return await _dbContext.SaveChangesAsync(cancellationToken);
         }
-
+        public void RecreateCleanDatabase()
+        {
+            _dbContext.Database.EnsureDeleted();
+            _dbContext.Database.EnsureCreated();
+        }
         public Task<int> SaveAndRemoveCache(CancellationToken cancellationToken, params string[] cacheKeys)
         {
             throw new NotImplementedException();

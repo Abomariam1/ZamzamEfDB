@@ -3,13 +3,12 @@ using Zamzam.Application.DTOs;
 using Zamzam.Application.Features.Customers.Commands.Create;
 using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.Domain;
-using Zamzam.Domain.Entites;
 using Zamzam.Domain.Types;
 using Zamzam.Shared;
 
-namespace Zamzam.Application.Features.Sales.Commands.Create
+namespace Zamzam.Application.Features.InstallmentSaleOrders.Commands.Create
 {
-    public record SaleCreateCommand : IRequest<Result<int>>
+    public record InstallmentSaleOrderCreateCommand : IRequest<Result<int>>
     {
         public int CustomerId { get; set; } = 0;
         public string? CustomerName { get; set; } = "عميل افتراضي";
@@ -21,20 +20,25 @@ namespace Zamzam.Application.Features.Sales.Commands.Create
         public DateTime OrderDate { get; set; } = DateTime.Now.Date;
         public decimal TotalPrice { get; set; }
         public decimal TotalDiscount { get; set; }
+        public decimal Payed { get; set; }
+        public decimal Remain { get; set; }
+        public decimal InstallmentValue { get; set; }
+        public int InstallmentPeriodInMonths { get; set; }
         public int EmployeeId { get; set; }
         public ICollection<ODetails>? OrderDetails { get; set; }
         public string? CreatedBy { get; set; }
     }
-    internal class SaleCreateCommandHandler : IRequestHandler<SaleCreateCommand, Result<int>>
+
+    internal class InstallmentSaleCreateCommandHandler : IRequestHandler<InstallmentSaleOrderCreateCommand, Result<int>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public SaleCreateCommandHandler(IUnitOfWork unitOfWork)
+        public InstallmentSaleCreateCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<int>> Handle(SaleCreateCommand request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(InstallmentSaleOrderCreateCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -48,20 +52,25 @@ namespace Zamzam.Application.Features.Sales.Commands.Create
                         Address = request.Address,
                         NationalCardId = request.NationalCardId,
                         Notes = request.Notes,
-                        AreaId = request.AreaId
+                        AreaId = request.AreaId,
+                        CreatedBy = request.CreatedBy,
                     };
                     cust = await _unitOfWork.Repository<Customer>().AddAsync(newCust);
                     cust.AddDomainEvent(new CreatedCustomerEvent(cust));
                 }
                 Employee? emp = await _unitOfWork.Repository<Employee>().GetByIdAsync(request.EmployeeId);
-                SaleOrder saleOrder = new()
+                InstallmentedSaleOrder instlmentSaleOrder = new()
                 {
                     OrderDate = request.OrderDate,
                     TotalPrice = request.TotalPrice,
                     TotalDiscount = request.TotalDiscount,
                     OrderType = OrderType.Sell,
-                    InvoiceType = InvoiceType.Cash,
+                    InvoiceType = InvoiceType.Installment,
                     Employee = emp,
+                    Payed = request.Payed,
+                    Remains = request.Remain,
+                    InstallmentValue = request.InstallmentValue,
+                    InstallmentPeriodInMonths = request.InstallmentPeriodInMonths,
                     Customer = cust,
                     CreatedBy = request.CreatedBy,
                 };
@@ -71,7 +80,7 @@ namespace Zamzam.Application.Features.Sales.Commands.Create
                 {
                     ordt.Add(new()
                     {
-                        Order = saleOrder,
+                        Order = instlmentSaleOrder,
                         ItemId = item.ItemId,
                         Quantity = item.Quantity,
                         Price = item.Price,
@@ -79,18 +88,15 @@ namespace Zamzam.Application.Features.Sales.Commands.Create
                         CreatedBy = item.CreatedBy,
                     });
                 }
-                saleOrder.OrderDetails = ordt;
-                //var saved = await _unitOfWork.Repository<OrderDetail>().AddAsync(detail);
-                Order? addedOrder = await _unitOfWork.Repository<Order>().AddAsync(saleOrder);
-                cust.AddDomainEvent(new SaleCreatedEvent(saleOrder));
+                instlmentSaleOrder.OrderDetails = ordt;
+                Order? addedOrder = await _unitOfWork.Repository<Order>().AddAsync(instlmentSaleOrder);
+                cust.AddDomainEvent(new InstalmentOrderCreatedEvent(instlmentSaleOrder));
                 await _unitOfWork.Save(cancellationToken);
             }
             catch (Exception e)
             {
                 return await Result<int>.FailureAsync(e.Message);
             }
-
-
             return await Result<int>.SuccessAsync();
         }
     }

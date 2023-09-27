@@ -1,32 +1,30 @@
-﻿using AutoMapper;
-using MediatR;
-using Zamzam.Application.Common.Mappings;
+﻿using MediatR;
 using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.Domain;
 using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.Customers.Commands.Create
 {
-    public record CreateCustomerCommand : IRequest<Result<int>>, IMapFrom<Customer>
+    public record CreateCustomerCommand : IRequest<Result<int>>
     {
         public string CustomerName { get; set; } = "عميل افتراضي";
         public string? Phone { get; set; } = string.Empty;
         public string? Address { get; set; } = string.Empty;
         public long NationalCardId { get; set; } = 0;
         public string? Notes { get; set; } = string.Empty;
-        public string CreatedBy { get; set; }
+        public string? CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         public int AreaId { get; set; }
     }
     internal class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, Result<int>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public CreateCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+
+        public CreateCustomerCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
+
         }
 
         public async Task<Result<int>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)

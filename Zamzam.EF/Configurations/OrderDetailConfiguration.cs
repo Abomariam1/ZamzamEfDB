@@ -8,8 +8,6 @@ namespace Zamzam.EF.Configurations
     {
         public void Configure(EntityTypeBuilder<OrderDetail> builder)
         {
-            builder.UseTptMappingStrategy();
-
             builder.HasKey(x => x.Id);
             //builder.HasKey(x => new { x.OrderId, x.ItemId });
 

@@ -22,6 +22,10 @@ namespace Zamzam.WebApi.Controllers
         [HttpPost]
         public async Task<Result<int>> Create(EmployeeCreateCommand command)
         {
+            if (!ModelState.IsValid)
+            {
+                return await Result<int>.FailureAsync(0, "Not valid command");
+            }
             command.CreatedBy = HttpContext.User.Identity.Name;
             return await _mediator.Send(command);
         }
@@ -36,7 +40,7 @@ namespace Zamzam.WebApi.Controllers
             command.UpdatedBy = HttpContext.User.Identity.Name;
             return await _mediator.Send(command);
         }
-
+        [HttpDelete]
         public async Task<Result<int>> Delete(EmployeeDeleteCommand command)
         {
             if (!ModelState.IsValid)

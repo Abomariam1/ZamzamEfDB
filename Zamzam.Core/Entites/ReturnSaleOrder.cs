@@ -1,8 +1,6 @@
-﻿using Zamzam.Domain.Common;
-
-namespace Zamzam.Domain
+﻿namespace Zamzam.Domain
 {
-    public class ReturnSaleOrder : BaseAuditableEntity
+    public class ReturnSaleOrder : Order
     {
         public string ReasonForReturn { get; set; }
 

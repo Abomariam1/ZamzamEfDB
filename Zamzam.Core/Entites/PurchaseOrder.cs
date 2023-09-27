@@ -1,8 +1,6 @@
-﻿using Zamzam.Domain.Common;
-
-namespace Zamzam.Domain
+﻿namespace Zamzam.Domain
 {
-    public class PurchaseOrder : BaseAuditableEntity
+    public class PurchaseOrder : Order
     {
         public int SupplierId { get; set; }
         public virtual Supplier Supplier { get; set; }

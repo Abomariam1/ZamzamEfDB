@@ -9,24 +9,19 @@ namespace Zamzam.EF.Configurations
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
-            builder.UseTptMappingStrategy();
 
             builder.HasKey(x => x.Id);
-
-
-            builder.Property(x => x.OrderType)
-               .HasConversion(
-               x => x.ToString(),
-               x => (OrderType)Enum.Parse(typeof(OrderType), x)
-               )
-               .HasMaxLength(20);
-
+            builder.UseTptMappingStrategy();
             builder.Property(x => x.InvoiceType)
                 .HasConversion(
                 x => x.ToString(),
-                x => (InvoiceType)Enum.Parse(typeof(InvoiceType), x)
-                )
+                x => (InvoiceType)Enum.Parse(typeof(InvoiceType), x))
                 .HasMaxLength(10);
+            builder.Property(x => x.OrderType)
+                .HasConversion(
+                x => x.ToString(),
+                x => (OrderType)Enum.Parse(typeof(OrderType), x))
+                .HasMaxLength(20);
 
             builder.HasOne(o => o.Employee)
                 .WithMany(o => o.Orders)
@@ -38,18 +33,16 @@ namespace Zamzam.EF.Configurations
 
             builder.Property(t => t.TotalPrice)
                 .HasPrecision(9, 2);
+            builder.UseTptMappingStrategy();
+
+            builder.Property(t => t.TotalDiscount)
+                .HasPrecision(9, 2);
+            builder.UseTptMappingStrategy();
 
             builder.Property(s => s.NetPrice)
                 .HasPrecision(9, 2)
                 .HasComputedColumnSql("[TotalPrice] - [TotalDiscount]");
 
-            builder.Property(s => s.TotalDiscount)
-                .HasPrecision(9, 2);
-            builder.Property(s => s.Payed)
-                .HasPrecision(9, 2);
-
-            builder.Property(r => r.Remains)
-                .HasPrecision(9, 2);
         }
     }
 }

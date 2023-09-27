@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Zamzam.Application.Features.Customers.Commands.Create;
 using Zamzam.Application.Features.Customers.Commands.Delete;
@@ -8,7 +9,7 @@ using Zamzam.Shared;
 
 namespace Zamzam.API.Controllers
 {
-
+    [Authorize]
     public class CustomerController : ApiControllerBase
     {
         private readonly IMediator _mediator;
@@ -18,10 +19,11 @@ namespace Zamzam.API.Controllers
             _mediator = mediator;
         }
         [HttpGet]
-        public async Task<ActionResult<Result<List<GetAllCustmerDto>>>> Get() =>
+        public async Task<Result<List<GetAllCustmerDto>>> Get() =>
             await _mediator.Send(new GetAllCustomerQuery());
+
         [HttpPost]
-        public async Task<ActionResult<Result<int>>> Create(CreateCustomerCommand command)
+        public async Task<Result<int>> Create(CreateCustomerCommand command)
         {
             if (!ModelState.IsValid)
             {
@@ -32,18 +34,24 @@ namespace Zamzam.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<Result<int>>> Update(UpdateCustomerCommand command)
+        public async Task<Result<int>> Update(UpdateCustomerCommand command)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("The Model Is not Valid");
+                return Result<int>.Failure(0, "خطاء");
             }
             command.UpdatedBy = HttpContext.User.Identity.Name;
             return await _mediator.Send(command);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Result<int>>> Delete(int id, DeleteCustomerCommand command) =>
-            await _mediator.Send(command);
+        [HttpDelete]
+        public async Task<Result<int>> Delete(DeleteCustomerCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Result<int>.Failure(0, "خطاء");
+            }
+            return await _mediator.Send(command);
+        }
     }
 }

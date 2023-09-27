@@ -33,7 +33,7 @@ namespace Zamzam.API.Controllers
             return await _mediator.Send(command);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ActionResult<Result<int>>> Update(UpdateAreaCommand command)
         {
             if (!ModelState.IsValid)
@@ -44,7 +44,7 @@ namespace Zamzam.API.Controllers
             return await _mediator.Send(command);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<ActionResult<Result<int>>> Delete(int id)
         {
             if (!ModelState.IsValid)

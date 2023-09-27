@@ -12,6 +12,7 @@ namespace Zamzam.EF
 
             builder.Property(p => p.Value)
                 .HasPrecision(9, 2);
+
             builder.Property(d => d.PayedOn)
                 .HasDefaultValueSql("GETDATE()");
 

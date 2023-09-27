@@ -25,6 +25,7 @@ namespace Zamzam.EF.Repositories
 
         public async Task<T> UpdateAsync(T entity)
         {
+
             T exist = await _dbContext.Set<T>().FindAsync(entity.Id) ?? throw new ArgumentException();
 
             EntityEntry<T>? updated = _dbContext.Set<T>().Update(entity);
