@@ -16,7 +16,7 @@ namespace Zamzam.EF.Configurations
                 .HasConversion(
                 x => x.ToString(),
                 x => (InvoiceType)Enum.Parse(typeof(InvoiceType), x))
-                .HasMaxLength(10);
+                .HasMaxLength(20);
 
             builder.Property(x => x.OrderType)
                 .HasConversion(
@@ -24,9 +24,10 @@ namespace Zamzam.EF.Configurations
                 x => (OrderType)Enum.Parse(typeof(OrderType), x))
                 .HasMaxLength(20);
 
-            builder.HasOne(o => o.Employee)
-                .WithMany(o => o.Orders)
-                .HasForeignKey(o => o.EmployeeId);
+            builder.HasOne(x => x.Employee)
+                 .WithMany(c => c.Orders)
+                 .HasForeignKey(x => x.EmployeeId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(d => d.OrderDate)
                 .HasDefaultValueSql("GETDATE()");

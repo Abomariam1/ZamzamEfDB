@@ -12,7 +12,8 @@ namespace Zamzam.EF
 
             builder.HasOne(a => a.Area)
                 .WithMany(a => a.Customers)
-                .HasForeignKey(a => a.AreaId);
+                .HasForeignKey(a => a.AreaId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             //builder.Property(x => x.Id)
             //    .HasColumnType("uniqueidentifier");

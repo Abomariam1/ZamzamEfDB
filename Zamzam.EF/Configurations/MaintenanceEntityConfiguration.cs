@@ -9,10 +9,6 @@ namespace Zamzam.EF
         public void Configure(EntityTypeBuilder<Maintenance> builder)
         {
 
-
-            builder.HasOne(s => s.SaleOrder)
-                .WithMany(x => x.Maintenances)
-                .HasForeignKey(x => x.SaleOrderId);
         }
     }
 }

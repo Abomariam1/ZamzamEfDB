@@ -9,14 +9,17 @@ namespace Zamzam.EF.Configurations
         public void Configure(EntityTypeBuilder<InstallmentedSaleOrder> builder)
         {
 
-            builder.HasOne(x => x.Customer)
-                .WithMany(x => x.InstallmentedSaleOrders)
-                .HasForeignKey(x => x.CustomerId);
+            builder.HasBaseType<Order>();
 
-            builder.Property(r => r.InstallmentValue)
+            builder.HasOne(c => c.Customer)
+                .WithMany(c => c.InstallmentedSaleOrders)
+                .HasForeignKey(c => c.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(i => i.InstallmentValue)
                 .HasPrecision(9, 2);
 
-            builder.Property(r => r.Payed)
+            builder.Property(p => p.Payed)
                 .HasPrecision(9, 2);
             builder.Property(r => r.Remains)
                 .HasPrecision(9, 2);

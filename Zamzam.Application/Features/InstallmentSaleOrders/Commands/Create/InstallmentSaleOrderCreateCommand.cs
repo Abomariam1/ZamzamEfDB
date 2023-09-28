@@ -78,6 +78,15 @@ namespace Zamzam.Application.Features.InstallmentSaleOrders.Commands.Create
                 var ordt = new List<OrderDetail>();
                 foreach (var item in request.OrderDetails)
                 {
+                    Item? itm = await _unitOfWork.Repository<Item>().GetByIdAsync(item.ItemId);
+                    if (itm != null)
+                    {
+                        if (itm.Balance < item.Quantity || itm.Balance == 0)
+                            return Result<int>.Failure(itm.Balance, "لا توجد كمية كافية في المخزن");
+                        itm.Balance -= item.Quantity;
+                    }
+                    else
+                        return Result<int>.Failure("لم يتم العثور على الصنف");
                     ordt.Add(new()
                     {
                         OrderId = instlmentSaleOrder.Id,
@@ -87,10 +96,11 @@ namespace Zamzam.Application.Features.InstallmentSaleOrders.Commands.Create
                         Discount = item.Discount,
                         CreatedBy = item.CreatedBy,
                     });
+                    await _unitOfWork.Repository<Item>().UpdateAsync(itm);
                 }
                 instlmentSaleOrder.OrderDetails = ordt;
-                Order? addedOrder = await _unitOfWork.Repository<Order>().AddAsync(instlmentSaleOrder);
-                cust.AddDomainEvent(new InstalmentOrderCreatedEvent(instlmentSaleOrder));
+                var addedOrder = await _unitOfWork.Repository<Order>().AddAsync(instlmentSaleOrder);
+                instlmentSaleOrder.AddDomainEvent(new InstalmentOrderCreatedEvent(instlmentSaleOrder));
                 await _unitOfWork.Save(cancellationToken);
             }
             catch (Exception e)

@@ -459,56 +459,6 @@ namespace Zamzam.EF.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("Zamzam.Domain.Entites.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
-                });
-
             modelBuilder.Entity("Zamzam.Domain.Installment", b =>
                 {
                     b.Property<int>("Id")
@@ -557,8 +507,6 @@ namespace Zamzam.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Installments");
                 });
@@ -641,8 +589,8 @@ namespace Zamzam.EF.Migrations
 
                     b.Property<string>("InvoiceType")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -841,7 +789,7 @@ namespace Zamzam.EF.Migrations
                     b.Property<DateTime>("NextMaintenanceDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SaleOrderId")
+                    b.Property<int?>("SaleOrderId")
                         .HasColumnType("int");
 
                     b.HasIndex("SaleOrderId");
@@ -939,7 +887,7 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Employee", "Employee")
                         .WithMany("Areas")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -950,7 +898,7 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Area", "Area")
                         .WithMany("Customers")
                         .HasForeignKey("AreaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Area");
@@ -961,7 +909,7 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Department", "Department")
                         .WithMany("Employees")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Department");
@@ -975,15 +923,7 @@ namespace Zamzam.EF.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Zamzam.Domain.InstallmentedSaleOrder", "InstallmentedSale")
-                        .WithMany("Installments")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Employee");
-
-                    b.Navigation("InstallmentedSale");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.Order", b =>
@@ -991,7 +931,7 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Employee", "Employee")
                         .WithMany("Orders")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -1002,13 +942,13 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Item", "Item")
                         .WithMany("OrderDetails")
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Zamzam.Domain.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Item");
@@ -1019,9 +959,9 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Domain.Entites.SaleOrder", b =>
                 {
                     b.HasOne("Zamzam.Domain.Customer", "Customer")
-                        .WithMany("Orders")
+                        .WithMany("SaleOrders")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Zamzam.Domain.Order", null)
@@ -1038,7 +978,7 @@ namespace Zamzam.EF.Migrations
                     b.HasOne("Zamzam.Domain.Customer", "Customer")
                         .WithMany("InstallmentedSaleOrders")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Zamzam.Domain.Order", null)
@@ -1058,13 +998,9 @@ namespace Zamzam.EF.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Zamzam.Domain.Entites.SaleOrder", "SaleOrder")
+                    b.HasOne("Zamzam.Domain.Entites.SaleOrder", null)
                         .WithMany("Maintenances")
-                        .HasForeignKey("SaleOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SaleOrder");
+                        .HasForeignKey("SaleOrderId");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.PurchaseOrder", b =>
@@ -1111,7 +1047,7 @@ namespace Zamzam.EF.Migrations
                 {
                     b.Navigation("InstallmentedSaleOrders");
 
-                    b.Navigation("Orders");
+                    b.Navigation("SaleOrders");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.Department", b =>
@@ -1141,11 +1077,6 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Domain.Entites.SaleOrder", b =>
                 {
                     b.Navigation("Maintenances");
-                });
-
-            modelBuilder.Entity("Zamzam.Domain.InstallmentedSaleOrder", b =>
-                {
-                    b.Navigation("Installments");
                 });
 #pragma warning restore 612, 618
         }
