@@ -9,5 +9,6 @@
         public decimal Discount { get; set; }
         public decimal TotalPrice { get; set; }
         public string? CreatedBy { get; set; }
+        public string? UpdateddBy { get; set; }
     }
 }

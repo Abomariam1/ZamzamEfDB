@@ -1,4 +1,5 @@
-﻿using Zamzam.Domain.Common.Interfaces;
+﻿using System.Linq.Expressions;
+using Zamzam.Domain.Common.Interfaces;
 
 namespace Zamzam.Application.Interfaces.Repositories
 {
@@ -7,7 +8,7 @@ namespace Zamzam.Application.Interfaces.Repositories
         IQueryable<T> Entities { get; }
         Task<List<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
-        Task<T> GetByNameAsync(string name);
+        Task<T> GetByNameAsync(Expression<Func<T, bool>> criteria);
         Task<T> AddAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task<T> DeleteAsync(int id);

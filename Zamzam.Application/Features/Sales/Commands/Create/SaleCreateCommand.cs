@@ -43,7 +43,7 @@ namespace Zamzam.Application.Features.Sales.Commands.Create
                 {
                     var newCust = new Customer()
                     {
-                        Name = request.CustomerName,
+                        Name = request.CustomerName!,
                         Phone = request.Phone,
                         Address = request.Address,
                         NationalCardId = request.NationalCardId,
@@ -81,7 +81,9 @@ namespace Zamzam.Application.Features.Sales.Commands.Create
                 }
                 saleOrder.OrderDetails = ordt;
                 //var saved = await _unitOfWork.Repository<OrderDetail>().AddAsync(detail);
-                Order? addedOrder = await _unitOfWork.Repository<Order>().AddAsync(saleOrder);
+                // Order? addedOrder = await _unitOfWork.Repository<Order>().AddAsync(saleOrder);
+                Order? addedOrder = await _unitOfWork.SaleOrderRepository().AddAsync(saleOrder);
+
                 cust.AddDomainEvent(new SaleCreatedEvent(saleOrder));
                 await _unitOfWork.Save(cancellationToken);
             }

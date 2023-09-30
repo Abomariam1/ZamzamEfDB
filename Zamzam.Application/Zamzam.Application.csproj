@@ -48,7 +48,6 @@
     <Folder Include="Features\ReturnPurchases\Commands\Update\" />
     <Folder Include="Features\ReturnPurchases\Queries\" />
     <Folder Include="Features\Sales\Commands\Delete\" />
-    <Folder Include="Features\Sales\Commands\Update\" />
     <Folder Include="Features\Sales\Queries\" />
   </ItemGroup>
 

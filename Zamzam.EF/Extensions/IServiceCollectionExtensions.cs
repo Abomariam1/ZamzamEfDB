@@ -33,7 +33,8 @@ namespace Zamzam.EF.Extensions
         {
             services
                 .AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork))
-                .AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+                .AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>))
+                .AddTransient<ISaleOrderRepository, SaleOrderRepository>();
         }
         private static void AddIdentity(this IServiceCollection services)
         {

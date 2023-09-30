@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.Domain.Common;
+using Zamzam.Domain.Entites;
 
 namespace Zamzam.EF.Repositories
 {
@@ -29,7 +30,7 @@ namespace Zamzam.EF.Repositories
 
                 _repositories.Add(type, repositoryInstance);
             }
-
+            IGenericRepository<T>? repository = (IGenericRepository<T>)_repositories[type];
             return (IGenericRepository<T>)_repositories[type];
         }
         public void Dispose()
@@ -67,6 +68,25 @@ namespace Zamzam.EF.Repositories
         public Task<int> SaveAndRemoveCache(CancellationToken cancellationToken, params string[] cacheKeys)
         {
             throw new NotImplementedException();
+        }
+
+        public ISaleOrderRepository? SaleOrderRepository()
+        {
+            _repositories ??= new Hashtable();
+
+            var type = typeof(SaleOrder).Name;
+
+            if (!_repositories.ContainsKey(type))
+            {
+                var repositoryType = typeof(SaleOrderRepository);
+
+                var repositoryInstance = Activator.CreateInstance(repositoryType, _dbContext);
+
+                _repositories.Add(type, repositoryInstance);
+            }
+            //IGenericRepository<T>? repository = (IGenericRepository<T>)_repositories[type];
+            return _repositories[type] as ISaleOrderRepository;
+
         }
     }
 }
