@@ -24,7 +24,6 @@
   <ItemGroup>
     <Folder Include="Features\Employees\Queries\" />
     <Folder Include="Features\InstallmentSaleOrders\Commands\Delete\" />
-    <Folder Include="Features\InstallmentSaleOrders\Commands\Update\" />
     <Folder Include="Features\InstallmentSaleOrders\Queries\" />
     <Folder Include="Features\Items\Queries\" />
     <Folder Include="Features\LogIn\Queries\" />
@@ -47,7 +46,6 @@
     <Folder Include="Features\ReturnPurchases\Commands\Delete\" />
     <Folder Include="Features\ReturnPurchases\Commands\Update\" />
     <Folder Include="Features\ReturnPurchases\Queries\" />
-    <Folder Include="Features\Sales\Commands\Delete\" />
     <Folder Include="Features\Sales\Queries\" />
   </ItemGroup>
 

@@ -36,7 +36,7 @@ namespace Zamzam.WebApi.Controllers
         }
 
         [HttpPost("CashUpdate")]
-        public async Task<Result<int>> CashUpdate(SaleOrederUpdateCommand command)
+        public async Task<Result<int>> CashUpdate(SaleOrderUpdateCommand command)
         {
             if (!ModelState.IsValid)
                 return await Result<int>.FailureAsync(0, "يجب ادخال الحقول كاملة");

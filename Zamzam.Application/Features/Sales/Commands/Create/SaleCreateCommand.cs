@@ -53,7 +53,7 @@ namespace Zamzam.Application.Features.Sales.Commands.Create
                     cust = await _unitOfWork.Repository<Customer>().AddAsync(newCust);
                     cust.AddDomainEvent(new CreatedCustomerEvent(cust));
                 }
-                Employee? emp = await _unitOfWork.Repository<Employee>().GetByIdAsync(request.EmployeeId);
+                //Employee? emp = await _unitOfWork.Repository<Employee>().GetByIdAsync(request.EmployeeId);
                 SaleOrder saleOrder = new()
                 {
                     OrderDate = request.OrderDate,
@@ -61,30 +61,31 @@ namespace Zamzam.Application.Features.Sales.Commands.Create
                     TotalDiscount = request.TotalDiscount,
                     OrderType = OrderType.Sell,
                     InvoiceType = InvoiceType.Cash,
-                    Employee = emp,
+                    EmployeeId = request.EmployeeId,
                     Customer = cust,
                     CreatedBy = request.CreatedBy,
                 };
 
                 var ordt = new List<OrderDetail>();
-                foreach (var item in request.OrderDetails)
+                foreach (ODetails orderDetails in request.OrderDetails)
                 {
+                    Item? item = await _unitOfWork.Repository<Item>().GetByIdAsync(orderDetails.ItemId);
                     ordt.Add(new()
                     {
                         Order = saleOrder,
-                        ItemId = item.ItemId,
-                        Quantity = item.Quantity,
-                        Price = item.Price,
-                        Discount = item.Discount,
-                        CreatedBy = item.CreatedBy,
+                        Item = item,
+                        Quantity = orderDetails.Quantity,
+                        Price = orderDetails.Price,
+                        Discount = orderDetails.Discount,
+                        CreatedBy = orderDetails.CreatedBy,
                     });
+                    item.Balance -= orderDetails.Quantity;
                 }
                 saleOrder.OrderDetails = ordt;
                 //var saved = await _unitOfWork.Repository<OrderDetail>().AddAsync(detail);
                 // Order? addedOrder = await _unitOfWork.Repository<Order>().AddAsync(saleOrder);
                 Order? addedOrder = await _unitOfWork.SaleOrderRepository().AddAsync(saleOrder);
-
-                cust.AddDomainEvent(new SaleCreatedEvent(saleOrder));
+                saleOrder.AddDomainEvent(new SaleCreatedEvent(saleOrder));
                 await _unitOfWork.Save(cancellationToken);
             }
             catch (Exception e)
