@@ -53,8 +53,8 @@ namespace Zamzam.Application.Features.Employees.Commands.Create
                 HireDate = request.HireDate,
                 BirthDate = request.BirthDate,
                 Salary = request.Salary,
-                Qualification = request.Qualification,
-                Photo = Convert.FromBase64String(request.Photo),
+                Qualification = request.Qualification!,
+                Photo = Convert.FromBase64String(request.Photo!),
                 DepartmentId = request.DepartmentId,
                 CreatedBy = request.CreatedBy,
                 CreatedDate = DateTime.Now

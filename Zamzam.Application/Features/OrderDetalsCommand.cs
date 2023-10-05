@@ -5,16 +5,34 @@ using Zamzam.Domain.Types;
 
 namespace Zamzam.Application.Features
 {
-    public class OrderDetalsUpdate
+    public class OrderDetalsCommand
     {
         private readonly List<OrderDetail> _requestedOrderDetail;
         private readonly IUnitOfWork _unitOfWork;
-        public OrderDetalsUpdate(List<OrderDetail> requestedOrderDetail, IUnitOfWork unitOfWork)
+        public OrderDetalsCommand(List<OrderDetail> requestedOrderDetail, IUnitOfWork unitOfWork)
         {
             _requestedOrderDetail = requestedOrderDetail;
             _unitOfWork = unitOfWork;
         }
-        public async Task GetUpdatedOrderDetails()
+        public async Task<List<OrderDetail>> Add()
+        {
+            foreach (var order in _requestedOrderDetail)
+            {
+                Item? item = await _unitOfWork.Repository<Item>().GetByIdAsync(order.ItemId);
+                if (item != null)
+                {
+                    if (item.Balance < order.Quantity || item.Balance == 0)
+                        throw new ItemBalanceException($"لا توجد كمية كافية للصنف {item.Name} في المخزن");
+                    item.Balance -= order.Quantity;
+                }
+                else
+                    throw new ItemBalanceException($"الصنف {item!.Name} غير متوفر");
+
+                await _unitOfWork.Repository<Item>().UpdateAsync(item);
+            }
+            return _requestedOrderDetail;
+        }
+        public async Task Update()
         {
             // Get Database Requested OrderDetails
             List<OrderDetail>? dbOrderDetails = _unitOfWork.Repository<OrderDetail>().Entities.Include("Order")
@@ -99,5 +117,24 @@ namespace Zamzam.Application.Features
                 item.Balance = itm.Value;
             }
         }
+
+        public async Task<List<OrderDetail>> Delete()
+        {
+
+            foreach (var order in _requestedOrderDetail)
+            {
+                Item? item = await _unitOfWork.Repository<Item>().GetByIdAsync(order.ItemId);
+                if (item != null)
+                {
+                    item.Balance += order.Quantity;
+                }
+                else
+                    throw new ItemBalanceException($"الصنف {item!.Name} غير متوفر");
+
+                await _unitOfWork.Repository<Item>().UpdateAsync(item);
+            }
+            return _requestedOrderDetail;
+        }
+
     }
 }

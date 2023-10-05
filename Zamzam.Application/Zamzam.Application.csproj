@@ -23,7 +23,8 @@
 
   <ItemGroup>
     <Folder Include="Features\Employees\Queries\" />
-    <Folder Include="Features\InstallmentSaleOrders\Commands\Delete\" />
+    <Folder Include="Features\InstallmentPayment\Commands\Delete\" />
+    <Folder Include="Features\InstallmentPayment\Queries\" />
     <Folder Include="Features\InstallmentSaleOrders\Queries\" />
     <Folder Include="Features\Items\Queries\" />
     <Folder Include="Features\LogIn\Queries\" />

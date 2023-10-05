@@ -42,9 +42,9 @@ namespace Zamzam.API.Controllers
         }
         //[Authorize]
         [HttpGet("getuser")]
-        public async Task<IActionResult> GetUser()
+        public IActionResult GetUser()
         {
-            string? context = HttpContext.User.Identity.Name;
+            string? context = HttpContext.User.Identity!.Name;
             if (string.IsNullOrEmpty(context))
             {
                 context = "NotFound";

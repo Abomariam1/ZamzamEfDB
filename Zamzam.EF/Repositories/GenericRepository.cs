@@ -36,7 +36,7 @@ namespace Zamzam.EF.Repositories
 
         public async Task<T> DeleteAsync(int id)
         {
-            T exist = await _dbContext.Set<T>().FindAsync(id);
+            T? exist = await _dbContext.Set<T>().FindAsync(id);
             exist.IsDeleted = true;
             EntityEntry<T>? updated = _dbContext.Set<T>().Update(exist);
             return updated.Entity;

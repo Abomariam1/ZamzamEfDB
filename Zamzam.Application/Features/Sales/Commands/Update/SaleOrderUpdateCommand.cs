@@ -51,8 +51,8 @@ namespace Zamzam.Application.Features.Sales.Commands.Update
                 };
                 rqOrderDetails.Add(detail);
             }
-            OrderDetalsUpdate? orderDetail = new(rqOrderDetails, _unitOfWork);
-            await orderDetail.GetUpdatedOrderDetails();
+            OrderDetalsCommand? orderDetail = new(rqOrderDetails, _unitOfWork);
+            await orderDetail.Update();
 
             DBOrder.OrderDate = request.OrderDate;
             DBOrder.TotalPrice = request.TotalPrice;

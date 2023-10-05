@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Zamzam.Application.DTOs;
+using Zamzam.Application.Features.InstallmentSaleOrders.Commands.Create;
 using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.Domain;
 using Zamzam.Shared;
@@ -38,9 +39,37 @@ namespace Zamzam.Application.Features.InstallmentSaleOrders.Commands.Update
             InstallmentedSaleOrder? dbOrder = await _unitOfWork.Repository<InstallmentedSaleOrder>().GetByIdAsync(request.OrderId);
             if (dbOrder == null)
                 return await Result<int>.FailureAsync(0, "لم يتم ايجاد الفاتورة");
+            dbOrder.CustomerId = request.CustomerId;
+            dbOrder.OrderDate = request.OrderDate;
+            dbOrder.TotalPrice = request.TotalPrice;
+            dbOrder.TotalDiscount = request.TotalDiscount;
+            dbOrder.Payed = request.Payed;
+            dbOrder.Remains = request.Remain;
+            dbOrder.InstallmentValue = request.InstallmentValue;
+            dbOrder.InstallmentPeriodInMonths = request.InstallmentPeriodInMonths;
+            dbOrder.EmployeeId = request.EmployeeId;
+            dbOrder.UpdatedBy = request.UpdatedBy;
+            dbOrder.UpdatedDate = DateTime.Now.ToLocalTime();
 
-
-            return await Result<int>.SuccessAsync(request.CustomerId);
+            List<OrderDetail> orderDetails = new();
+            foreach (var detail in request.OrderDetails!)
+            {
+                OrderDetail orderDetail = new()
+                {
+                    OrderId = (int)detail.OrderId!,
+                    ItemId = detail.ItemId,
+                    Quantity = detail.Quantity,
+                    Price = detail.Price,
+                    CreatedBy = detail.CreatedBy,
+                };
+                orderDetails.Add(orderDetail);
+            }
+            OrderDetalsCommand? Detail = new(orderDetails, _unitOfWork);
+            dbOrder.OrderDetails = await Detail.Add();
+            Order? addedOrder = await _unitOfWork.Repository<Order>().AddAsync(dbOrder);
+            addedOrder.AddDomainEvent(new InstalmentOrderCreatedEvent(dbOrder));
+            await _unitOfWork.Save(cancellationToken);
+            return await Result<int>.SuccessAsync(addedOrder.Id, $"تم اضافة الفاتورة");
         }
     }
 }

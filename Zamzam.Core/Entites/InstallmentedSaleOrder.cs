@@ -8,6 +8,6 @@
         public int InstallmentPeriodInMonths { get; set; }
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
-
+        public virtual ICollection<Installment> Installments { get; set; }
     }
 }

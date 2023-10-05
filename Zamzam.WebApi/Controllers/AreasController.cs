@@ -51,7 +51,7 @@ namespace Zamzam.API.Controllers
             {
                 return await Result<int>.FailureAsync(0, "Not valid command");
             }
-            return await _mediator.Send(new DeleteAreaCommand(id));
+            return await _mediator.Send(new AreaDeleteCommand(id));
         }
     }
 }

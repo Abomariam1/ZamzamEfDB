@@ -75,30 +75,22 @@ namespace Zamzam.Application.Features.InstallmentSaleOrders.Commands.Create
                     CreatedBy = request.CreatedBy,
                 };
 
-                var ordt = new List<OrderDetail>();
-                foreach (var item in request.OrderDetails)
+                List<OrderDetail>? ordt = new();
+                foreach (var order in request.OrderDetails!)
                 {
-                    Item? itm = await _unitOfWork.Repository<Item>().GetByIdAsync(item.ItemId);
-                    if (itm != null)
+                    OrderDetail detail = new()
                     {
-                        if (itm.Balance < item.Quantity || itm.Balance == 0)
-                            return Result<int>.Failure(itm.Balance, "لا توجد كمية كافية في المخزن");
-                        itm.Balance -= item.Quantity;
-                    }
-                    else
-                        return Result<int>.Failure("لم يتم العثور على الصنف");
-                    ordt.Add(new()
-                    {
-                        OrderId = instlmentSaleOrder.Id,
-                        ItemId = item.ItemId,
-                        Quantity = item.Quantity,
-                        Price = item.Price,
-                        Discount = item.Discount,
-                        CreatedBy = item.CreatedBy,
-                    });
-                    await _unitOfWork.Repository<Item>().UpdateAsync(itm);
+                        OrderId = (int)order.OrderId!,
+                        ItemId = order.ItemId,
+                        Quantity = order.Quantity,
+                        Price = order.Price,
+                        CreatedBy = order.CreatedBy,
+                    };
+                    ordt.Add(detail);
                 }
-                instlmentSaleOrder.OrderDetails = ordt;
+
+                OrderDetalsCommand? orderDetails = new(ordt, _unitOfWork);
+                instlmentSaleOrder.OrderDetails = await orderDetails.Add();
                 var addedOrder = await _unitOfWork.Repository<Order>().AddAsync(instlmentSaleOrder);
                 instlmentSaleOrder.AddDomainEvent(new InstalmentOrderCreatedEvent(instlmentSaleOrder));
                 await _unitOfWork.Save(cancellationToken);
