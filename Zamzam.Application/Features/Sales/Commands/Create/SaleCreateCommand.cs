@@ -54,6 +54,20 @@ namespace Zamzam.Application.Features.Sales.Commands.Create
                     cust.AddDomainEvent(new CreatedCustomerEvent(cust));
                 }
                 //Employee? emp = await _unitOfWork.Repository<Employee>().GetByIdAsync(request.EmployeeId);
+                var ordt = new List<OrderDetail>();
+                foreach (ODetails orderDetails in request.OrderDetails)
+                {
+                    Item? item = await _unitOfWork.Repository<Item>().GetByIdAsync(orderDetails.ItemId);
+                    ordt.Add(new()
+                    {
+                        Item = item,
+                        Quantity = orderDetails.Quantity,
+                        Price = orderDetails.Price,
+                        Discount = orderDetails.Discount,
+                        CreatedBy = orderDetails.CreatedBy,
+                    });
+                    item.Balance -= orderDetails.Quantity;
+                }
                 SaleOrder saleOrder = new()
                 {
                     OrderDate = request.OrderDate,
@@ -63,27 +77,11 @@ namespace Zamzam.Application.Features.Sales.Commands.Create
                     InvoiceType = InvoiceType.Cash,
                     EmployeeId = request.EmployeeId,
                     Customer = cust,
+                    OrderDetails = ordt,
                     CreatedBy = request.CreatedBy,
                 };
 
-                var ordt = new List<OrderDetail>();
-                foreach (ODetails orderDetails in request.OrderDetails)
-                {
-                    Item? item = await _unitOfWork.Repository<Item>().GetByIdAsync(orderDetails.ItemId);
-                    ordt.Add(new()
-                    {
-                        Order = saleOrder,
-                        Item = item,
-                        Quantity = orderDetails.Quantity,
-                        Price = orderDetails.Price,
-                        Discount = orderDetails.Discount,
-                        CreatedBy = orderDetails.CreatedBy,
-                    });
-                    item.Balance -= orderDetails.Quantity;
-                }
                 saleOrder.OrderDetails = ordt;
-                //var saved = await _unitOfWork.Repository<OrderDetail>().AddAsync(detail);
-                // Order? addedOrder = await _unitOfWork.Repository<Order>().AddAsync(saleOrder);
                 Order? addedOrder = await _unitOfWork.SaleOrderRepository().AddAsync(saleOrder);
                 saleOrder.AddDomainEvent(new SaleCreatedEvent(saleOrder));
                 await _unitOfWork.Save(cancellationToken);
@@ -94,7 +92,7 @@ namespace Zamzam.Application.Features.Sales.Commands.Create
             }
 
 
-            return await Result<int>.SuccessAsync();
+            return await Result<int>.SuccessAsync(0, "تم انشاء الفاتورة ....");
         }
     }
 }

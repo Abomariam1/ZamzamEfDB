@@ -34,7 +34,7 @@ namespace Zamzam.Application.Features.InstallmentSaleOrders.Commands.Delete
         public async Task<Result<int>> Handle(InstallmentSaleOrderDeleteCommand request, CancellationToken cancellationToken)
         {
             InstallmentedSaleOrder? installOrder = await _unitOfWork.Repository<InstallmentedSaleOrder>()
-                .Entities.Include("OrderDetails").FirstOrDefaultAsync(x => x.Id == request.Id);
+                .Entities.Include("OrderDetails").FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
             if (installOrder == null)
                 return await Result<int>.FailureAsync(0, "لم يتم العثور على الفاتورة");
 

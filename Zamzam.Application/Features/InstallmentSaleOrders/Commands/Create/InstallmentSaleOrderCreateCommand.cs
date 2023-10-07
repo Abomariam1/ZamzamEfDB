@@ -59,21 +59,6 @@ namespace Zamzam.Application.Features.InstallmentSaleOrders.Commands.Create
                     cust.AddDomainEvent(new CreatedCustomerEvent(cust));
                 }
                 Employee? emp = await _unitOfWork.Repository<Employee>().GetByIdAsync(request.EmployeeId);
-                InstallmentedSaleOrder instlmentSaleOrder = new()
-                {
-                    OrderDate = request.OrderDate,
-                    TotalPrice = request.TotalPrice,
-                    TotalDiscount = request.TotalDiscount,
-                    OrderType = OrderType.Sell,
-                    InvoiceType = InvoiceType.Installment,
-                    EmployeeId = emp.Id,
-                    Payed = request.Payed,
-                    Remains = request.Remain,
-                    InstallmentValue = request.InstallmentValue,
-                    InstallmentPeriodInMonths = request.InstallmentPeriodInMonths,
-                    CustomerId = cust.Id,
-                    CreatedBy = request.CreatedBy,
-                };
 
                 List<OrderDetail>? ordt = new();
                 foreach (var order in request.OrderDetails!)
@@ -88,9 +73,26 @@ namespace Zamzam.Application.Features.InstallmentSaleOrders.Commands.Create
                     };
                     ordt.Add(detail);
                 }
+                InstallmentedSaleOrder instlmentSaleOrder = new()
+                {
+                    OrderDate = request.OrderDate,
+                    TotalPrice = request.TotalPrice,
+                    TotalDiscount = request.TotalDiscount,
+                    OrderType = OrderType.Sell,
+                    InvoiceType = InvoiceType.Installment,
+                    EmployeeId = emp.Id,
+                    Payed = request.Payed,
+                    Remains = request.Remain,
+                    InstallmentValue = request.InstallmentValue,
+                    InstallmentPeriodInMonths = request.InstallmentPeriodInMonths,
+                    OrderDetails = ordt,
+                    CustomerId = cust.Id,
+                    CreatedBy = request.CreatedBy,
+                };
+
 
                 OrderDetalsCommand? orderDetails = new(ordt, _unitOfWork);
-                instlmentSaleOrder.OrderDetails = await orderDetails.Add();
+                instlmentSaleOrder.OrderDetails = await orderDetails.AddSell();
                 var addedOrder = await _unitOfWork.Repository<Order>().AddAsync(instlmentSaleOrder);
                 instlmentSaleOrder.AddDomainEvent(new InstalmentOrderCreatedEvent(instlmentSaleOrder));
                 await _unitOfWork.Save(cancellationToken);

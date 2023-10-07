@@ -5,7 +5,7 @@ using Zamzam.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// AddSell services to the container.
 
 builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructureLayer();

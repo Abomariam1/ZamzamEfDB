@@ -47,12 +47,13 @@ namespace Zamzam.Application.Features.Sales.Commands.Update
                     Price = rq.Price,
                     Quantity = rq.Quantity,
                     Discount = rq.Discount,
-                    TotalPrice = rq.TotalPrice,
+                    CreatedBy = rq.CreatedBy,
                 };
                 rqOrderDetails.Add(detail);
             }
+
             OrderDetalsCommand? orderDetail = new(rqOrderDetails, _unitOfWork);
-            await orderDetail.Update();
+            await orderDetail.UpdateSell();
 
             DBOrder.OrderDate = request.OrderDate;
             DBOrder.TotalPrice = request.TotalPrice;

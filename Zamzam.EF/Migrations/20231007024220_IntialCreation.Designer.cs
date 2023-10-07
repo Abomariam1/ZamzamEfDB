@@ -12,8 +12,8 @@ using Zamzam.EF;
 namespace Zamzam.EF.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231005055728_AddInstallments")]
-    partial class AddInstallments
+    [Migration("20231007024220_IntialCreation")]
+    partial class IntialCreation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -579,6 +579,51 @@ namespace Zamzam.EF.Migrations
                     b.ToTable("Items");
                 });
 
+            modelBuilder.Entity("Zamzam.Domain.Maintenance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("BlockDateToChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CalsetDateToChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CarbonDateToChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("InfraDateToChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsMaintained")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("MimpreenDateToChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PostDateToChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PrimitiveDateToChange")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Maintenances");
+                });
+
             modelBuilder.Entity("Zamzam.Domain.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -786,27 +831,6 @@ namespace Zamzam.EF.Migrations
                     b.ToTable("InstallmentSaleOrders");
                 });
 
-            modelBuilder.Entity("Zamzam.Domain.Maintenance", b =>
-                {
-                    b.HasBaseType("Zamzam.Domain.Order");
-
-                    b.Property<bool>("IsMaintained")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastMaintenanceDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("NextMaintenanceDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("SaleOrderId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("SaleOrderId");
-
-                    b.ToTable("Maintenances");
-                });
-
             modelBuilder.Entity("Zamzam.Domain.PurchaseOrder", b =>
                 {
                     b.HasBaseType("Zamzam.Domain.Order");
@@ -952,6 +976,17 @@ namespace Zamzam.EF.Migrations
                     b.Navigation("InstallmentedSaleOrder");
                 });
 
+            modelBuilder.Entity("Zamzam.Domain.Maintenance", b =>
+                {
+                    b.HasOne("Zamzam.Domain.Order", "Order")
+                        .WithMany("Maintenances")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("Zamzam.Domain.Order", b =>
                 {
                     b.HasOne("Zamzam.Domain.Employee", "Employee")
@@ -1014,19 +1049,6 @@ namespace Zamzam.EF.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("Zamzam.Domain.Maintenance", b =>
-                {
-                    b.HasOne("Zamzam.Domain.Order", null)
-                        .WithOne()
-                        .HasForeignKey("Zamzam.Domain.Maintenance", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Zamzam.Domain.Entites.SaleOrder", null)
-                        .WithMany("Maintenances")
-                        .HasForeignKey("SaleOrderId");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.PurchaseOrder", b =>
@@ -1099,12 +1121,9 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Domain.Order", b =>
                 {
-                    b.Navigation("OrderDetails");
-                });
-
-            modelBuilder.Entity("Zamzam.Domain.Entites.SaleOrder", b =>
-                {
                     b.Navigation("Maintenances");
+
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.InstallmentedSaleOrder", b =>

@@ -55,8 +55,8 @@ namespace Zamzam.WebApi.Controllers
             {
                 return await Result<int>.FailureAsync(0, "Not valid command");
             }
-            command.CreatedBy = HttpContext.User.Identity.Name;
-            foreach (var o in command.OrderDetails)
+            command.CreatedBy = HttpContext.User.Identity!.Name;
+            foreach (var o in command.OrderDetails!)
             {
                 o.CreatedBy = HttpContext.User.Identity.Name;
             }

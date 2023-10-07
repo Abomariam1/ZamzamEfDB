@@ -15,7 +15,7 @@ namespace Zamzam.Domain
         public InvoiceType InvoiceType { get; set; }
         public int EmployeeId { get; set; }
         public virtual Employee Employee { get; set; }
-        public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
-
+        public required virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<Maintenance>? Maintenances { get; set; }
     }
 }

@@ -65,7 +65,7 @@ namespace Zamzam.Application.Features.InstallmentSaleOrders.Commands.Update
                 orderDetails.Add(orderDetail);
             }
             OrderDetalsCommand? Detail = new(orderDetails, _unitOfWork);
-            dbOrder.OrderDetails = await Detail.Add();
+            dbOrder.OrderDetails = await Detail.AddSell();
             Order? addedOrder = await _unitOfWork.Repository<Order>().AddAsync(dbOrder);
             addedOrder.AddDomainEvent(new InstalmentOrderCreatedEvent(dbOrder));
             await _unitOfWork.Save(cancellationToken);

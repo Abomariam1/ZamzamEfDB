@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Zamzam.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreation : Migration
+    public partial class IntialCreation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -282,34 +282,6 @@ namespace Zamzam.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Installments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    PayedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    Value = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Installments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Installments_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -320,7 +292,7 @@ namespace Zamzam.EF.Migrations
                     TotalDiscount = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
                     NetPrice = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false, computedColumnSql: "[TotalPrice] - [TotalDiscount]"),
                     OrderType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    InvoiceType = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    InvoiceType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -368,6 +340,34 @@ namespace Zamzam.EF.Migrations
                         principalTable: "Areas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Maintenances",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PrimitiveDateToChange = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CarbonDateToChange = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BlockDateToChange = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PostDateToChange = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CalsetDateToChange = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    InfraDateToChange = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MimpreenDateToChange = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsMaintained = table.Column<bool>(type: "bit", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Maintenances", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Maintenances_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -518,29 +518,44 @@ namespace Zamzam.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Maintenances",
+                name: "Installments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    NextMaintenanceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastMaintenanceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsMaintained = table.Column<bool>(type: "bit", nullable: false),
-                    SaleOrderId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    PayedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    Value = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Maintenances", x => x.Id);
+                    table.PrimaryKey("PK_Installments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Maintenances_Orders_Id",
-                        column: x => x.Id,
-                        principalTable: "Orders",
+                        name: "FK_Installments_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Installments_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Maintenances_SaleOrders_SaleOrderId",
-                        column: x => x.SaleOrderId,
-                        principalTable: "SaleOrders",
-                        principalColumn: "Id");
+                        name: "FK_Installments_InstallmentSaleOrders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "InstallmentSaleOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -598,9 +613,19 @@ namespace Zamzam.EF.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Installments_CustomerId",
+                table: "Installments",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Installments_EmployeeId",
                 table: "Installments",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Installments_OrderId",
+                table: "Installments",
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InstallmentSaleOrders_CustomerId",
@@ -608,9 +633,9 @@ namespace Zamzam.EF.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Maintenances_SaleOrderId",
+                name: "IX_Maintenances_OrderId",
                 table: "Maintenances",
-                column: "SaleOrderId");
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_ItemId",
@@ -660,9 +685,6 @@ namespace Zamzam.EF.Migrations
                 name: "Installments");
 
             migrationBuilder.DropTable(
-                name: "InstallmentSaleOrders");
-
-            migrationBuilder.DropTable(
                 name: "Maintenances");
 
             migrationBuilder.DropTable(
@@ -678,13 +700,16 @@ namespace Zamzam.EF.Migrations
                 name: "ReturnSaleOrders");
 
             migrationBuilder.DropTable(
+                name: "SaleOrders");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "SaleOrders");
+                name: "InstallmentSaleOrders");
 
             migrationBuilder.DropTable(
                 name: "Items");
