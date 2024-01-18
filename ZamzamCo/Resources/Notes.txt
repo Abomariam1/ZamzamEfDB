@@ -1,2 +1,0 @@
-﻿Primary color linearGrandient #FF19253F
-Socandry color linearGrandient #FF3C4959

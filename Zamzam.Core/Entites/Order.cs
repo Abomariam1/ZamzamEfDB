@@ -7,13 +7,13 @@ namespace Zamzam.Domain
 
     public class Order : BaseAuditableEntity, IOrder
     {
-        public DateTime OrderDate { get; set; }
-        public decimal TotalPrice { get; set; }
-        public decimal TotalDiscount { get; set; }
-        public decimal NetPrice { get; set; }
-        public OrderType OrderType { get; set; }
-        public InvoiceType InvoiceType { get; set; }
-        public int EmployeeId { get; set; }
+        public DateTime OrderDate { get; set; } //تاريخ العملية
+        public decimal TotalPrice { get; set; } // جمالي السعر
+        public decimal TotalDiscount { get; set; } // اجمالي الخصم
+        public decimal NetPrice { get; set; } // صافي السعر
+        public OrderType OrderType { get; set; } // نوع العملية {بيع, شراء, مرتجع مبيعات, مرتجع مشتريات } و
+        public InvoiceType InvoiceType { get; set; } // نوع الفاتورة {كاش,اجل} و
+        public int EmployeeId { get; set; } // الموظف المسؤول عن العملية
         public virtual Employee Employee { get; set; }
         public required virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<Maintenance>? Maintenances { get; set; }

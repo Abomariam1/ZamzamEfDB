@@ -30,10 +30,14 @@ namespace Zamzam.API.Controllers
                 JwtSecurityToken? result = await _mediator.Send(Command);
                 if (result != null)
                 {
+                    JwtSecurityToken? tkn = new JwtSecurityTokenHandler().CreateJwtSecurityToken(result.RawPayload);
+
                     return Ok(new
                     {
                         token = new JwtSecurityTokenHandler().WriteToken(result),
-                        Expiration = result.ValidTo
+                        UserName = Command.UserName,
+                        Expiration = result.ValidTo,
+                        Refresh_Token = ""
                     });
                 }
                 return BadRequest("UserName Or Password is incorrect...");
@@ -44,13 +48,13 @@ namespace Zamzam.API.Controllers
         [HttpGet("getuser")]
         public IActionResult GetUser()
         {
-            string? context = HttpContext.User.Identity!.Name;
-            if (string.IsNullOrEmpty(context))
-            {
-                context = "NotFound";
-            }
-            var usr = HttpContext.User.Claims.Select(e => e.Value).ToList();
-            return Ok(context);
+            //var context = HttpContext.User.Identities;
+            //if (string.IsNullOrEmpty(context.Name))
+            //{
+            //    context = "NotFound";
+            //}
+            //var usr = HttpContext.User.Claims.Select(e => e.Value).ToList();
+            return Ok();
         }
     }
 }

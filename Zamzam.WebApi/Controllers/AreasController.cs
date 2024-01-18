@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Zamzam.Application.DTOs;
 using Zamzam.Application.Features.Areas.Commands.CreateArea;
 using Zamzam.Application.Features.Areas.Commands.DeleteArea;
 using Zamzam.Application.Features.Areas.Commands.UpdateArea;
@@ -19,7 +20,7 @@ namespace Zamzam.API.Controllers
             _mediator = mediator;
         }
         [HttpGet]
-        public async Task<ActionResult<Result<List<GetAllAreasDto>>>> Get() =>
+        public async Task<ActionResult<Result<List<AreaDto>>>> Get() =>
             await _mediator.Send(new GetAllAreasQuery());
 
         [HttpPost]

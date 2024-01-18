@@ -30,8 +30,8 @@ namespace Zamzam.EF.Repositories
 
                 _repositories.Add(type, repositoryInstance);
             }
-            IGenericRepository<T>? repository = (IGenericRepository<T>)_repositories[type];
-            return (IGenericRepository<T>)_repositories[type];
+            //IGenericRepository<T>? repository = (IGenericRepository<T>)_repositories[type]!;
+            return (IGenericRepository<T>)_repositories[type]!;
         }
         public void Dispose()
         {

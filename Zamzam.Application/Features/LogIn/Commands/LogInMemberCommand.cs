@@ -36,14 +36,14 @@ namespace Zamzam.Application.Features.LogIn.Commands
                 bool found = await _userManager.CheckPasswordAsync(user, request.Password);
                 if (found)
                 {
-                    Task<IList<string>>? roles = _userManager.GetRolesAsync(user);
+                    IList<string>? roles = await _userManager.GetRolesAsync(user);
                     List<Claim>? claims = new()
                         {
                             new(ClaimTypes.Name,user.UserName),
                             new(ClaimTypes.NameIdentifier,user.Id),
                             new(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                         };
-                    foreach (string role in await roles)
+                    foreach (string role in roles)
                     {
                         claims.Add(new Claim(ClaimTypes.Role, role));
                     }
@@ -56,7 +56,7 @@ namespace Zamzam.Application.Features.LogIn.Commands
                         issuer: _config["Jwt:Validessure"],
                         audience: _config["Jwt:ValidAudiance"],
                         claims: claims,
-                        expires: DateTime.UtcNow.AddDays(1),
+                        expires: DateTime.UtcNow.AddYears(1),
                         signingCredentials: credentials
                         );
 

@@ -1,0 +1,24 @@
+﻿<Application x:Class="ZamzamApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewModel="clr-namespace:ZamzamApp.Mvvm.ViewModels"
+             xmlns:view="clr-namespace:ZamzamApp.Mvvm.Views"
+             xmlns:local="clr-namespace:ZamzamApp"
+             >
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mDesign:BundledTheme 
+                BaseTheme="Dark" 
+                PrimaryColor="BlueGrey"
+                SecondaryColor="DeepOrange"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type TypeName=viewModel:HomeViewModel}">
+                <view:HomeView/>
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

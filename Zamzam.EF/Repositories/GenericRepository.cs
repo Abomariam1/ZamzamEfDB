@@ -42,13 +42,13 @@ namespace Zamzam.EF.Repositories
             return updated.Entity;
         }
 
-        public async Task<List<T>> GetAllAsync() => await _dbContext.Set<T>().ToListAsync();
+        public async Task<List<T>> GetAllAsync() => await Entities.ToListAsync();
 
-        public async Task<T> GetByIdAsync(int id) => await _dbContext.Set<T>().FindAsync(id);
+        public async Task<T> GetByIdAsync(int id) => await Entities.SingleOrDefaultAsync(x => x.Id == id);
 
         public async Task<T> GetByNameAsync(Expression<Func<T, bool>> criteria)
         {
-            T? entity = await _dbContext.Set<T>().SingleOrDefaultAsync(criteria);
+            T? entity = await Entities.SingleOrDefaultAsync(criteria);
             if (entity == null)
                 return null;
             return entity;

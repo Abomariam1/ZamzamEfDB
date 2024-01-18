@@ -10,6 +10,5 @@ namespace Zamzam.Domain
         public decimal InstallmentPrice { get; set; }
         public int Balance { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-
     }
 }
