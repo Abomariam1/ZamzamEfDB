@@ -1,22 +1,24 @@
 ﻿using AutoMapper;
 using MediatR;
 using Zamzam.Application.Common.Mappings;
+using Zamzam.Application.DTOs;
 using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.Domain;
 using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.Employees.Commands.Create
 {
-    public record EmployeeCreateCommand : IRequest<Result<int>>, IMapFrom<Employee>
+    public record EmployeeCreateCommand : IRequest<Result<EmployeeDTO>>, IMapFrom<Employee>
     {
-        public string Name { get; set; } = string.Empty;
+        public int EmployeeId { get; set; }
+        public string EmployeeName { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
         public string Region { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
         public string? PostalCode { get; set; } = string.Empty;
-        public long NCardlId { get; set; }
+        public long NationalId { get; set; }
         public string Titel { get; set; } = string.Empty;
         public DateTime HireDate { get; set; }
         public DateTime BirthDate { get; set; }
@@ -26,7 +28,7 @@ namespace Zamzam.Application.Features.Employees.Commands.Create
         public int DepartmentId { get; set; }
         public string? CreatedBy { get; set; }
     }
-    internal class EmployeeCreateCommandHandler : IRequestHandler<EmployeeCreateCommand, Result<int>>
+    internal class EmployeeCreateCommandHandler : IRequestHandler<EmployeeCreateCommand, Result<EmployeeDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -37,32 +39,33 @@ namespace Zamzam.Application.Features.Employees.Commands.Create
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> Handle(EmployeeCreateCommand request, CancellationToken cancellationToken)
+        public async Task<Result<EmployeeDTO>> Handle(EmployeeCreateCommand request, CancellationToken cancellationToken)
         {
-            Employee cust = new()
+            Employee Emp = new()
             {
-                Name = request.Name,
+                Name = request.EmployeeName,
                 Phone = request.Phone,
                 Address = request.Address,
                 City = request.City,
                 PostalCode = request.PostalCode,
                 Country = request.Country,
                 Region = request.Region,
-                NationalId = request.NCardlId,
+                NationalId = request.NationalId,
                 Titel = request.Titel,
                 HireDate = request.HireDate,
                 BirthDate = request.BirthDate,
                 Salary = request.Salary,
                 Qualification = request.Qualification!,
-                Photo = Convert.FromBase64String(request.Photo!),
+                Photo = Convert.FromBase64String(request.Photo),
                 DepartmentId = request.DepartmentId,
                 CreatedBy = request.CreatedBy,
                 CreatedDate = DateTime.Now
             };
-            var created = await _unitOfWork.Repository<Employee>().AddAsync(cust);
-            created.AddDomainEvent(new EmployeeCreateEvent(created));
-            var count = await _unitOfWork.Save(cancellationToken);
-            return Result<int>.Success(count, $"Employee {created.Name} is created...");
+            var newEmployee = await _unitOfWork.Repository<Employee>().AddAsync(Emp);
+            newEmployee.AddDomainEvent(new EmployeeCreateEvent(newEmployee));
+            await _unitOfWork.Save(cancellationToken);
+            EmployeeDTO? emp = _mapper.Map<EmployeeDTO>(newEmployee);
+            return Result<EmployeeDTO>.Success(emp, $"Employee {newEmployee.Name} is created...");
         }
     }
 }

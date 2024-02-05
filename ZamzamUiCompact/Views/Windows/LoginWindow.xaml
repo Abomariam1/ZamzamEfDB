@@ -1,0 +1,99 @@
+﻿<ui:FluentWindow 
+        x:Class="ZamzamUiCompact.Views.Windows.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:local="clr-namespace:ZamzamUiCompact.Views.Windows"
+        xmlns:closer="clr-namespace:ZamzamUiCompact.Helpers" 
+        xmlns:windows="clr-namespace:ZamzamUiCompact.ViewModels.Windows"
+        d:DataContext="{d:DesignInstance windows:LoginWindowViewModel}"
+        mc:Ignorable="d"
+        FlowDirection="RightToLeft"
+        Title="{Binding ApplicationTitle, Mode=OneWay}"
+        ui:Design.Background="{StaticResource ApplicationBackgroundBrush}"
+        ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+        WindowStartupLocation="CenterScreen"
+        WindowCornerPreference="Round"
+        ExtendsContentIntoTitleBar="True"
+        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+        closer:WindowHelper.EnableWindowClosing="True"
+        Height="600" Width="600">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <ui:TitleBar 
+            x:Name="TitleBar"
+            Title="{Binding ApplicationTitle}"
+            Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+            CloseWindowByDoubleClickOnIcon="True">
+            <ui:TitleBar.Icon>
+                <ui:ImageIcon Source="/Assets/zamzamlogo.png"  />
+            </ui:TitleBar.Icon>
+        </ui:TitleBar>
+
+        <ui:Image Grid.Column="1" Grid.Row="1" Background="Transparent"
+                  Source="/Assets/zamzamlogo.png"/>
+        <StackPanel Grid.Column="1" Grid.Row="2" Margin="0 30">
+            <TextBlock Text="{Binding ErrorMessage}" FontSize="12"/>
+            <DockPanel Margin="0 10"
+                        HorizontalAlignment="Stretch">
+                <StackPanel Margin="0 0 0 10">
+
+                    <ui:TextBlock Text="اسم المستخدم:"
+                                  MinWidth="90"
+                                  Grid.Column="0"
+                                  Margin="5"
+                                  VerticalAlignment="Center"/>  
+                    <ui:TextBox PlaceholderText="ادخل اسم المستخدم" 
+                                Grid.Column="1"
+                                Text="{Binding UserName}"/>
+                </StackPanel>
+
+            </DockPanel>
+            <DockPanel  >
+                <StackPanel>
+
+                    <ui:TextBlock Text="كلمة المرور:"
+                                  MinWidth="90"
+                                  Grid.Column="0"
+                                  Margin="5"
+                                  VerticalAlignment="Center"/>
+                    <ui:PasswordBox PlaceholderText="ادخل كلمة المرور"
+                                    Grid.Column="1"
+                                    Password="{Binding PasswordStr,
+                                                Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                
+            </DockPanel>
+            <StackPanel HorizontalAlignment="Stretch" Margin="0 20">
+                <ui:ToggleSwitch Content="تذكر كلمة المرور" Margin="0 5" 
+                                 IsChecked="{Binding RememberPassword}"
+                                 />
+                <ui:ToggleSwitch Content="تسجيل الدخول تلقائيا" Margin="0 5" 
+                                 IsChecked="{Binding AutoLoggin}"/>
+                <ui:Button d:DataContext="{d:DesignInstance Type=windows:LoginWindowViewModel}" Content="دخول" HorizontalAlignment="Stretch" 
+                           Margin="0 20"
+                           Command="{Binding SignInCommand}"/>
+            </StackPanel>
+            <DockPanel >
+                
+            </DockPanel>
+            
+        </StackPanel>
+
+    </Grid>
+</ui:FluentWindow>

@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Zamzam.Application.Interfaces;
 using Zamzam.Domain.Common;
 using Zamzam.Domain.Common.Interfaces;
+using Zamzam.Infrastructure.ExeptionHandler;
 using Zamzam.Infrastructure.Services;
 
 namespace Zamzam.Infrastructure.Extensions
@@ -19,7 +20,9 @@ namespace Zamzam.Infrastructure.Extensions
                 .AddTransient<IMediator, Mediator>()
                 .AddTransient<IDomainEventDispatcher, DomainEventDispatcher>()
                 .AddTransient<IDateTimeService, DateTimeService>()
-                .AddTransient<IEmailService, EmailService>();
+                .AddTransient<IEmailService, EmailService>()
+                .AddExceptionHandler<GlobalExceptionHandler>()
+                .AddProblemDetails();
         }
     }
 }

@@ -19,8 +19,8 @@ namespace Zamzam.EF.Repositories
 
         public async Task<T> AddAsync(T entity)
         {
-            await _dbContext.Set<T>().AddAsync(entity);
-            return entity;
+            var result = await _dbContext.Set<T>().AddAsync(entity);
+            return result.Entity;
         }
 
 
@@ -29,9 +29,9 @@ namespace Zamzam.EF.Repositories
 
             T exist = await _dbContext.Set<T>().FindAsync(entity.Id) ?? throw new ArgumentException();
 
-            EntityEntry<T>? updated = _dbContext.Set<T>().Update(entity);
+            T? updated = _dbContext.Set<T>().Update(entity).Entity;
 
-            return updated.Entity;
+            return updated;
         }
 
         public async Task<T> DeleteAsync(int id)

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
@@ -30,11 +31,20 @@ namespace Zamzam.API.Controllers
                 JwtSecurityToken? result = await _mediator.Send(Command);
                 if (result != null)
                 {
-                    JwtSecurityToken? tkn = new JwtSecurityTokenHandler().CreateJwtSecurityToken(result.RawPayload);
+                    string tkn = "";
+                    try
+                    {
+                        var tok = new JwtSecurityTokenHandler();
+                        tkn = tok.WriteToken(result);
 
+                    }
+                    catch (Exception e)
+                    {
+                        var ss = e.Message;
+                    }
                     return Ok(new
                     {
-                        token = new JwtSecurityTokenHandler().WriteToken(result),
+                        Token = tkn,
                         UserName = Command.UserName,
                         Expiration = result.ValidTo,
                         Refresh_Token = ""
@@ -44,17 +54,9 @@ namespace Zamzam.API.Controllers
             }
             return Unauthorized();
         }
-        //[Authorize]
+        [Authorize]
         [HttpGet("getuser")]
-        public IActionResult GetUser()
-        {
-            //var context = HttpContext.User.Identities;
-            //if (string.IsNullOrEmpty(context.Name))
-            //{
-            //    context = "NotFound";
-            //}
-            //var usr = HttpContext.User.Claims.Select(e => e.Value).ToList();
-            return Ok();
-        }
+        public async Task<IActionResult> GetUser() => Ok();
+
     }
 }

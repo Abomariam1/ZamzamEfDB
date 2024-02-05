@@ -69,6 +69,7 @@ if (app.Environment.IsDevelopment())
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseExceptionHandler();
 app.MapControllers();
 
 app.Run();

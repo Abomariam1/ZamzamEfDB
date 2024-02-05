@@ -15,7 +15,6 @@ namespace Zamzam.Application.Features.Members.Commands.Create
         [Compare("Password")]
         public required string ConfirmPassword { get; set; }
         public string? Email { get; set; }
-
     }
 
     internal class CreateMemberCommandHandler : IRequestHandler<CreateMemberCommand, Result<IdentityResult>>

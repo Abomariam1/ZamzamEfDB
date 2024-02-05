@@ -56,7 +56,7 @@ namespace Zamzam.Application.Features.LogIn.Commands
                         issuer: _config["Jwt:Validessure"],
                         audience: _config["Jwt:ValidAudiance"],
                         claims: claims,
-                        expires: DateTime.UtcNow.AddYears(1),
+                        expires: DateTime.UtcNow.AddDays(1),
                         signingCredentials: credentials
                         );
 

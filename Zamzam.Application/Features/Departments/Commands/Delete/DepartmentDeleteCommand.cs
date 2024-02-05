@@ -41,7 +41,7 @@ namespace Zamzam.Application.Features.Departments.Commands.Delete
             var del = await _unitOfWork.Repository<Department>().DeleteAsync(dep.Id);
             dep.AddDomainEvent(new DepartmentDeletedEvent(dep));
             await _unitOfWork.Save(cancellationToken);
-            return Result<int>.Success(del.Id, $"Department {del.DepName} is deleted...");
+            return Result<int>.Success(del.Id, "تم حذف القسم");
         }
     }
 

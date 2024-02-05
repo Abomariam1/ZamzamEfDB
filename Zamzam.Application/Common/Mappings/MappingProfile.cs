@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using System.Reflection;
+using Zamzam.Application.DTOs;
+using Zamzam.Domain;
 
 namespace Zamzam.Application.Common.Mappings
 {
@@ -38,6 +40,26 @@ namespace Zamzam.Application.Common.Mappings
 
                 }
             }
+            CreateMap<Department, DepartmentDTO>()
+           .ForMember(dst => dst.DepartmentName,
+           src => src.MapFrom(x => x.DepName))
+           .ForMember(dst => dst.DepartmentId,
+           src => src.MapFrom(x => x.Id))
+           .ForMember(dst => dst.Employees,
+           src => src.MapFrom(x => x.Employees.Where(x => x.IsDeleted == false)))
+           .ReverseMap();
+
+            CreateMap<Employee, EmployeeDTO>()
+                .ForMember(dst => dst.EmployeeId,
+                src => src.MapFrom(x => x.Id))
+                .ForMember(dst => dst.EmployeeName,
+                src => src.MapFrom(x => x.Name))
+                .ForMember(dst => dst.Department,
+                src => src.MapFrom(x => x.Department))
+                .ForMember(dst => dst.Photo,
+                src => src.MapFrom(x => Convert.ToBase64String(x.Photo)))
+                .ReverseMap();
+
         }
     }
 }
