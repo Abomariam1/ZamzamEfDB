@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-namespace ZamzamUiCompact.Views.Pages
+﻿namespace ZamzamUiCompact.Views.Pages
 {
     /// <summary>
     /// Interaction logic for AreasPage.xaml
     /// </summary>
-    public partial class AreasPage : Page
+    public partial class AreasPage : INavigableView<AreaViewModel>
     {
-        public AreasPage()
+        public AreaViewModel ViewModel { get; }
+        public AreasPage(AreaViewModel viewModel)
         {
+            ViewModel = viewModel;
+            DataContext = this;
+
             InitializeComponent();
+        }
+
+
+        private void DataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

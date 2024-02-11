@@ -14,7 +14,7 @@ public partial class StartUpWindowViewModel : ObservableObject, IWindowEvent
 
     [ObservableProperty]
     private int _progress;
-    public Action Close { get; set; }
+    public Action Close { get; set; } = () => { };
     public StartUpWindowViewModel(
         HttpClient httpClient,
         IServiceProvider provider,
@@ -26,7 +26,7 @@ public partial class StartUpWindowViewModel : ObservableObject, IWindowEvent
         _mainWindow = mainWindow;
         _httpClient = httpClient;
         _user = user.GetUser();
-        _timer.Tick += Timer_Tick;
+        _timer.Tick += Timer_Tick!;
         _timer.Start();
     }
     private void StopAutoProgress()

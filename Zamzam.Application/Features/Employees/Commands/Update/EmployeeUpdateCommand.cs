@@ -2,7 +2,6 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
 using Zamzam.Application.Common.Mappings;
 using Zamzam.Application.DTOs;
 using Zamzam.Application.Interfaces.Repositories;
@@ -62,7 +61,7 @@ namespace Zamzam.Application.Features.Employees.Commands.Update
             employee.BirthDate = request.BirthDate;
             employee.Salary = request.Salary;
             employee.Qualification = request.Qualification;
-            employee.Photo = Encoding.UTF8.GetBytes(request.Photo ?? "");
+            employee.Photo = Convert.FromBase64String(request.Photo ?? "");
             employee.DepartmentId = request.DepartmentId;
             employee.UpdatedBy = request.UpdatedBy;
             Employee? result = await _unitOfWork.Repository<Employee>().UpdateAsync(employee);

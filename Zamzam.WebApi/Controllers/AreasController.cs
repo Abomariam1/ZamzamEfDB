@@ -24,28 +24,28 @@ namespace Zamzam.API.Controllers
             await _mediator.Send(new GetAllAreasQuery());
 
         [HttpPost]
-        public async Task<ActionResult<Result<int>>> Create(CreateAreaCommand command)
+        public async Task<ActionResult<Result<AreaDto>>> Create(CreateAreaCommand command)
         {
             if (!ModelState.IsValid)
             {
-                return await Result<int>.FailureAsync(0, "Not valid command");
+                return await Result<AreaDto>.FailureAsync("Not valid command");
             }
             command.CreatedBy = HttpContext.User.Identity.Name;
             return await _mediator.Send(command);
         }
 
         [HttpPut]
-        public async Task<ActionResult<Result<int>>> Update(UpdateAreaCommand command)
+        public async Task<ActionResult<Result<AreaDto>>> Update(UpdateAreaCommand command)
         {
             if (!ModelState.IsValid)
             {
-                return await Result<int>.FailureAsync(0, "Not valid command");
+                return await Result<AreaDto>.FailureAsync("Not valid command");
             }
             command.UpdatedBy = HttpContext.User.Identity.Name;
             return await _mediator.Send(command);
         }
 
-        [HttpDelete]
+        [HttpDelete("{int id}")]
         public async Task<ActionResult<Result<int>>> Delete(int id)
         {
             if (!ModelState.IsValid)

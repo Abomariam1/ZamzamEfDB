@@ -112,12 +112,6 @@ public partial class DepartmentViewModel : ObservableValidator
 
     }
 
-    private void StartTimer()
-    {
-        _dispatcher.Tick += _dispatcher_Tick;
-        _dispatcher.Start();
-    }
-
     [RelayCommand]
     public async Task Update()
     {
@@ -149,7 +143,7 @@ public partial class DepartmentViewModel : ObservableValidator
                 var index = Departments.IndexOf(Departments.FirstOrDefault(x => x.DepartmentId == Id));
                 Departments[index] = model;
                 OnPropertyChanged(nameof(Departments));
-                Validate(result.Message[0], "Succeeded", InfoBarSeverity.Success);
+                Validate(result.Message, "Succeeded", InfoBarSeverity.Success);
             }
             else
             {
@@ -157,14 +151,6 @@ public partial class DepartmentViewModel : ObservableValidator
             }
         }
         Enabled = true;
-    }
-
-    private void Validate(string message, string title, InfoBarSeverity saverty)
-    {
-        StartTimer();
-        Message = message;
-        Status = true;
-        Saverty = saverty;
     }
 
     [RelayCommand]
@@ -198,7 +184,7 @@ public partial class DepartmentViewModel : ObservableValidator
             {
                 PropertyNameCaseInsensitive = true
             });
-            Validate(result.Message[0], "Succeeded", InfoBarSeverity.Success);
+            Validate(result.Message, "Succeeded", InfoBarSeverity.Success);
             Departments.Remove(SelectedDepartment);
         }
         Enabled = true;
@@ -210,6 +196,18 @@ public partial class DepartmentViewModel : ObservableValidator
         DepartmentName = SelectedDepartment?.DepartmentName ?? "";
     }
 
+    private void Validate(string message, string title, InfoBarSeverity saverty)
+    {
+        StartTimer();
+        Message = message;
+        Status = true;
+        Saverty = saverty;
+    }
+    private void StartTimer()
+    {
+        _dispatcher.Tick += _dispatcher_Tick;
+        _dispatcher.Start();
+    }
     private void _dispatcher_Tick(object? sender, EventArgs e)
     {
         Status = true;

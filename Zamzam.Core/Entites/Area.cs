@@ -9,6 +9,6 @@ namespace Zamzam.Domain
         public string? Location { get; set; } = string.Empty;
         public int EmployeeId { get; set; }
         public virtual ICollection<Customer>? Customers { get; set; }
-        public virtual Employee Employee { get; set; }
+        public virtual Employee? Employee { get; set; }
     }
 }

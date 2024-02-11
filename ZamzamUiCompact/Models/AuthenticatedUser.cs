@@ -1,4 +1,6 @@
-﻿namespace ZamzamUiCompact.Models;
+﻿using ZamzamUiCompact.Execptions;
+
+namespace ZamzamUiCompact.Models;
 
 public class AuthenticatedUser : IAuthenticatedUser
 {
@@ -12,15 +14,30 @@ public class AuthenticatedUser : IAuthenticatedUser
 
     public AuthenticatedUser GetUser()
     {
-        AuthenticatedUser user = null;
-        string? str = string.Empty;
         if (File.Exists("user.json"))
         {
-            str = File.ReadAllText("user.json");
-            user = JsonSerializer.Deserialize<AuthenticatedUser>(str)!;
-            return user;
+            string? str = File.ReadAllText("user.json");
+            AuthenticatedUser user = JsonSerializer.Deserialize<AuthenticatedUser>(str)!;
+            return FillUser(user);
         }
+        return this;
+    }
+
+    private void WriteUser(AuthenticatedUser user)
+    {
+        if (user == null) throw new UserNullExecption("null user");
         File.WriteAllText("user.json", JsonSerializer.Serialize(user));
+    }
+
+    private AuthenticatedUser FillUser(AuthenticatedUser user)
+    {
+        Token = user.Token;
+        IsPasswordRemmemberd = user.IsPasswordRemmemberd;
+        IsAutoLogging = user.IsAutoLogging;
+        UserName = user.UserName;
+        Password = user.Password;
+        LogedInAt = user.LogedInAt;
+        Expiration = user.Expiration;
         return this;
     }
 }

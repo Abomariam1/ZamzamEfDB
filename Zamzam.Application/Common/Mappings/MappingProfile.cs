@@ -40,6 +40,8 @@ namespace Zamzam.Application.Common.Mappings
 
                 }
             }
+
+
             CreateMap<Department, DepartmentDTO>()
            .ForMember(dst => dst.DepartmentName,
            src => src.MapFrom(x => x.DepName))

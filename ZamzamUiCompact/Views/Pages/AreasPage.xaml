@@ -4,42 +4,146 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ZamzamUiCompact.Views.Pages"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:i2="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:interactivity="using:Microsoft.Xaml.Interactivity" 
+      xmlns:pages="clr-namespace:ZamzamUiCompact.ViewModels.Pages" 
+      d:DataContext="{d:DesignInstance Type=pages:AreaViewModel}"
       mc:Ignorable="d" 
-      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-        d:DataContext="{d:DesignInstance local:DashboardPage,
-                                         IsDesignTimeCreatable=False}"
-        d:DesignHeight="450"
-        d:DesignWidth="800"
-        ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
-        ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-      Title="AreasPage">
+      d:DesignHeight="450" d:DesignWidth="800"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      ScrollViewer.CanContentScroll="False"
+      >
 
     <Grid>
+        <Grid.Resources>
+            <Style x:Key="AlterRowStyle" TargetType="DataGridRow">
+                <Setter Property="Background" Value="Brown"/>
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ui:TextBlock Grid.Row="0" Text="شاشة المناطق" Margin="0 15"/>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions >
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.Resources>
+                <Style TargetType="ui:TextBlock" >
+                    <Setter Property="MinWidth" Value="100"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="Margin" Value="0 10"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="FontSize" Value="14"/>
+                </Style>
+            </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <ui:TextBlock Text="اسم المنطقة:" Margin="5 0"/>
-            <ui:TextBox Grid.Column="1" Grid.Row="0"/>
-            <ui:TextBlock Grid.Row="1" Text="المركز:" Margin="5 0"/>
-            <ui:TextBox Grid.Column="1" Grid.Row="1"/>
-            <ui:TextBlock Grid.Row="2" Text="الموقع:" Margin="5 0"/>
-            <ui:TextBox Grid.Column="1" Grid.Row="2"/>
-            <ui:TextBlock Grid.Row="3" Text="المحصل :" Margin="5 0"/>
-            <ComboBox Grid.Column="1" Grid.Row="3"/>
+            <Grid Grid.Row="0" Grid.Column="0" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <ui:InfoBar x:Name="SuccessInfoBar"
+                            Title="Success"
+                            Message="The form was filled in correctly."
+                            Severity="Success">
+                    <!--<i:Interaction.Behaviors>
+                        <i:ConditionBehavior Condition="{Binding ViewModel.CounterIncrementCommand}">
+                            <i:Interaction.Triggers>
+                                <i:PropertyChangedTrigger>
+                                   
+                                </i:PropertyChangedTrigger>
+                            </i:Interaction.Triggers>
+                        </i:ConditionBehavior>
+                    </i:Interaction.Behaviors>-->
+       
+                </ui:InfoBar>
+
+                <StackPanel >
+                    
+                    <StackPanel Margin="10">
+                        <ui:TextBlock Text="اسم المنطقة"/>
+                        <ui:TextBox Grid.Column="1" 
+                                PlaceholderText="اسم المنطقة" 
+                                    Text="{Binding ViewModel.Name}"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="10">
+                        <ui:TextBlock Grid.Row="1" Text="المركز" />
+                        <ui:TextBox Grid.Column="1" PlaceholderText="المركز"
+                                    Text="{Binding ViewModel.Station}"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="10">
+                        <ui:TextBlock Grid.Row="2" Text="الموقع"/>
+                        <ui:TextBox Grid.Column="1" PlaceholderText="الموقع"
+                                    Text="{Binding ViewModel.Location}"/>
+
+                    </StackPanel>
+
+                    <StackPanel Margin="10">
+                        <ui:TextBlock Grid.Row="3" Text="المحصل" />
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding ViewModel.Employees}" 
+                                  SelectedItem="{Binding ViewModel.Employee}"
+                                  >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate >
+                                    <TextBlock Text="{Binding EmployeeName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+                <GridSplitter/>
+                <ScrollViewer Grid.Column="1">
+                    <Grid>
+                        <ui:DataGrid  ItemsSource="{Binding ViewModel.Areas}"
+                                      SelectedItem="{Binding ViewModel.Area}"
+                                      AutoGenerateColumns="False"
+                                      SelectionChanged="DataGrid_SelectionChanged">
+                            <ui:DataGrid.Columns>
+                                <DataGridTextColumn Header="اسم المنطقة" Binding="{Binding AreaName}" FontWeight="Bold"/>
+                                <DataGridTextColumn Header="المركز" Binding="{Binding Station}"/>
+                                <DataGridTextColumn Header="الموقع" Binding="{Binding Location}"/>
+                                <DataGridTextColumn Header="المحصل" Binding="{Binding CollectorName}"/>
+                            </ui:DataGrid.Columns>
+                            <ui:DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource ApplicationBackgroundBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ui:DataGrid.RowStyle>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding ViewModel.FillTextCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ui:DataGrid>
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 50">
+                <ui:Button Content="اضافة" Margin="10 0"
+                           Width="80" Height="40"
+                           Command="{Binding ViewModel.AddAreaCommand}"/>
+                <ui:Button Content="تعديل" Margin="10 0"
+                           Width="80" Height="40"
+                           Command="{Binding ViewModel.UpdateAreaCommand}"/>
+                <ui:Button Content="حذف" Margin="10 0"
+                           Width="80" Height="40"
+                           Command="{Binding ViewModel.DeleteAreaCommand}"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>

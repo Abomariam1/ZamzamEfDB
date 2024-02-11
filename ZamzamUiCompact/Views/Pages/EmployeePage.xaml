@@ -197,7 +197,7 @@
                                   Margin="5"
                                   VerticalAlignment="Center"/>
                             <DatePicker HorizontalAlignment="Stretch"
-                                        SelectedDate="{Binding ViewModel.BirthDate}"
+                                        SelectedDate="{Binding ViewModel.HireDate}"
                                         SelectedDateFormat="Short" FirstDayOfWeek="Saturday" />
                         </StackPanel>
 
@@ -296,6 +296,9 @@
         </ui:DynamicScrollViewer>
         <WrapPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                    HorizontalAlignment="Center" Margin="0 20">
+            <ui:Button Content="جديد" Height="45" Width="70"
+                       CornerRadius="5" Margin="10 0"
+                       Command="{Binding ViewModel.NewEmployeeCommand}"/>
             <ui:Button Content="اضافة" Height="45" Width="70"
                        CornerRadius="5" Margin="10 0"
                        Command="{Binding ViewModel.AddEmployeeCommand}"/>

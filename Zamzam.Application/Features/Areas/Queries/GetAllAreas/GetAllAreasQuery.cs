@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Zamzam.Application.DTOs;
@@ -26,9 +25,13 @@ namespace Zamzam.Application.Features.Areas.Queries.GetAllAreas
         {
             var areas = await _unitOfWork.Repository<Area>().Entities
                 .Where(x => x.IsDeleted != true).Include(x => x.Employee)
-                .ProjectTo<AreaDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
-            return await Result<List<AreaDto>>.SuccessAsync(areas);
+            List<AreaDto>? result = new();
+            foreach (var area in areas)
+            {
+                result.Add((AreaDto)area);
+            }
+            return await Result<List<AreaDto>>.SuccessAsync(result);
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface IResult<T>
     {
-        List<string> Message { get; set; }
+        string Message { get; set; }
         bool Succeeded { get; set; }
         T Data { get; set; }
         Exception Exception { get; set; }

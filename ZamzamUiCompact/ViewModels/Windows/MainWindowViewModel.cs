@@ -29,6 +29,12 @@ public partial class MainWindowViewModel : ObservableObject, IWindowEvent
             Icon = new SymbolIcon { Symbol = SymbolRegular.Person24 },
             TargetPageType = typeof(EmployeePage)
         },
+        new NavigationViewItem()
+        {
+            Content = "المناطق",
+            Icon = new SymbolIcon { Symbol = SymbolRegular.DataArea24 },
+            TargetPageType = typeof(AreasPage)
+        },
     };
 
     [ObservableProperty]
@@ -51,7 +57,7 @@ public partial class MainWindowViewModel : ObservableObject, IWindowEvent
     [ObservableProperty]
     private IAuthenticatedUser _user;
 
-    public Action Close { get; set; }
+    public Action Close { get; set; } = () => { };
 
     public MainWindowViewModel(IServiceProvider provider, IAuthenticatedUser user)
     {

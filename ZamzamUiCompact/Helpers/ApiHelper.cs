@@ -10,15 +10,15 @@ public class ApiHelper(IHttpClientFactory httpClient) : IApiHelper, IDisposable
         return response;
     }
 
+    public async Task<HttpResponseMessage> PostModelAsync<T>(string uri, T value)
+    {
+        HttpResponseMessage? respons = await _httpClient.PostAsJsonAsync<T>($"{_httpClient.BaseAddress}/{uri}", value);
+        return respons;
+    }
 
     public void Dispose()
     {
         _httpClient?.Dispose();
     }
 
-    public async Task<HttpResponseMessage> PostModelAsync<T>(string uri, T value)
-    {
-        HttpResponseMessage? respons = await _httpClient.PostAsJsonAsync<T>($"{_httpClient.BaseAddress}{uri}", value);
-        return respons;
-    }
 }

@@ -93,6 +93,28 @@ public partial class EmployeeViewModel : ObservableValidator
 
     #region Interface Methods
     [RelayCommand]
+    public void NewEmployee()
+    {
+        EmployeeName = string.Empty;
+        Phone = string.Empty;
+        Address = string.Empty;
+        City = string.Empty;
+        Region = string.Empty;
+        Country = string.Empty;
+        PostalCode = string.Empty;
+        NationalId = 0;
+        Titel = string.Empty;
+        HireDate = DateTime.Now;
+        BirthDate = DateTime.Now;
+        Salary = 0;
+        Qualification = string.Empty;
+        //var ph = Encoding.UTF8.GetBytes(SelectedEmployee.Photo ?? "");
+        //var ph = 
+        Photo = PathToPhoto(PathPhoto);
+        SelectedDepartment = null;
+    }
+
+    [RelayCommand]
     public async Task AddEmployee()
     {
         EmployeeModel? newEmployee = new()
@@ -111,7 +133,7 @@ public partial class EmployeeViewModel : ObservableValidator
             BirthDate = BirthDate,
             Salary = Salary,
             Qualification = Qualification,
-            Photo = Convert.ToBase64String(Photo),
+            Photo = Convert.ToBase64String(Photo ?? []),
             DepartmentId = SelectedDepartment.DepartmentId,
         };
 
@@ -157,7 +179,7 @@ public partial class EmployeeViewModel : ObservableValidator
             BirthDate = BirthDate,
             Salary = Salary,
             Qualification = Qualification,
-            Photo = Convert.ToBase64String(Photo),
+            Photo = Convert.ToBase64String(Photo ?? []),
             DepartmentId = SelectedDepartment.DepartmentId
         };
         var response = await _httpClient.PutAsJsonAsync(_httpClient.BaseAddress, updatedEmployee, new JsonSerializerOptions()

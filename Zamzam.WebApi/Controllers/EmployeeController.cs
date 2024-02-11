@@ -57,7 +57,7 @@ namespace Zamzam.WebApi.Controllers
         [HttpGet("getall")]
         public async Task<ActionResult<Result<List<EmployeeDTO>>>> GetAllEmployees()
         {
-            var emp = await _mediator.Send(new GetAllEmployeesQuery());
+            Result<List<EmployeeDTO>>? emp = await _mediator.Send(new GetAllEmployeesQuery());
             return emp;
         }
     }

@@ -19,7 +19,7 @@ namespace Zamzam.EF.Repositories
 
         public async Task<T> AddAsync(T entity)
         {
-            var result = await _dbContext.Set<T>().AddAsync(entity);
+            EntityEntry<T>? result = await _dbContext.Set<T>().AddAsync(entity);
             return result.Entity;
         }
 
