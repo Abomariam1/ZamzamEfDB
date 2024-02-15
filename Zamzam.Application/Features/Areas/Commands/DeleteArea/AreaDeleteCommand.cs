@@ -35,10 +35,10 @@ namespace Zamzam.Application.Features.Areas.Commands.DeleteArea
                 Area? ar = await _unitOfWork.Repository<Area>().DeleteAsync(area.Id);
                 area.AddDomainEvent(new AreaDeletedEvent(area));
                 await _unitOfWork.Save(cancellationToken);
-                return await Result<int>.SuccessAsync(area.Id, $" {ar.Name} Deleted.");
+                return await Result<int>.SuccessAsync(area.Id, $"تم حذف {ar.Name} بنجاح.");
             }
             else
-                return Result<int>.Failure("Area Not Found");
+                return Result<int>.Failure("لم يتم العثور على المنطقة");
         }
     }
 }

@@ -35,6 +35,12 @@ public partial class MainWindowViewModel : ObservableObject, IWindowEvent
             Icon = new SymbolIcon { Symbol = SymbolRegular.DataArea24 },
             TargetPageType = typeof(AreasPage)
         },
+        new NavigationViewItem()
+        {
+            Content = "الاصناف",
+            Icon = new SymbolIcon { Symbol = SymbolRegular.TrayItemAdd24 },
+            TargetPageType = typeof(ItemsPage)
+        },
     };
 
     [ObservableProperty]

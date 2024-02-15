@@ -44,7 +44,7 @@ namespace Zamzam.Application.Features.Areas.Commands.CreateArea
             await _unitOfWork.Save(cancellationToken);
             added = await _unitOfWork.Repository<Area>().GetByIdAsync(added.Id);
             AreaDto? conv = (AreaDto)added;
-            return await Result<AreaDto>.SuccessAsync(conv, "Area Created.");
+            return await Result<AreaDto>.SuccessAsync(conv, $"تم اضافة {added.Name}");
         }
     }
 

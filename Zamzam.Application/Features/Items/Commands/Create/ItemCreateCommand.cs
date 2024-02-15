@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
 using MediatR;
 using Zamzam.Application.Common.Mappings;
+using Zamzam.Application.DTOs;
 using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.Domain;
 using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.Items.Commands.Create
 {
-    public record ItemCreateCommand : IRequest<Result<int>>, IMapFrom<Item>
+    public record ItemCreateCommand : IRequest<Result<ItemDTO>>, IMapFrom<Item>
     {
-        public string Name { get; set; }
+        public int ItemId { get; set; }
+        public string ItemName { get; set; } = string.Empty;
         public decimal PurchasingPrice { get; set; }
         public decimal SellingCashPrice { get; set; }
         public decimal InstallmentPrice { get; set; }
@@ -17,7 +19,7 @@ namespace Zamzam.Application.Features.Items.Commands.Create
         public string? CreatedBy { get; set; }
     }
 
-    internal class ItemCreateCommandHandler : IRequestHandler<ItemCreateCommand, Result<int>>
+    internal class ItemCreateCommandHandler : IRequestHandler<ItemCreateCommand, Result<ItemDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -28,11 +30,11 @@ namespace Zamzam.Application.Features.Items.Commands.Create
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> Handle(ItemCreateCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ItemDTO>> Handle(ItemCreateCommand request, CancellationToken cancellationToken)
         {
             Item item = new()
             {
-                Name = request.Name,
+                Name = request.ItemName,
                 PurchasingPrice = request.PurchasingPrice,
                 SellingCashPrice = request.SellingCashPrice,
                 InstallmentPrice = request.InstallmentPrice,
@@ -43,7 +45,10 @@ namespace Zamzam.Application.Features.Items.Commands.Create
             var result = await _unitOfWork.Repository<Item>().AddAsync(item);
             result.AddDomainEvent(new ItemCreatedEvet(item));
             var count = await _unitOfWork.Save(cancellationToken);
-            return await Result<int>.SuccessAsync(count, $"تم اضافة الصنف : {result.Name}");
+            var resultDto = (ItemDTO)result;
+            return count <= 0
+                ? await Result<ItemDTO>.FailureAsync(resultDto, $"فشل في اضافة الصنف : {result.Name}")
+                : await Result<ItemDTO>.SuccessAsync(resultDto, $"تم اضافة الصنف : {result.Name}");
         }
     }
 }

@@ -7,7 +7,7 @@ using Zamzam.Application.Features.LogIn.Commands;
 using Zamzam.Application.Features.Members.Commands.Create;
 using Zamzam.Shared;
 
-namespace Zamzam.API.Controllers
+namespace Zamzam.WebApi.Controllers.v1
 {
     public class AccountController : ApiControllerBase
     {
@@ -45,7 +45,7 @@ namespace Zamzam.API.Controllers
                     return Ok(new
                     {
                         Token = tkn,
-                        UserName = Command.UserName,
+                        Command.UserName,
                         Expiration = result.ValidTo,
                         Refresh_Token = ""
                     });

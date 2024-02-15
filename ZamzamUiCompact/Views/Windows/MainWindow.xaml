@@ -21,6 +21,7 @@
     WindowBackdropType="Mica"
     WindowCornerPreference="Round"
     WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
     mc:Ignorable="d">
     <ui:FluentWindow.InputBindings>
         <KeyBinding

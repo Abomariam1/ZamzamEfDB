@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace ZamzamUiCompact.Views.Pages
 {
@@ -23,6 +24,30 @@ namespace ZamzamUiCompact.Views.Pages
             {
                 ViewModel.SelectedEmployee = emp;
                 ViewModel.FillProperities();
+            }
+        }
+
+        private void autoBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            var ky = sender as AutoSuggestBox;
+            if (ky != null)
+            {
+                var txt = args.Text;
+            }
+        }
+
+        private void autoBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape) { return; }
+            if (e.Key == Key.Enter)
+            {
+                if (sender is AutoSuggestBox suggestBox)
+                {
+                    var emp = ViewModel.Employees.Where(x => x.EmployeeName == suggestBox.Text).FirstOrDefault();
+                    ViewModel.SelectedEmployee = emp == null ? ViewModel.SelectedEmployee : emp;
+                    ViewModel.FillProperities();
+                }
+
             }
         }
     }

@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.OpenApi.Models;
 using Zamzam.Application.Extentions;
 using Zamzam.EF.Extensions;
@@ -11,6 +12,24 @@ builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructureLayer();
 builder.Services.AddEfLayer(builder.Configuration);
 builder.Services.AddControllers();
+
+//Versioning
+builder.Services.AddApiVersioning(opt =>
+{
+    opt.AssumeDefaultVersionWhenUnspecified = true;
+    opt.DefaultApiVersion = new ApiVersion(1, 0);
+    opt.ReportApiVersions = true;
+    opt.ApiVersionReader = ApiVersionReader.Combine(
+        new QueryStringApiVersionReader("Api-version"),
+        new HeaderApiVersionReader("Api-version"),
+        new UrlSegmentApiVersionReader()
+        );
+}).AddApiExplorer(opt =>
+{
+    opt.GroupNameFormat = "'v'V";
+    opt.SubstituteApiVersionInUrl = true;
+}
+    );
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swagger =>

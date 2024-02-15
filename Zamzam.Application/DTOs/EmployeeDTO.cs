@@ -23,4 +23,30 @@ public class EmployeeDTO : IMapFrom<Employee>
     public int DeoartmentId { get; set; }
     public DepartmentDTO? Department { get; set; }
     public string? CreatedBy { get; set; }
+
+    public static explicit operator EmployeeDTO(Employee v)
+    {
+        if (v == null) return new();
+        return new()
+        {
+            EmployeeId = v.Id,
+            EmployeeName = v.Name,
+            Phone = v.Phone,
+            Address = v.Address,
+            City = v.City,
+            Region = v.Region,
+            Country = v.Country,
+            PostalCode = v.PostalCode,
+            BirthDate = v.BirthDate,
+            HireDate = v.HireDate,
+            NationalId = v.NationalId,
+            Titel = v.Titel,
+            Qualification = v.Qualification,
+            Salary = v.Salary,
+            Photo = Convert.ToBase64String(v.Photo ?? []),
+            DeoartmentId = v.DepartmentId,
+            CreatedBy = v.CreatedBy,
+            Department = (DepartmentDTO)v.Department
+        };
+    }
 }

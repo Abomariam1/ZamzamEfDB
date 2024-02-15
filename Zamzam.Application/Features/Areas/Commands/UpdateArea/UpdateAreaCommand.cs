@@ -48,7 +48,7 @@ namespace Zamzam.Application.Features.Areas.Commands.UpdateArea
                 await _unitOfWork.Save(cancellationToken);
                 area = _unitOfWork.Repository<Area>().Entities.Include(x => x.Employee)
                     .FirstOrDefault(x => x.Id == area.Id && x.IsDeleted == false)!;
-                return Result<AreaDto>.Success((AreaDto)area);
+                return Result<AreaDto>.Success((AreaDto)area, $"تم تعديل المنطقة {area.Name}");
             }
         }
     }

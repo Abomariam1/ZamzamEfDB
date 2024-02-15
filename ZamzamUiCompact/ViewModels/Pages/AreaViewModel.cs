@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
 namespace ZamzamUiCompact.ViewModels.Pages;
 
 public partial class AreaViewModel : ObservableValidator
 {
-    AreaService _areaService;
+    private readonly IUnitOfWork _unitOfWork;
+    const string areaController = "Areas";
+    const string employeeController = "Employee";
 
     [ObservableProperty] int _id;
     [Required]
@@ -31,12 +34,9 @@ public partial class AreaViewModel : ObservableValidator
     [ObservableProperty] ObservableCollection<AreaModel> _areas;
 
     [ObservableProperty] string _messages;
-    public AreaViewModel(AreaService areaService)
+    public AreaViewModel(IUnitOfWork unitOfWork)
     {
-        _areaService = areaService;
-        var tt = Task.Run(_areaService.GetEmployees).GetAwaiter().GetResult();
-        Task.Run(GetAreas).Wait();
-        Employees = new ObservableCollection<EmployeeModel>(tt);
+        _unitOfWork = unitOfWork;
     }
 
     [RelayCommand]
@@ -52,7 +52,7 @@ public partial class AreaViewModel : ObservableValidator
             Location = Location,
             CollectorId = Employee.EmployeeId
         };
-        Result<AreaModel>? response = await _areaService.Add(area);
+        Result<AreaModel>? response = await _unitOfWork.Service<AreaModel>().AddAsync(areaController, area);
         if (response.Succeeded)
         {
             Area = response.Data;
@@ -81,7 +81,7 @@ public partial class AreaViewModel : ObservableValidator
             Location = Location,
             CollectorId = Employee.EmployeeId
         };
-        Result<AreaModel>? response = await _areaService.Update(toUpdate);
+        Result<AreaModel>? response = await _unitOfWork.Service<AreaModel>().UpdateAsync(areaController, toUpdate);
         if (response.Succeeded)
         {
             Area = response.Data;
@@ -101,7 +101,7 @@ public partial class AreaViewModel : ObservableValidator
     [RelayCommand]
     public async Task DeleteArea()
     {
-        Result<int>? response = await _areaService.Delete(Area.AreaId);
+        Result<int>? response = await _unitOfWork.Service<AreaModel>().DeleteAsync($"{areaController}/{Area.AreaId}");
         if (response.Succeeded)
         {
             Areas.Remove(Area);
@@ -118,9 +118,12 @@ public partial class AreaViewModel : ObservableValidator
         Employee = Employees.FirstOrDefault(x => x.EmployeeId == Area.CollectorId)!;
     }
 
-    public async Task GetAreas()
+    [RelayCommand]
+    public async Task Startup()
     {
-        var areas = (List<AreaModel>)await _areaService.GetAreas();
-        Areas = new ObservableCollection<AreaModel>(areas);
+        Result<List<AreaModel>>? areas = await _unitOfWork.Service<AreaModel>().GetAllAsync(areaController);
+        Result<List<EmployeeModel>>? employees = await _unitOfWork.Service<EmployeeModel>().GetAllAsync($"{employeeController}/getall");
+        Areas = new ObservableCollection<AreaModel>(areas.Data);
+        Employees = new ObservableCollection<EmployeeModel>(employees.Data);
     }
 }

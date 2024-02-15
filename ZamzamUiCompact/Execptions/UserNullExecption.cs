@@ -3,7 +3,7 @@
 public class UserNullExecption : Exception
 {
     public string[] Errors { get; set; } = [];
-    public UserNullExecption() : base() { }
+    public UserNullExecption() : base("user is Null") { }
     public UserNullExecption(string message) : base(message) { }
     public UserNullExecption(string message, Exception innerException)
             : base(message, innerException) { }

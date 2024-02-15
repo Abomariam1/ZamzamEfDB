@@ -13,7 +13,13 @@
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      x:Name="departmentPage"
       Title="DepartmentPage">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded" SourceName="departmentPage">
+            <i:InvokeCommandAction Command="{Binding ViewModel.GetAllDeparmentsCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -70,9 +76,11 @@
             <ui:InfoBar Grid.Row="2" Height="50" Foreground="AliceBlue" 
                         Title="{Binding ViewModel.InfoBarTitle}"
                         Message="{Binding ViewModel.Message}"
-                        Severity="{Binding ViewModel.Saverty}" IsOpen="{Binding ViewModel.Status}"
+                        Severity="{Binding ViewModel.Saverty}" 
+                        IsOpen="{Binding ViewModel.Status}"
                         IsClosable="True" 
-                        Visibility="{Binding ViewModel.Status,Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        Visibility="{Binding ViewModel.Status,
+                Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </Grid>
     </Grid>
 </Page>

@@ -8,7 +8,7 @@ using Zamzam.Application.Features.Departments.Commands.Update;
 using Zamzam.Application.Features.Departments.Queries;
 using Zamzam.Shared;
 
-namespace Zamzam.API.Controllers
+namespace Zamzam.WebApi.Controllers.v1
 {
     [Authorize]
     public class DepartmentController : ApiControllerBase
@@ -21,12 +21,12 @@ namespace Zamzam.API.Controllers
         }
 
         [HttpPost]
-        public async Task<Result<DepartmentCreateCommand>> Create(DepartmentCreateCommand command)
+        public async Task<Result<DepartmentDTO>> Create(DepartmentCreateCommand command)
         {
             if (!ModelState.IsValid)
             {
 
-                return await Result<DepartmentCreateCommand>.FailureAsync("Fail to create Department...");
+                return await Result<DepartmentDTO>.FailureAsync("Fail to create Department...");
             }
             command.CreatedBy = HttpContext.User.Identity!.Name;
             var res = await _mediator.Send(command);
@@ -34,14 +34,14 @@ namespace Zamzam.API.Controllers
         }
 
         [HttpPut]
-        public async Task<Result<int>> Update(DepartmentUpdateCommand command)
+        public async Task<Result<DepartmentDTO>> Update(DepartmentUpdateCommand command)
         {
             if (ModelState.IsValid)
             {
                 command.UpdatedBy = HttpContext.User.Identity!.Name;
                 return await _mediator.Send(command);
             }
-            return await Result<int>.FailureAsync(0, "Fail to update Department...");
+            return await Result<DepartmentDTO>.FailureAsync("Fail to update Department...");
         }
         [HttpDelete("{id}")]
         public async Task<Result<int>> Delete(int id)
@@ -49,7 +49,8 @@ namespace Zamzam.API.Controllers
             if (ModelState.IsValid)
             {
                 var command = new DepartmentDeleteCommand { Id = id };
-                return await _mediator.Send(command);
+                Result<int>? result = await _mediator.Send(command);
+                return result;
             }
             return await Result<int>.FailureAsync(0, "Fail to Delete Department...");
         }

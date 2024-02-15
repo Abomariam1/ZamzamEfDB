@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
 using MediatR;
 using Zamzam.Application.Common.Mappings;
+using Zamzam.Application.DTOs;
 using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.Domain;
 using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.Departments.Commands.Create;
 
-public record DepartmentCreateCommand : IRequest<Result<DepartmentCreateCommand>>, IMapFrom<Department>
+public record DepartmentCreateCommand : IRequest<Result<DepartmentDTO>>, IMapFrom<Department>
 {
     public int DepartmentId { get; set; }
-    public string DepartmentName { get; set; }
+    public string DepartmentName { get; set; } = string.Empty;
     public string? CreatedBy { get; set; }
     public DateTime? CreatedOn { get; set; }
 }
-internal class DepartmentCreatedCommandHandler : IRequestHandler<DepartmentCreateCommand, Result<DepartmentCreateCommand>>
+internal class DepartmentCreatedCommandHandler : IRequestHandler<DepartmentCreateCommand, Result<DepartmentDTO>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -25,7 +26,7 @@ internal class DepartmentCreatedCommandHandler : IRequestHandler<DepartmentCreat
         _mapper = mapper;
     }
 
-    public async Task<Result<DepartmentCreateCommand>> Handle(DepartmentCreateCommand request, CancellationToken cancellationToken)
+    public async Task<Result<DepartmentDTO>> Handle(DepartmentCreateCommand request, CancellationToken cancellationToken)
     {
         //_unitOfWork.RecreateCleanDatabase();
         if (request == null) throw new ArgumentNullException(nameof(request));
@@ -39,16 +40,8 @@ internal class DepartmentCreatedCommandHandler : IRequestHandler<DepartmentCreat
         {
             result.AddDomainEvent(new DepartmentCreatedEvent(result));
             await _unitOfWork.Save(cancellationToken);
-            DepartmentCreateCommand? dp = new DepartmentCreateCommand
-            {
-                DepartmentId = result.Id,
-                DepartmentName = result.DepName,
-                CreatedBy = result.CreatedBy,
-                CreatedOn = result.CreatedDate,
-            };
-            return await Result<DepartmentCreateCommand>.SuccessAsync(dp, "تم اضافة القسم بنجاح");
-
+            return await Result<DepartmentDTO>.SuccessAsync((DepartmentDTO)result, $"تم اضافة القسم {result.DepName} بنجاح");
         }
-        return Result<DepartmentCreateCommand>.Failure("فشل في اشاء القسم");
+        return Result<DepartmentDTO>.Failure("فشل في انشاء القسم");
     }
 }

@@ -27,10 +27,11 @@ namespace Zamzam.Application.Features.Areas.Queries.GetAllAreas
                 .Where(x => x.IsDeleted != true).Include(x => x.Employee)
                 .ToListAsync(cancellationToken);
             List<AreaDto>? result = new();
-            foreach (var area in areas)
-            {
-                result.Add((AreaDto)area);
-            }
+            result = areas.ConvertAll<AreaDto>(x => (AreaDto)x);
+            //foreach (var area in areas)
+            //{
+            //    result.Add((AreaDto)area);
+            //}
             return await Result<List<AreaDto>>.SuccessAsync(result);
         }
     }

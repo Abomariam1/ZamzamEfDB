@@ -1,4 +1,6 @@
-﻿using ZamzamUiCompact.Services.Security;
+﻿using ZamzamUiCompact.Services.RepositoryServices;
+using ZamzamUiCompact.Services.RepositoryServices.Inteface;
+using ZamzamUiCompact.Services.Security;
 
 namespace ZamzamUiCompact.Extensions;
 
@@ -21,7 +23,9 @@ public static class IServiceCollectionExtension
         services.AddSingleton<IContentDialogService, ContentDialogService>();
         services.AddSingleton<IAuthenticatedUser, AuthenticatedUser>();
         services.AddSingleton<ApplicationSettings>();
-        services.AddSingleton<AreaService>();
+        services.AddTransient(typeof(IGenericService<>), typeof(GenericService<>));
+        services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork));
+
         services.ConfigureOptions<AuthenticatedUserSetup>();
         services.ConfigureOptions<ApplicationSettingsSetup>();
 
@@ -36,6 +40,7 @@ public static class IServiceCollectionExtension
         {
             options.BaseAddress = new Uri($"{baseAdress}");
             options.DefaultRequestHeaders.Add("Accept", "application/json");
+            //options.DefaultRequestHeaders.Add("Authorization", _user.Token);
         });
 
         services.AddHttpClient<StartUpWindowViewModel>(client =>
@@ -49,19 +54,6 @@ public static class IServiceCollectionExtension
             client.BaseAddress = new Uri($"{baseAdress}/Account");
             client.DefaultRequestHeaders.Add("Accept", "application/json");
         });
-
-        services.AddHttpClient<DepartmentViewModel>(client =>
-        {
-            client.BaseAddress = new Uri($"{baseAdress}/Department");
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-        });
-
-        services.AddHttpClient<EmployeeViewModel>(client =>
-        {
-            client.BaseAddress = new Uri($"{baseAdress}/Employee");
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-        });
-
         services.AddHttpClient();
     }
 
@@ -77,6 +69,7 @@ public static class IServiceCollectionExtension
         services.AddSingleton<DepartmentModel>();
         services.AddSingleton<EmployeeViewModel>();
         services.AddSingleton<AreaViewModel>();
+        services.AddSingleton<ItemsViewModel>();
     }
 
     private static void AddViews(this IServiceCollection services)
@@ -90,6 +83,7 @@ public static class IServiceCollectionExtension
         services.AddSingleton<DepartmentPage>();
         services.AddSingleton<EmployeePage>();
         services.AddSingleton<AreasPage>();
+        services.AddSingleton<ItemsPage>();
     }
 
 }

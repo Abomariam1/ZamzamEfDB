@@ -7,7 +7,7 @@ using Zamzam.Application.Features.Customers.Commands.Update;
 using Zamzam.Application.Features.Customers.Queries.GetAllCustomer;
 using Zamzam.Shared;
 
-namespace Zamzam.API.Controllers
+namespace Zamzam.WebApi.Controllers.v1
 {
     [Authorize]
     public class CustomerController : ApiControllerBase

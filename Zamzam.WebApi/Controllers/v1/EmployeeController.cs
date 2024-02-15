@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Zamzam.API.Controllers;
 using Zamzam.Application.DTOs;
 using Zamzam.Application.Features.Employees.Commands.Create;
 using Zamzam.Application.Features.Employees.Commands.Delete;
@@ -9,7 +8,7 @@ using Zamzam.Application.Features.Employees.Commands.Update;
 using Zamzam.Application.Features.Employees.Queries;
 using Zamzam.Shared;
 
-namespace Zamzam.WebApi.Controllers
+namespace Zamzam.WebApi.Controllers.v1
 {
     [Authorize]
     public class EmployeeController : ApiControllerBase

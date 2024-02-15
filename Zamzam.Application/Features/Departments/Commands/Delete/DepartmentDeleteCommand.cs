@@ -34,14 +34,12 @@ namespace Zamzam.Application.Features.Departments.Commands.Delete
         public async Task<Result<int>> Handle(DepartmentDeleteCommand request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) { return await Result<int>.FailureAsync("Pleaze choose department for deleting"); }
-            Department dep = new()
-            {
-                Id = request.Id
-            };
-            var del = await _unitOfWork.Repository<Department>().DeleteAsync(dep.Id);
+
+            Department? dep = await _unitOfWork.Repository<Department>().DeleteAsync(request.Id);
             dep.AddDomainEvent(new DepartmentDeletedEvent(dep));
-            await _unitOfWork.Save(cancellationToken);
-            return Result<int>.Success(del.Id, "تم حذف القسم");
+            var count = await _unitOfWork.Save(cancellationToken);
+            return count > 0 ? Result<int>.Success(dep.Id, $"تم حذف القسم {dep.DepName} بنجاح")
+                : Result<int>.Failure(0, $"فشل في حذف القسم {dep.DepName}.");
         }
     }
 

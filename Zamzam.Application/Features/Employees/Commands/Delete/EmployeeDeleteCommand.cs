@@ -38,8 +38,9 @@ namespace Zamzam.Application.Features.Employees.Commands.Delete
                     "");
             var result = await _unitOfWork.Repository<Employee>().DeleteAsync(request.Id);
             result.AddDomainEvent(new EmployeeDeleteEvent(result));
-            var save = await _unitOfWork.Save(cancellationToken);
-            return await Result<int>.SuccessAsync(save, $"تم حدف الموظف{result.Name}");
+            int count = await _unitOfWork.Save(cancellationToken);
+            return count > 0 ? await Result<int>.SuccessAsync(count, $"تم حدف الموظف {result.Name}.") :
+                await Result<int>.FailureAsync("فشل في حذف الموظف {result.Name}. ");
         }
     }
 }

@@ -16,17 +16,23 @@
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      x:Name="employeepage"
       Title="EmployeePage">
     <Page.Resources>
         <helpers:BytesToImageConverter x:Key="BytesToImageConverter"/>
     </Page.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded" SourceName="employeepage">
+            <i:InvokeCommandAction Command="{Binding ViewModel.GetAllEmployeesCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ui:DynamicScrollViewer>
+        <ui:DynamicScrollViewer  Grid.Row="0">
             <Grid>
                 <Grid.ColumnDefinitions >
                     <ColumnDefinition Width="*"/>
@@ -301,30 +307,50 @@
                        Command="{Binding ViewModel.NewEmployeeCommand}"/>
             <ui:Button Content="اضافة" Height="45" Width="70"
                        CornerRadius="5" Margin="10 0"
-                       Command="{Binding ViewModel.AddEmployeeCommand}"/>
+                       Command="{Binding ViewModel.AddCommand}"
+                       IsEnabled="{Binding ViewModel.Enabled}"/>
             <ui:Button Content="تعديل" Height="45" Width="70"
                        CornerRadius="5" Margin="10 0"
-                       Command="{Binding ViewModel.UpdateEmployeeCommand}"/>
+                       Command="{Binding ViewModel.UpdateCommand}"
+                       IsEnabled="{Binding ViewModel.Enabled}"/>
             <ui:Button Content="حذف" Height="45" Width="70"
                        CornerRadius="5" Margin="10 0"
-                       Command="{Binding ViewModel.RemoveEmployeeCommand}"/>
+                       Command="{Binding ViewModel.DeleteCommand}"
+                       IsEnabled="{Binding ViewModel.Enabled}"/>
             <ui:Button Content="بحث" Height="45" Width="70"
            CornerRadius="5" Margin="10 0"/>
-            <ui:AutoSuggestBox OriginalItemsSource="{Binding ViewModel.Departments}"
-                               Text="{Binding ViewModel.SelectedDepartment.DepartmentName}"
-                               IsSuggestionListOpen="True" MinWidth="250"
-                               UpdateTextOnSelect="True" IsTextSearchCaseSensitive="False"
+            <ui:AutoSuggestBox x:Name="autoBox"
+                               OriginalItemsSource="{Binding ViewModel.Employees}"
+                               IsSuggestionListOpen="False" MinWidth="250"
+                               UpdateTextOnSelect="True"
+                               PlaceholderText="بحث باسم الموظف"
+                               IsTextSearchCaseSensitive="False"
+                               DisplayMemberPath="EmployeeName"
+                               Text="{Binding RelativeSource={
+                RelativeSource Mode=Self},Path=DisplayMemberPath}"
+                               KeyUp="autoBox_KeyUp"
+                               TextChanged="autoBox_TextChanged"
                                >
-                <ui:AutoSuggestBox.ItemTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type models:DepartmentModel}">
-                        <TextBlock Text="{Binding DepartmentName}"/>
-                    </HierarchicalDataTemplate>
-                    <!--<DataTemplate DataType="{x:Type models:DepartmentModel}">
-                        <TextBlock Text="{Binding DepartmentName}"/>
-                    </DataTemplate>-->
-                </ui:AutoSuggestBox.ItemTemplate>
-                
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged" SourceName="{Binding ElementName=autoBox}" >
+                        <i:InvokeCommandAction Command="{Binding ViewModel.TextChangedAutoBoxCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </ui:AutoSuggestBox>
         </WrapPanel>
+        <StackPanel Grid.Row="2">
+            <ui:InfoBar Grid.Row="2" Foreground="AliceBlue"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    Title="{Binding ViewModel.InfoBarTitle}"
+                    Message="{Binding ViewModel.Message}"
+                    Severity="{Binding ViewModel.Saverty}"
+                    IsOpen="{Binding ViewModel.Status}"
+                    IsClosable="True" 
+                    Visibility="{Binding ViewModel.Status,
+            Converter={StaticResource BooleanToVisibilityConverter}}"
+                    />
+        </StackPanel>
     </Grid>
 </Page>

@@ -1,23 +1,24 @@
 ﻿using Microsoft.Win32;
 using System.ComponentModel.DataAnnotations;
+using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
 namespace ZamzamUiCompact.ViewModels.Pages;
 
 public partial class EmployeeViewModel : ObservableValidator
 {
     #region Private fields
-    private const string _userPath = "user.json";
-    private readonly IAuthenticatedUser _user;
-    private readonly HttpClient _httpClient;
-
-    private readonly string _photoPath = $"{Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.FullName}/Assets/zamzamlogo.png";
+    const string employeeController = "Employee";
+    const string departmentController = "Department";
+    private readonly string _photoPath =
+        $"{Directory.GetParent(path: AppDomain.CurrentDomain.BaseDirectory)!
+            .Parent!.Parent!.Parent!.FullName}/Assets/zamzamlogo.png";
+    private IUnitOfWork _unitOfWork;
+    private static int counter = 0;
 
     private readonly DispatcherTimer _dispatcher = new()
     {
-        Interval = TimeSpan.FromMicroseconds(200)
+        Interval = TimeSpan.FromMilliseconds(500)
     };
-
-    private readonly DepartmentViewModel _department;
 
     #endregion
 
@@ -76,18 +77,23 @@ public partial class EmployeeViewModel : ObservableValidator
     [ObservableProperty]
     private ObservableCollection<EmployeeModel> _employees;
 
+    [ObservableProperty] private string _message = string.Empty;
+
+    [ObservableProperty] private bool _status = false;
+
+    [ObservableProperty] private bool _enabled = true;
+
+    [ObservableProperty] private InfoBarSeverity _saverty = InfoBarSeverity.Informational;
+    [ObservableProperty] private string _infoBarTitle = "رسالة";
     #endregion
 
     #region Constructors
 
-    public EmployeeViewModel(HttpClient httpClient, DepartmentViewModel department, IAuthenticatedUser user)
+    public EmployeeViewModel(IUnitOfWork unitOfWork)
     {
-        _httpClient = httpClient;
-        _user = user.GetUser();
-        _httpClient.DefaultRequestHeaders.Add("Authorization", _user.Token);
-        _department = department;
-        Departments = _department.Departments;
+        _unitOfWork = unitOfWork;
         Photo = PathToPhoto(PathPhoto);
+        StartTimer();
     }
     #endregion
 
@@ -108,14 +114,12 @@ public partial class EmployeeViewModel : ObservableValidator
         BirthDate = DateTime.Now;
         Salary = 0;
         Qualification = string.Empty;
-        //var ph = Encoding.UTF8.GetBytes(SelectedEmployee.Photo ?? "");
-        //var ph = 
         Photo = PathToPhoto(PathPhoto);
         SelectedDepartment = null;
     }
 
     [RelayCommand]
-    public async Task AddEmployee()
+    public async Task AddAsync()
     {
         EmployeeModel? newEmployee = new()
         {
@@ -135,34 +139,26 @@ public partial class EmployeeViewModel : ObservableValidator
             Qualification = Qualification,
             Photo = Convert.ToBase64String(Photo ?? []),
             DepartmentId = SelectedDepartment.DepartmentId,
+            Department = SelectedDepartment
         };
-
-        var request = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress, newEmployee);
-        if (request.IsSuccessStatusCode)
+        Enabled = false;
+        Result<EmployeeModel>? result = await _unitOfWork.Service<EmployeeModel>().AddAsync(employeeController, newEmployee);
+        if (result.Succeeded)
         {
-            var result = await request.Content.ReadAsStringAsync();
-            Result<EmployeeModel>? emp = JsonSerializer.Deserialize<Result<EmployeeModel>>(result, new JsonSerializerOptions()
-            {
-                PropertyNameCaseInsensitive = true
-            });
-            EmployeeModel? employee = emp.Data;
-
-            if (emp != null)
-            {
-                Departments = await _department.GetAllDeparmentsAsync();
-
-                //var index = Departments.IndexOf(SelectedDepartment);
-                //if (index > -1)
-                //    Departments[index].Employees.Add(employee);
-                //else
-                //    Departments[index].Employees.Add(employee);
-            }
+            EmployeeModel? employee = result.Data;
+            var index = Departments.IndexOf(SelectedDepartment);
+            if (index > -1)
+                Departments[index].Employees.Add(employee);
+            Validate(result.Message, "Succeeded", InfoBarSeverity.Success);
+            //Message = result.Message;
         }
+        Enabled = true;
     }
 
     [RelayCommand]
-    public async Task UpdateEmployee()
+    public async Task UpdateAsync()
     {
+        if (SelectedDepartment == null) { return; }
         EmployeeModel? updatedEmployee = new()
         {
             EmployeeId = SelectedEmployee.EmployeeId,
@@ -180,54 +176,49 @@ public partial class EmployeeViewModel : ObservableValidator
             Salary = Salary,
             Qualification = Qualification,
             Photo = Convert.ToBase64String(Photo ?? []),
-            DepartmentId = SelectedDepartment.DepartmentId
+            DepartmentId = SelectedDepartment.DepartmentId,
+            Department = SelectedDepartment
         };
-        var response = await _httpClient.PutAsJsonAsync(_httpClient.BaseAddress, updatedEmployee, new JsonSerializerOptions()
+        Enabled = false;
+        Result<EmployeeModel>? result = await _unitOfWork.Service<EmployeeModel>().UpdateAsync(employeeController, updatedEmployee);
+        if (result.Succeeded)
         {
-            PropertyNameCaseInsensitive = false
-        });
-        var json = response.Content.ReadAsStringAsync().Result;
-        if (response.IsSuccessStatusCode)
-        {
-            var result = await response.Content.ReadAsStringAsync();
-            Result<EmployeeModel>? data = JsonSerializer.Deserialize<Result<EmployeeModel>>(result, new JsonSerializerOptions()
-            {
-                PropertyNameCaseInsensitive = true
-            });
-            EmployeeModel? employee = data.Data;
+            //Departments = await _department.GetAllDeparmentsAsync();
+            EmployeeModel? employee = result.Data;
+            //DepartmentModel? newDep = result.Data.Department;
 
-            if (employee != null)
-            {
-                Departments = await _department.GetAllDeparmentsAsync();
-                //foreach (var department in Departments)
-                //{
-                //    if (department.Employees.Count > 0)
-                //    {
-                //        foreach (var emp in department.Employees)
-                //        {
-                //            var ph = emp.Phone;
-                //            if (ph != null)
-                //            {
-                //                var p = Convert.TryFromBase64Chars
-                //            }
-                //        }
-                //    }
-                //}
-            }
+            DepartmentModel? oldDep = Departments.Where(x => x.Employees.Contains(SelectedEmployee)).FirstOrDefault();
+            if (oldDep != null && oldDep.DepartmentId == employee.Department.DepartmentId) return;
+            var newList = Departments.ToList();
+
+            int oldDepIndex = Departments.IndexOf(oldDep);
+            DepartmentModel? dd = newList.Where(x => x.DepartmentId == employee.Department.DepartmentId).FirstOrDefault();
+            int newDepIndex = newList.IndexOf(dd);
+
+            int delIndex = newList[oldDepIndex].Employees.IndexOf(SelectedEmployee);
+            newList[oldDepIndex].Employees.RemoveAt(delIndex);
+            newList[newDepIndex].Employees.Add(employee);
+            Departments.Clear();
+            Departments = new ObservableCollection<DepartmentModel>(newList);
+            Validate(result.Message, "Succeeded", InfoBarSeverity.Success);
+            Enabled = true;
         }
-
     }
 
     [RelayCommand]
-    public async Task RemoveEmployee()
+    public async Task DeleteAsync()
     {
         if (SelectedDepartment == null && SelectedEmployee.EmployeeId == 0) return;
-
-        var response = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}/{SelectedEmployee.EmployeeId}");
-        if (response.IsSuccessStatusCode)
+        Enabled = false;
+        Result<int>? result = await _unitOfWork.Service<EmployeeModel>().DeleteAsync($"{employeeController}/{SelectedEmployee.EmployeeId} ");
+        if (result.Succeeded)
         {
-            Departments = await _department.GetAllDeparmentsAsync();
+            var index = Departments.IndexOf(SelectedDepartment);
+            var empindex = Departments[index].Employees.IndexOf(SelectedEmployee);
+            Departments[index].Employees.RemoveAt(empindex);
+            Validate(result.Message, "Succeeded", InfoBarSeverity.Success);
         }
+        Enabled = true;
     }
 
     [RelayCommand]
@@ -248,6 +239,21 @@ public partial class EmployeeViewModel : ObservableValidator
         }
     }
 
+    [RelayCommand]
+    public async Task GetAllEmployeesAsync()
+    {
+        Result<List<DepartmentModel>>? deps = await _unitOfWork.Service<DepartmentModel>().GetAllAsync(departmentController);
+        Departments = new ObservableCollection<DepartmentModel>(deps.Data);
+        Result<List<EmployeeModel>>? result = await _unitOfWork.Service<EmployeeModel>().GetAllAsync($"{employeeController}/getall");
+        var employees = result.Data;
+        Employees = new ObservableCollection<EmployeeModel>(employees);
+    }
+
+    [RelayCommand]
+    public void TextChangedAutoBox()
+    {
+
+    }
     #endregion
 
     #region Private Methods
@@ -266,11 +272,12 @@ public partial class EmployeeViewModel : ObservableValidator
         HireDate = SelectedEmployee.HireDate;
         BirthDate = SelectedEmployee.BirthDate;
         Salary = SelectedEmployee.Salary;
-        Qualification = SelectedEmployee.Qualification;
-        //var ph = Encoding.UTF8.GetBytes(SelectedEmployee.Photo ?? "");
-        //var ph = 
-        Photo = Convert.FromBase64String(SelectedEmployee.Photo);
-        var departmentModel = new DepartmentModel();
+        Qualification = SelectedEmployee.Qualification ?? "";
+        Photo = Convert.FromBase64String(SelectedEmployee.Photo ?? "");
+
+        var emp = Departments.Where(x => x.DepartmentId == SelectedEmployee.DepartmentId)
+            .FirstOrDefault()!;
+        SelectedDepartment = emp;
         foreach (DepartmentModel department in Departments)
         {
             if (department.Employees.Contains(SelectedEmployee))
@@ -300,6 +307,38 @@ public partial class EmployeeViewModel : ObservableValidator
         }
 
         return stringToValidate;
+    }
+    private void Validate(string message, string title, InfoBarSeverity saverty)
+    {
+        Message = message;
+        InfoBarTitle = title;
+        Status = true;
+        Saverty = saverty;
+        StartTimer();
+    }
+    private void StartTimer()
+    {
+        _dispatcher.Tick += _dispatcher_Tick;
+        _dispatcher.Start();
+    }
+    private void _dispatcher_Tick(object? sender, EventArgs e)
+    {
+        counter++;
+        if (counter == 5)
+        {
+            counter = 0;
+            StopAutoProgress();
+            _dispatcher.Tick -= _dispatcher_Tick;
+        }
+    }
+    private void StopAutoProgress()
+    {
+        // Stop the timer when needed
+        if (_dispatcher != null)
+        {
+            Status = false;
+            _dispatcher.Stop();
+        }
     }
 
     #endregion

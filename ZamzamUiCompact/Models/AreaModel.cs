@@ -1,6 +1,6 @@
 ﻿namespace ZamzamUiCompact.Models;
 
-public record AreaModel
+public class AreaModel : Model
 {
     public int AreaId { get; set; }
     public string AreaName { get; set; }

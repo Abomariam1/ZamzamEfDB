@@ -6,8 +6,6 @@
       xmlns:local="clr-namespace:ZamzamUiCompact.Views.Pages"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-      xmlns:i2="http://schemas.microsoft.com/expression/2010/interactivity"
-      xmlns:interactivity="using:Microsoft.Xaml.Interactivity" 
       xmlns:pages="clr-namespace:ZamzamUiCompact.ViewModels.Pages" 
       d:DataContext="{d:DesignInstance Type=pages:AreaViewModel}"
       mc:Ignorable="d" 
@@ -16,8 +14,13 @@
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       ScrollViewer.CanContentScroll="False"
+      x:Name="areaPage"
       >
-
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded" SourceName="areaPage">
+            <i:InvokeCommandAction Command="{Binding ViewModel.StartupCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.Resources>
             <Style x:Key="AlterRowStyle" TargetType="DataGridRow">

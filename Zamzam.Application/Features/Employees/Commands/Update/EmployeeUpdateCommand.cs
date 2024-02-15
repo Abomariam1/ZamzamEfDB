@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Zamzam.Application.Common.Mappings;
@@ -60,19 +59,20 @@ namespace Zamzam.Application.Features.Employees.Commands.Update
             employee.HireDate = request.HireDate;
             employee.BirthDate = request.BirthDate;
             employee.Salary = request.Salary;
-            employee.Qualification = request.Qualification;
+            employee.Qualification = request.Qualification ?? "";
             employee.Photo = Convert.FromBase64String(request.Photo ?? "");
             employee.DepartmentId = request.DepartmentId;
             employee.UpdatedBy = request.UpdatedBy;
             Employee? result = await _unitOfWork.Repository<Employee>().UpdateAsync(employee);
             result.AddDomainEvent(new EmployeeUpdateEvent(result));
-            await _unitOfWork.Save(cancellationToken);
-            EmployeeDTO? updated = _unitOfWork.Repository<Employee>().Entities
+            int count = await _unitOfWork.Save(cancellationToken);
+            Employee? updated = _unitOfWork.Repository<Employee>().Entities
                 .Where(x => x.IsDeleted == false && x.Id == result.Id)
                 .Include(x => x.Department)
-                .ProjectTo<EmployeeDTO>(_mapper.ConfigurationProvider)
                 .FirstOrDefault();
-            return Result<EmployeeDTO>.Success(updated!, $"تم تعديل العميل {updated!.EmployeeName}...");
+            EmployeeDTO? empUpdated = (EmployeeDTO)updated;
+            return count > 0 ? Result<EmployeeDTO>.Success(empUpdated!, $"تم تعديل الموظف {empUpdated.EmployeeName} بنجاح.") :
+                Result<EmployeeDTO>.Failure($"فشل في تعديل الموظف {empUpdated.EmployeeName} ");
         }
     }
 }

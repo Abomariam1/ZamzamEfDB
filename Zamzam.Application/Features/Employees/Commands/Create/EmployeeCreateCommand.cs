@@ -63,9 +63,10 @@ namespace Zamzam.Application.Features.Employees.Commands.Create
             };
             var newEmployee = await _unitOfWork.Repository<Employee>().AddAsync(Emp);
             newEmployee.AddDomainEvent(new EmployeeCreateEvent(newEmployee));
-            await _unitOfWork.Save(cancellationToken);
+            int count = await _unitOfWork.Save(cancellationToken);
             EmployeeDTO? emp = _mapper.Map<EmployeeDTO>(newEmployee);
-            return Result<EmployeeDTO>.Success(emp, $"Employee {newEmployee.Name} is created...");
+            return count > 0 ? Result<EmployeeDTO>.Success(emp, $"تم انشاء الموظف  {newEmployee.Name} بنجاح.") :
+                Result<EmployeeDTO>.Failure($"فشل في انشاء الموظف {emp.EmployeeName}.");
         }
     }
 }

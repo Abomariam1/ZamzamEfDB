@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Zamzam.Application.DTOs;
@@ -25,10 +24,9 @@ internal class GetAllEmployeesQueryHandler : IRequestHandler<GetAllEmployeesQuer
     {
         var employees = await _unitOfWork.Repository<Employee>().Entities
             .Where(x => x.IsDeleted == false).Include(x => x.Department)
-            .ProjectTo<EmployeeDTO>(_mapper.ConfigurationProvider)
             .ToListAsync();
-        var emp = employees;
+        var emp = employees.ConvertAll(x => (EmployeeDTO)x);
 
-        return await Result<List<EmployeeDTO>>.SuccessAsync(employees);
+        return await Result<List<EmployeeDTO>>.SuccessAsync(emp);
     }
 }
