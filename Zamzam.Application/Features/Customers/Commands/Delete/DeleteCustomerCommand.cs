@@ -1,13 +1,11 @@
-﻿using AutoMapper;
-using MediatR;
-using Zamzam.Application.Common.Mappings;
+﻿using MediatR;
 using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.Domain;
 using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.Customers.Commands.Delete
 {
-    public record DeleteCustomerCommand : IRequest<Result<int>>, IMapFrom<Customer>
+    public record DeleteCustomerCommand : IRequest<Result<int>>
     {
         public int Id { get; }
         public DeleteCustomerCommand()
@@ -22,12 +20,10 @@ namespace Zamzam.Application.Features.Customers.Commands.Delete
     internal class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, Result<int>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public DeleteCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public DeleteCustomerCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public async Task<Result<int>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
@@ -39,14 +35,18 @@ namespace Zamzam.Application.Features.Customers.Commands.Delete
             Customer customer = await _unitOfWork.Repository<Customer>().GetByIdAsync(request.Id);
             if (customer == null)
             {
-                return await Result<int>.FailureAsync("Customer not found");
+                return await Result<int>.FailureAsync("لم يتم ايجاد العميل");
             }
             else
             {
                 await _unitOfWork.Repository<Customer>().DeleteAsync(customer.Id);
-                customer.AddDomainEvent(new DeleteCustomerEvent(customer));
-                await _unitOfWork.Save(cancellationToken);
-                return await Result<int>.SuccessAsync(customer.Id, "Customer deleted...");
+                int count = await _unitOfWork.Save(cancellationToken);
+                if (count > 0)
+                {
+                    customer.AddDomainEvent(new DeleteCustomerEvent(customer));
+                    return await Result<int>.SuccessAsync(customer.Id, "Customer deleted...");
+                }
+                return await Result<int>.FailureAsync("لم يتم ايجاد العميل");
             }
         }
     }

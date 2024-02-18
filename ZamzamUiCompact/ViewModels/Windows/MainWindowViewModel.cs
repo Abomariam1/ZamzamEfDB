@@ -41,6 +41,18 @@ public partial class MainWindowViewModel : ObservableObject, IWindowEvent
             Icon = new SymbolIcon { Symbol = SymbolRegular.TrayItemAdd24 },
             TargetPageType = typeof(ItemsPage)
         },
+        new NavigationViewItem()
+        {
+            Content = "الموردين",
+            Icon = new SymbolIcon { Symbol = SymbolRegular.Sanitize24 },
+            TargetPageType = typeof(SupplierPage)
+        },
+        new NavigationViewItem()
+        {
+            Content = "المشتريات",
+            Icon = new SymbolIcon { Symbol = SymbolRegular.Production24 },
+            TargetPageType = typeof(PurchasePage)
+        },
     };
 
     [ObservableProperty]

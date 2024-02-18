@@ -1,9 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Zamzam.Application.DTOs;
 using Zamzam.Application.Features.Customers.Commands.Create;
 using Zamzam.Application.Features.Customers.Commands.Delete;
 using Zamzam.Application.Features.Customers.Commands.Update;
+using Zamzam.Application.Features.Customers.Queries;
 using Zamzam.Application.Features.Customers.Queries.GetAllCustomer;
 using Zamzam.Shared;
 
@@ -19,15 +21,15 @@ namespace Zamzam.WebApi.Controllers.v1
             _mediator = mediator;
         }
         [HttpGet]
-        public async Task<Result<List<GetAllCustmerDto>>> Get() =>
+        public async Task<Result<List<GetAllCustmersQuery>>> Get() =>
             await _mediator.Send(new GetAllCustomerQuery());
 
         [HttpPost]
-        public async Task<Result<int>> Create(CreateCustomerCommand command)
+        public async Task<Result<CustomerDto>> Create(CreateCustomerCommand command)
         {
             if (!ModelState.IsValid)
             {
-                return Result<int>.Failure(0, "خطاء");
+                return Result<CustomerDto>.Failure("خطاء");
             }
             command.CreatedBy = HttpContext.User.Identity.Name;
             return await _mediator.Send(command);

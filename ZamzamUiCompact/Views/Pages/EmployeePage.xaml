@@ -12,7 +12,7 @@
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       d:DataContext="{d:DesignInstance Type=pages:EmployeeViewModel}"
       mc:Ignorable="d" 
-      d:DesignHeight="800" d:DesignWidth="1050"
+      d:DesignHeight="1050" d:DesignWidth="1200"
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
@@ -331,6 +331,9 @@
                                KeyUp="autoBox_KeyUp"
                                TextChanged="autoBox_TextChanged"
                                >
+                <!--<ui:AutoSuggestBox.InputBindings  >
+                    <KeyBinding Gesture=""
+                </ui:AutoSuggestBox.InputBindings>-->
 
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="TextChanged" SourceName="{Binding ElementName=autoBox}" >

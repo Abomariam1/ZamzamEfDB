@@ -1,11 +1,12 @@
 ﻿using MediatR;
+using Zamzam.Application.DTOs;
 using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.Domain;
 using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.Customers.Commands.Create
 {
-    public record CreateCustomerCommand : IRequest<Result<int>>
+    public record CreateCustomerCommand : IRequest<Result<CustomerDto>>
     {
         public string CustomerName { get; set; } = "عميل افتراضي";
         public string? Phone { get; set; } = string.Empty;
@@ -16,7 +17,7 @@ namespace Zamzam.Application.Features.Customers.Commands.Create
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         public int AreaId { get; set; }
     }
-    internal class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, Result<int>>
+    internal class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, Result<CustomerDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -27,7 +28,7 @@ namespace Zamzam.Application.Features.Customers.Commands.Create
 
         }
 
-        public async Task<Result<int>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<Result<CustomerDto>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
             var cust = new Customer()
             {
@@ -39,10 +40,14 @@ namespace Zamzam.Application.Features.Customers.Commands.Create
                 AreaId = request.AreaId,
                 CreatedBy = request.CreatedBy
             };
-            await _unitOfWork.Repository<Customer>().AddAsync(cust);
-            cust.AddDomainEvent(new CreatedCustomerEvent(cust));
-            await _unitOfWork.Save(cancellationToken);
-            return await Result<int>.SuccessAsync(cust.Id, "Customer created...");
+            Customer? added = await _unitOfWork.Repository<Customer>().AddAsync(cust);
+            int count = await _unitOfWork.Save(cancellationToken);
+            if (count > 0)
+            {
+                cust.AddDomainEvent(new CreatedCustomerEvent(cust));
+                return await Result<CustomerDto>.SuccessAsync((CustomerDto)added, $"تم اضاقة العميل {added.Name}...");
+            }
+            return await Result<CustomerDto>.FailureAsync("فشل في اضافة العميل");
         }
     }
 }

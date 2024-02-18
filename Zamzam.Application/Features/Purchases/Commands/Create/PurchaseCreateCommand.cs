@@ -15,7 +15,7 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
         public required InvoiceType InvoiceType { get; set; }
         public required int EmployeeId { get; set; }
         public required int SupplierId { get; set; }
-        public List<ODetails> Details { get; set; }
+        public required List<ODetails> Details { get; set; }
         public string? CreatedBy { get; set; }
     }
 
@@ -38,7 +38,6 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
                     return await Result<int>.FailureAsync(0, $"لم يتم العثور على صنف");
                 OrderDetail? detail = new()
                 {
-                    OrderId = (int)requstDetails.OrderId!,
                     ItemId = requstDetails.ItemId,
                     Price = requstDetails.Price,
                     Quantity = requstDetails.Quantity,

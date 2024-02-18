@@ -26,8 +26,8 @@ namespace Zamzam.Application.Features.Areas.Queries.GetAllAreas
             var areas = await _unitOfWork.Repository<Area>().Entities
                 .Where(x => x.IsDeleted != true).Include(x => x.Employee)
                 .ToListAsync(cancellationToken);
-            List<AreaDto>? result = new();
-            result = areas.ConvertAll<AreaDto>(x => (AreaDto)x);
+            List<AreaDto>? result = [];
+            result = [.. areas.ConvertAll(x => (AreaDto)x)];
             //foreach (var area in areas)
             //{
             //    result.Add((AreaDto)area);

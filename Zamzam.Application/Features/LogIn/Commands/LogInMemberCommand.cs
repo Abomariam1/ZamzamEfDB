@@ -19,13 +19,11 @@ namespace Zamzam.Application.Features.LogIn.Commands
     internal class LoginMemberCommandHandler : IRequestHandler<LogInMemberCommand, JwtSecurityToken>
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IMapper _mapper;
         private readonly IConfiguration _config;
 
         public LoginMemberCommandHandler(UserManager<ApplicationUser> userManager, IMapper mapper, IConfiguration config)
         {
             _userManager = userManager;
-            _mapper = mapper;
             _config = config;
         }
         async Task<JwtSecurityToken> IRequestHandler<LogInMemberCommand, JwtSecurityToken>.Handle(LogInMemberCommand request, CancellationToken cancellationToken)

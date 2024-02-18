@@ -4,11 +4,77 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ZamzamUiCompact.Views.Pages"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:pages="clr-namespace:ZamzamUiCompact.ViewModels.Pages"
+      d:DataContext="{d:DesignInstance Type=pages:SupplierViewModel}"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="SupplierPage">
+      >
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel >
+
+                <StackPanel Margin="10">
+                    <ui:TextBlock Text="اسم المورد"/>
+                    <ui:TextBox Grid.Column="1" 
+                                PlaceholderText="اسم المورد" 
+                                Text="{Binding ViewModel.SupplierName}"/>
+                </StackPanel>
+
+                <StackPanel Margin="10">
+                    <ui:TextBlock Grid.Row="1" Text="التليفون" />
+                    <ui:TextBox Grid.Column="1" PlaceholderText="تليفون"
+                                  Text="{Binding ViewModel.Phone}"/>
+                </StackPanel>
+
+                <StackPanel Margin="10">
+                    <ui:TextBlock Grid.Row="1" Text="العنوان" />
+                    <ui:TextBox Grid.Column="1" PlaceholderText="العنوان"
+                                  Text="{Binding ViewModel.Address}"/>
+
+                </StackPanel>
+
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <DataGrid ItemsSource="{Binding ViewModel.Suppliers}" AutoGenerateColumns="False"
+                          IsReadOnly="True" SelectedItem="{Binding ViewModel.Supplier}"
+                          SelectionMode="Single" AlternatingRowBackground="Gray"
+                          HeadersVisibility="Column" 
+                          >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="اسم المورد" Binding="{Binding SupplierName}"/>
+                        <DataGridTextColumn Header="تليفون" Binding="{Binding Phone}"/>
+                        <DataGridTextColumn Header="العنوان" Binding="{Binding Address}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Grid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" >
+            <ui:Button Content="اضافة" Margin="10 0"
+                           Width="80" Height="40"
+                           Command="{Binding ViewModel.AddSupplierCommand}"/>
+            <ui:Button Content="تعديل" Margin="10 0"
+                           Width="80" Height="40"
+                           Command="{Binding ViewModel.UpdateSupplierCommand}"/>
+            <ui:Button Content="حذف" Margin="10 0"
+                           Width="80" Height="40"
+                           Command="{Binding ViewModel.DeleteSupplierCommand}"/>
+        </StackPanel>
+
     </Grid>
 </Page>

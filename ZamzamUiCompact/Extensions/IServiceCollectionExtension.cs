@@ -64,12 +64,14 @@ public static class IServiceCollectionExtension
         services.AddSingleton<LoginWindowViewModel>();
         services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<SettingsViewModel>();
-        services.AddSingleton<DataViewModel>();
-        services.AddSingleton<DepartmentViewModel>();
-        services.AddSingleton<DepartmentModel>();
-        services.AddSingleton<EmployeeViewModel>();
-        services.AddSingleton<AreaViewModel>();
-        services.AddSingleton<ItemsViewModel>();
+        services.AddTransient<DataViewModel>();
+        services.AddTransient<DepartmentViewModel>();
+        services.AddTransient<DepartmentModel>();
+        services.AddTransient<EmployeeViewModel>();
+        services.AddTransient<AreaViewModel>();
+        services.AddTransient<ItemsViewModel>();
+        services.AddTransient<SupplierViewModel>();
+        services.AddTransient<PurchaseViewModel>();
     }
 
     private static void AddViews(this IServiceCollection services)
@@ -84,6 +86,8 @@ public static class IServiceCollectionExtension
         services.AddSingleton<EmployeePage>();
         services.AddSingleton<AreasPage>();
         services.AddSingleton<ItemsPage>();
+        services.AddSingleton<SupplierPage>();
+        services.AddSingleton<PurchasePage>();
     }
 
 }
