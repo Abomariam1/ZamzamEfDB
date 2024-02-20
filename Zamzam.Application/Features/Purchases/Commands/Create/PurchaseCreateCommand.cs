@@ -7,7 +7,7 @@ using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.Purchases.Commands.Create
 {
-    public record PurchaseCreateCommand : IRequest<Result<int>>
+    public record PurchaseCreateCommand: IRequest<Result<PurchaseDto>>
     {
         public required DateTime OrderDate { get; set; }
         public required decimal TotalPrice { get; set; }
@@ -19,7 +19,7 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
         public string? CreatedBy { get; set; }
     }
 
-    internal record PurchaseCreateCommandHndler : IRequestHandler<PurchaseCreateCommand, Result<int>>
+    internal record PurchaseCreateCommandHndler: IRequestHandler<PurchaseCreateCommand, Result<PurchaseDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -28,14 +28,14 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<int>> Handle(PurchaseCreateCommand request, CancellationToken cancellationToken)
+        public async Task<Result<PurchaseDto>> Handle(PurchaseCreateCommand request, CancellationToken cancellationToken)
         {
             List<OrderDetail> details = new();
-            foreach (ODetails requstDetails in request.Details)
+            foreach(ODetails requstDetails in request.Details)
             {
                 var product = await _unitOfWork.Repository<Item>().GetByIdAsync(requstDetails.ItemId);
-                if (product == null)
-                    return await Result<int>.FailureAsync(0, $"لم يتم العثور على صنف");
+                if(product == null)
+                    return await Result<PurchaseDto>.FailureAsync($"لم يتم العثور على صنف");
                 OrderDetail? detail = new()
                 {
                     ItemId = requstDetails.ItemId,
@@ -61,9 +61,10 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
             };
             purchase.OrderDetails = details;
             PurchaseOrder? order = await _unitOfWork.Repository<PurchaseOrder>().AddAsync(purchase);
+            int count = await _unitOfWork.Save(cancellationToken);
             order.AddDomainEvent(new PurchaseCreatedEvent(purchase));
-            await _unitOfWork.Save(cancellationToken);
-            return await Result<int>.SuccessAsync(0);
+
+            return await Result<PurchaseDto>.SuccessAsync("");
         }
     }
 }

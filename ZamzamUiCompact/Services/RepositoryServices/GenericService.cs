@@ -20,7 +20,10 @@ public class GenericService<T> : IGenericService<T> where T : IModel
             .FirstOrDefault(x => x.Key == "Authorization");
 
         if (str.Value == null)
+        {
+            _user = user.GetUser();
             _httpClient.DefaultRequestHeaders.Add("Authorization", _user.Token);
+        }
     }
 
     public async Task<Result<T>> AddAsync(string uri, T model)

@@ -2,7 +2,7 @@
 
 namespace Zamzam.WebApi.Controllers.v1;
 
-public class PurchaseController : ApiControllerBase
+public class PurchaseController: ApiControllerBase
 {
     private readonly IMediator _mediator;
 
@@ -10,4 +10,7 @@ public class PurchaseController : ApiControllerBase
     {
         _mediator = mediator;
     }
+
+    [HttpPost]
+    public async Task<ActionResult<Result<PurchasesDto>>>
 }
