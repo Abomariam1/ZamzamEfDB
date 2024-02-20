@@ -32,7 +32,7 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): ObservableObject
     int? _quantity;
 
     [ObservableProperty()]
-    readonly decimal _Total;
+    decimal _Total;
 
     [RelayCommand]
     public async Task GetAllSuppliers()
