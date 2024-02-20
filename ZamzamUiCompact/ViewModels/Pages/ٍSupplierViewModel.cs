@@ -3,13 +3,13 @@ using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
 namespace ZamzamUiCompact.ViewModels.Pages;
 
-public partial class SupplierViewModel : ObservableValidator
+public partial class SupplierViewModel: ObservableValidator
 {
     const string supplierController = "Supplier";
     private IUnitOfWork _unitOfWork;
 
     #region Public Properities
-
+    [ObservableProperty] int _supplierId;
     [ObservableProperty]
     [Required]
     [MaxLength(100)]
@@ -23,12 +23,12 @@ public partial class SupplierViewModel : ObservableValidator
     string _address = string.Empty;
 
     [ObservableProperty]
-    SupplierModel _supplier;
+    SupplierModel _supplier = new();
 
     [ObservableProperty]
-    ObservableCollection<SupplierViewModel> _suppliers;
+    ObservableCollection<SupplierModel> _suppliers = new();
 
-    [ObservableProperty] InfoBarService _infoBarService;
+    [ObservableProperty] InfoBarService _infoBarService = new();
     #endregion
 
     public SupplierViewModel(IUnitOfWork unitOfWork)
@@ -38,9 +38,9 @@ public partial class SupplierViewModel : ObservableValidator
 
     #region Interface Method
     [RelayCommand]
-    public async Task<Result<SupplierModel>> AddSupplierAsync()
+    public async Task AddSupplierAsync()
     {
-        if (SupplierName == string.Empty)
+        if(SupplierName != string.Empty)
         {
             var sup = new SupplierModel()
             {
@@ -48,21 +48,62 @@ public partial class SupplierViewModel : ObservableValidator
                 Phone = Phone,
                 Address = Address,
             };
-            var result = await _unitOfWork.Service<SupplierModel>().AddAsync(supplierController, Supplier);
+            Result<SupplierModel>? result = await _unitOfWork.Service<SupplierModel>().AddAsync(supplierController, sup);
+            SupplierModel? supp = result.Data;
+            Suppliers.Add(supp);
         }
-        return await Result<SupplierModel>.SuccessAsync(Supplier);
     }
     [RelayCommand]
-    public async Task<Result<SupplierModel>> UpdateSupplierAsync()
+    public async Task UpdateSupplierAsync()
     {
-
-        return await Result<SupplierModel>.SuccessAsync(Supplier);
+        if(Supplier != null || Supplier?.SupplierId != 0)
+        {
+            SupplierModel sup = new()
+            {
+                SupplierId = Supplier!.SupplierId,
+                SupplierName = SupplierName,
+                Phone = Phone,
+                Address = Address,
+            };
+            Result<SupplierModel>? result = await _unitOfWork.Service<SupplierModel>().UpdateAsync(supplierController, sup);
+            SupplierModel? supp = result.Data;
+            await GetAllSuppiers();
+        }
     }
     [RelayCommand]
     public async Task DeleteSupplierAsync()
     {
-        await Task.Delay(300);
+        if(Supplier != null || Supplier?.SupplierId != 0)
+        {
+            Result<int>? result = await _unitOfWork.Service<SupplierModel>().DeleteAsync($"{supplierController}/{Supplier!.SupplierId}");
+            if(result != null)
+            {
+                await GetAllSuppiers();
+            }
+            else
+            {
+                throw new InvalidDataException();
+            }
+        }
     }
 
+    [RelayCommand]
+    public async Task GetAllSuppiers()
+    {
+        Result<List<SupplierModel>>? result = await _unitOfWork.Service<SupplierModel>().GetAllAsync(supplierController);
+        Suppliers = new ObservableCollection<SupplierModel>(result.Data);
+    }
+
+    [RelayCommand]
+    public void FillTexts()
+    {
+        if(Supplier != null)
+        {
+            SupplierId = Supplier.SupplierId;
+            SupplierName = Supplier.SupplierName;
+            Phone = Supplier.Phone;
+            Address = Supplier.Address;
+        }
+    }
     #endregion
 }

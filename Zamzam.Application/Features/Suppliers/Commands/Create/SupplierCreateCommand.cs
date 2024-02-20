@@ -6,14 +6,14 @@ using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.Suppliers.Commands.Create;
 
-public record SupplierCreateCommand : IRequest<Result<SupplierDto>>
+public record SupplierCreateCommand: IRequest<Result<SupplierDto>>
 {
     public string SupplierName { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
     public string CreatedBy { get; set; } = string.Empty;
 }
-internal class SupplierCreateCommandHandler : IRequestHandler<SupplierCreateCommand, Result<SupplierDto>>
+internal class SupplierCreateCommandHandler: IRequestHandler<SupplierCreateCommand, Result<SupplierDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -33,7 +33,7 @@ internal class SupplierCreateCommandHandler : IRequestHandler<SupplierCreateComm
         };
         Supplier? result = await _unitOfWork.Repository<Supplier>().AddAsync(supplier);
         int count = await _unitOfWork.Save(cancellationToken);
-        if (count > 0)
+        if(count > 0)
         {
             result.AddDomainEvent(new SupplierCreateEvent(result));
             var dto = (SupplierDto)result;

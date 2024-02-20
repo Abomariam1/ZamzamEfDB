@@ -4,7 +4,7 @@ using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
 namespace ZamzamUiCompact.Services.RepositoryServices;
 
-public class GenericService<T> : IGenericService<T> where T : IModel
+public class GenericService<T>: IGenericService<T> where T : IModel
 {
     private readonly HttpClient _httpClient;
     private readonly IAuthenticatedUser _user;
@@ -16,10 +16,10 @@ public class GenericService<T> : IGenericService<T> where T : IModel
     {
         _httpClient = httpClient;
         _user = user;
-        var str = _httpClient.DefaultRequestHeaders
+        KeyValuePair<string, IEnumerable<string>> str = _httpClient.DefaultRequestHeaders
             .FirstOrDefault(x => x.Key == "Authorization");
 
-        if (str.Value == null)
+        if(str.Value == null)
         {
             _user = user.GetUser();
             _httpClient.DefaultRequestHeaders.Add("Authorization", _user.Token);
@@ -28,7 +28,7 @@ public class GenericService<T> : IGenericService<T> where T : IModel
 
     public async Task<Result<T>> AddAsync(string uri, T model)
     {
-        if (_user is null)
+        if(_user is null)
             throw new UserNullExecption();
         HttpResponseMessage? request = await _httpClient.PostAsJsonAsync($"{_httpClient.BaseAddress}/{uri}", model, option);
         Result<T>? result = await SendRequst(request);
@@ -36,7 +36,7 @@ public class GenericService<T> : IGenericService<T> where T : IModel
     }
     public async Task<Result<T>> UpdateAsync(string uri, T model)
     {
-        if (_user is null)
+        if(_user is null)
             throw new UserNullExecption();
         HttpResponseMessage? request = await _httpClient.PutAsJsonAsync($"{_httpClient.BaseAddress}/{uri}", model, option);
         Result<T>? result = await SendRequst(request);
@@ -44,10 +44,10 @@ public class GenericService<T> : IGenericService<T> where T : IModel
     }
     public async Task<Result<int>> DeleteAsync(string uri)
     {
-        if (_user is null)
+        if(_user is null)
             throw new UserNullExecption();
         HttpResponseMessage? request = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}/{uri}");
-        if (!request.IsSuccessStatusCode)
+        if(!request.IsSuccessStatusCode)
             return new Result<int> { Succeeded = false, Message = $"fail to process" };
 
         Result<int>? result = await request.Content.ReadFromJsonAsync<Result<int>>();
@@ -55,21 +55,21 @@ public class GenericService<T> : IGenericService<T> where T : IModel
     }
     public async Task<Result<List<T>>> GetAllAsync(string uri)
     {
-        if (_user is null)
+        if(_user is null)
             throw new UserNullExecption();
         Result<List<T>>? request = await _httpClient.GetFromJsonAsync<Result<List<T>>>($"{_httpClient.BaseAddress}/{uri}");
         return request ?? new Result<List<T>>() { Succeeded = false, Message = "faild to get the List" };
     }
     public async Task<Result<T>> GetByIdAsync(string uri)
     {
-        if (_user is null)
+        if(_user is null)
             throw new UserNullExecption();
         Result<T>? request = await _httpClient.GetFromJsonAsync<Result<T>>($"{_httpClient.BaseAddress}/{uri}");
         return request ?? new Result<T>() { Succeeded = false, Message = "faild to get the List" };
     }
     private async Task<Result<T>> SendRequst(HttpResponseMessage responseMessage)
     {
-        if (!responseMessage.IsSuccessStatusCode)
+        if(!responseMessage.IsSuccessStatusCode)
         {
             return new Result<T> { Succeeded = false, Message = $"fail to process" };
         }

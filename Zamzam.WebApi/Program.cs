@@ -4,7 +4,7 @@ using Zamzam.Application.Extentions;
 using Zamzam.EF.Extensions;
 using Zamzam.Infrastructure.Extensions;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 // AddSell services to the container.
 
@@ -72,7 +72,7 @@ builder.Services.AddSwaggerGen(swagger =>
 WebApplication? app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if(app.Environment.IsDevelopment())
 {
     app.UseSwagger(options =>
     {

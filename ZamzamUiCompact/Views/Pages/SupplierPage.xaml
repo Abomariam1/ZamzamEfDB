@@ -13,8 +13,13 @@
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      x:Name="supplierPage"
       >
-
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded" SourceName="supplierPage" >
+            <i:InvokeCommandAction Command="{Binding ViewModel.GetAllSuppiersCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"/>
@@ -26,7 +31,11 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
+            <Grid.Resources>
+                <Style x:Key="rowStyle" TargetType="DataGridRow">
+                    <Setter Property="Background" Value="Gray"/>
+                </Style>
+            </Grid.Resources>
             <StackPanel >
 
                 <StackPanel Margin="10">
@@ -51,17 +60,31 @@
 
             </StackPanel>
             <StackPanel Grid.Column="1">
-                <DataGrid ItemsSource="{Binding ViewModel.Suppliers}" AutoGenerateColumns="False"
-                          IsReadOnly="True" SelectedItem="{Binding ViewModel.Supplier}"
-                          SelectionMode="Single" AlternatingRowBackground="Gray"
-                          HeadersVisibility="Column" 
-                          >
+                <ui:DataGrid x:Name="Dg" ItemsSource="{Binding ViewModel.Suppliers}" AutoGenerateColumns="False"
+                             IsReadOnly="True" SelectedItem="{Binding ViewModel.Supplier}"
+                             SelectionMode="Single" SelectionUnit="FullRow" 
+                             HeadersVisibility="Column"
+                             >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="اسم المورد" Binding="{Binding SupplierName}"/>
-                        <DataGridTextColumn Header="تليفون" Binding="{Binding Phone}"/>
-                        <DataGridTextColumn Header="العنوان" Binding="{Binding Address}"/>
+                        <DataGridTextColumn Header="تليفون" Binding="{Binding Phone}" />
+                        <DataGridTextColumn Header="العنوان" Binding="{Binding Address}" Width="*"/>
                     </DataGrid.Columns>
-                </DataGrid>
+                    <ui:DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource ApplicationBackgroundBrush}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:DataGrid.RowStyle>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged" SourceName="Dg">
+                            <i:InvokeCommandAction Command="{Binding ViewModel.FillTextsCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ui:DataGrid>
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" >

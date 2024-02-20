@@ -1,6 +1,6 @@
 ﻿namespace ZamzamUiCompact.Models;
 
-public class EmployeeModel : Model
+public class EmployeeModel: Model
 {
     public int EmployeeId { get; set; }
     public string EmployeeName { get; set; } = string.Empty;
@@ -18,7 +18,7 @@ public class EmployeeModel : Model
     public string? Qualification { get; set; } = string.Empty;
     public string? Photo { get; set; }
     public int DepartmentId { get; set; }
-    public required DepartmentModel Department { get; set; }
+    public DepartmentModel? Department { get; set; }
 
     public override int GetHashCode()
     {

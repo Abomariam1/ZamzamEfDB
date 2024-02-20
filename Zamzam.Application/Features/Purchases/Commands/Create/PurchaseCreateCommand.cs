@@ -64,7 +64,8 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
             int count = await _unitOfWork.Save(cancellationToken);
             order.AddDomainEvent(new PurchaseCreatedEvent(purchase));
 
-            return await Result<PurchaseDto>.SuccessAsync("");
+            return count > 0 ? await Result<PurchaseDto>.SuccessAsync((PurchaseDto)order, "تم اضافة فاتورة الشراء بنجاح")
+                : await Result<PurchaseDto>.FailureAsync("فشل في انشاء فاتورة شراء");
         }
     }
 }

@@ -18,7 +18,7 @@ public class PurchaseDto
 
 
     public static implicit operator PurchaseDto(PurchaseOrder v) =>
-        new PurchaseDto
+        new()
         {
             OrderDate = v.OrderDate,
             TotalPrice = v.TotalPrice,

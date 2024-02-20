@@ -4,16 +4,26 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      xmlns:local="clr-namespace:ZamzamUiCompact.Views.Pages"
+      xmlns:pages="clr-namespace:ZamzamUiCompact.ViewModels.Pages"
+      d:DataContext="{d:DesignInstance Type=pages:PurchaseViewModel}"
+      mc:Ignorable="d" 
+      d:DesignHeight="1050" d:DesignWidth="1200"
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-      xmlns:local="clr-namespace:ZamzamUiCompact.Views.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="1050" d:DesignWidth="1200"
+      x:Name="purchasePage"
       >
-
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded" SourceName="purchasePage">
+            <i:InvokeCommandAction Command="{Binding ViewModel.GetAllSuppliersCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.7*"/>
             <RowDefinition Height="0.7*"/>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="*"/>
@@ -27,10 +37,15 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="10 0" >
                     <TextBlock Text="اسم المورد" Margin="5" FontSize="16"/>
-                    <ComboBox />
+                    <ComboBox ItemsSource="{Binding ViewModel.Suppliers}"
+                              DisplayMemberPath="SupplierName"
+                              SelectedItem="{Binding ViewModel.Supplier}"
+                              />
                 </StackPanel>
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="نوع العملية" Margin="5" FontSize="16"/>
@@ -41,11 +56,59 @@
                 </StackPanel>
                 <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="التاريخ" Margin="5" FontSize="16"/>
-                    <DatePicker FontSize="16"/>
+                    <DatePicker FontSize="16" SelectedDate="{x:Static sys:DateTime.Today}"/>
                 </StackPanel>
+                <StackPanel Grid.Column="3" VerticalAlignment="Center" Margin="10 0">
+                    <TextBlock Text="مسؤول المشتريات" Margin="5" FontSize="16"/>
+                    <ComboBox FontSize="16" ItemsSource="{Binding ViewModel.Employees}"
+                              SelectedItem="{Binding ViewModel.Employee}"
+                              DisplayMemberPath="EmployeeName" SelectedIndex="0"/>
+                </StackPanel>
+
             </Grid>
         </Border>
+        
         <Border Grid.Row="1" BorderBrush="AliceBlue" BorderThickness="1"
+                SnapsToDevicePixels="True"
+                CornerRadius="15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="10 0" >
+                    <TextBlock Text="اسم الصنف" Margin="5" FontSize="16"/>
+                    <ComboBox ItemsSource="{Binding ViewModel.Items}"
+                              DisplayMemberPath="ItemName"
+                              SelectedItem="{Binding ViewModel.Item}"
+                              />
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10 0">
+                    <TextBlock Text="الكمية" Margin="5" FontSize="16"/>
+                    <ui:NumberBox FontSize="16"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="10 0">
+                    <TextBlock Text="السعر" Margin="5" FontSize="16"/>
+                    <ui:NumberBox FontSize="16"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="3" VerticalAlignment="Center" Margin="10 0">
+                    <TextBlock Text="اجمالي" Margin="5" FontSize="16"/>
+                    <ui:NumberBox FontSize="16"/>
+                </StackPanel>
+                <ui:Button Grid.Column="4" Content="اضافة" Margin="10 25 10 0"
+                           Height="50" 
+                           HorizontalAlignment="Stretch" />
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" BorderBrush="AliceBlue" BorderThickness="1"
                         SnapsToDevicePixels="True"
                         CornerRadius="15" Margin="0 20" Padding="10" >
 
@@ -53,7 +116,8 @@
                 
             </ui:DataGrid>
         </Border>
-        <Border Grid.Row="2" BorderBrush="AliceBlue" BorderThickness="1"
+        
+        <Border Grid.Row="3" BorderBrush="AliceBlue" BorderThickness="1"
                         SnapsToDevicePixels="True"
                         CornerRadius="15" Margin="0 20" Padding="10">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
