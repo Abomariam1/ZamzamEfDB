@@ -24,6 +24,20 @@ public class EmployeeModel: Model
     {
         int hashCode = 23;
         hashCode = (hashCode * 19) + EmployeeId.GetHashCode();
+        hashCode = (hashCode * 19) + EmployeeName.GetHashCode();
+        hashCode = (hashCode * 19) + Phone.GetHashCode();
+        hashCode = (hashCode * 19) + Address.GetHashCode();
+        hashCode = (hashCode * 19) + City.GetHashCode();
+        hashCode = (hashCode * 19) + Region.GetHashCode();
+        hashCode = (hashCode * 19) + Country.GetHashCode();
+        hashCode = (hashCode * 19) + (PostalCode == null ? 0 : PostalCode.GetHashCode());
+        hashCode = (hashCode * 19) + NationalId.GetHashCode();
+        hashCode = (hashCode * 19) + Titel.GetHashCode();
+        hashCode = (hashCode * 19) + HireDate.GetHashCode();
+        hashCode = (hashCode * 19) + BirthDate.GetHashCode();
+        hashCode = (hashCode * 19) + Salary.GetHashCode();
+        hashCode = (hashCode * 19) + (Qualification == null ? 0 : Qualification.GetHashCode());
+        hashCode = (hashCode * 19) + (Photo == null ? 0 : Photo.GetHashCode());
         return hashCode;
     }
 }

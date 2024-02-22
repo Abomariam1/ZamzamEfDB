@@ -300,7 +300,7 @@
                 </StackPanel>
             </Grid>
         </ui:DynamicScrollViewer>
-        <WrapPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                    HorizontalAlignment="Center" Margin="0 20">
             <ui:Button Content="جديد" Height="45" Width="70"
                        CornerRadius="5" Margin="10 0"
@@ -326,22 +326,19 @@
                                PlaceholderText="بحث باسم الموظف"
                                IsTextSearchCaseSensitive="False"
                                DisplayMemberPath="EmployeeName"
+                               
                                Text="{Binding RelativeSource={
                 RelativeSource Mode=Self},Path=DisplayMemberPath}"
                                KeyUp="autoBox_KeyUp"
                                TextChanged="autoBox_TextChanged"
                                >
-                <!--<ui:AutoSuggestBox.InputBindings  >
-                    <KeyBinding Gesture=""
-                </ui:AutoSuggestBox.InputBindings>-->
-
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="TextChanged" SourceName="{Binding ElementName=autoBox}" >
                         <i:InvokeCommandAction Command="{Binding ViewModel.TextChangedAutoBoxCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ui:AutoSuggestBox>
-        </WrapPanel>
+        </StackPanel>
         <StackPanel Grid.Row="2">
             <ui:InfoBar Grid.Row="2" Foreground="AliceBlue"
                     HorizontalAlignment="Stretch"

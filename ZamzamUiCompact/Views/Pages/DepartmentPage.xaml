@@ -3,10 +3,10 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ZamzamUiCompact.Views.Pages"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-      xmlns:pages="clr-namespace:ZamzamUiCompact.ViewModels.Pages" 
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:pages="clr-namespace:ZamzamUiCompact.ViewModels.Pages" 
+      xmlns:local="clr-namespace:ZamzamUiCompact.Views.Pages"
       d:DataContext="{d:DesignInstance Type=pages:DepartmentViewModel}"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="600"
@@ -25,6 +25,10 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
         <ListView x:Name="lv" Grid.Column="0" Margin="20 0"
                   ItemsSource="{Binding ViewModel.Departments,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding ViewModel.SelectedDepartment,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -41,6 +45,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        
         <Grid Margin="10 0" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -73,14 +78,41 @@
                        Command="{Binding ViewModel.DeleteCommand}"/>
                 </WrapPanel>
             </Grid>
-            <ui:InfoBar Grid.Row="2" Height="50" Foreground="AliceBlue" 
-                        Title="{Binding ViewModel.InfoBarTitle}"
-                        Message="{Binding ViewModel.Message}"
-                        Severity="{Binding ViewModel.Saverty}" 
-                        IsOpen="{Binding ViewModel.Status}"
-                        IsClosable="True" 
-                        Visibility="{Binding ViewModel.Status,
-                Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </Grid>
+
+        <ui:InfoBar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                    x:Name="info"
+                    Height="50" Foreground="AliceBlue" 
+                    Title="{Binding ViewModel.InfoBarTitle}"
+                    Message="{Binding ViewModel.Message}"
+                    Severity="{Binding ViewModel.Saverty}" 
+                    IsOpen="{Binding ViewModel.IsInfoBarOpen}"
+                    IsClosable="True" >
+            
+            <!--<ui:InfoBar.Style>
+                <Style TargetType="ui:InfoBar">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ui:InfoBar">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="يجب مليء الحقول كاملة" FontSize="16"
+                                               Foreground="{DynamicResource TextFillColorPrimaryBrush }"
+                                               Background="{DynamicResource ApplicationBackgroundBrush }"
+                                               VerticalAlignment="Center" Margin="10 0"/>
+                                    <Button Content="الاخطاء" Command="{Binding ViewModel.ShowErrorsCommand}"/>
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ui:InfoBar.Style>-->
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="FormSubmissionFailed" SourceObject="{Binding ViewModel}">
+                    <i:InvokeCommandAction Command="{Binding ViewModel.ShowErrorsCommand}"/>
+                    <!--<i:ChangePropertyAction  TargetName="info" PropertyName="IsOpen" Value="True" />-->
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ui:InfoBar>
+
     </Grid>
 </Page>

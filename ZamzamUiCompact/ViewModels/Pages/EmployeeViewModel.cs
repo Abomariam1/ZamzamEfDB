@@ -4,7 +4,7 @@ using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
 namespace ZamzamUiCompact.ViewModels.Pages;
 
-public partial class EmployeeViewModel : ObservableValidator
+public partial class EmployeeViewModel: ObservableValidator
 {
     #region Private fields
     const string employeeController = "Employee";
@@ -17,7 +17,7 @@ public partial class EmployeeViewModel : ObservableValidator
 
     private readonly DispatcherTimer _dispatcher = new()
     {
-        Interval = TimeSpan.FromMilliseconds(500)
+        Interval = TimeSpan.FromMilliseconds(100)
     };
 
     #endregion
@@ -44,14 +44,20 @@ public partial class EmployeeViewModel : ObservableValidator
 
     [ObservableProperty] string? _postalCode = string.Empty;
 
-    [ObservableProperty] long _nationalId;
+    [ObservableProperty]
+    [Required(ErrorMessage = "يجب ادخال الرقم القومي")]
+    [RegularExpression(@"^[0-9]*$", ErrorMessage = "لايسمح بالاحرف في الرقم القومي")]
+    long _nationalId;
     [Required]
+    [MaxLength(50, ErrorMessage = "الحد الاقصي للمسمى الوظيفي 50 حرف")]
     [ObservableProperty] string _titel = string.Empty;
 
     [Required]
+    [DataType(DataType.Date)]
     [ObservableProperty] private DateTime _hireDate = DateTime.Today;
 
     [Required]
+    [DataType(DataType.Date)]
     [ObservableProperty] DateTime _birthDate = DateTime.Today;
 
     [Required]
@@ -70,21 +76,19 @@ public partial class EmployeeViewModel : ObservableValidator
     private DepartmentModel _selectedDepartment;
 
     [ObservableProperty]
-    [Required]
     private ObservableCollection<DepartmentModel> _departments;
 
-    [ObservableProperty] private EmployeeModel _selectedEmployee;
-    [ObservableProperty]
-    private ObservableCollection<EmployeeModel> _employees;
+    [ObservableProperty] EmployeeModel _selectedEmployee;
+    [ObservableProperty] ObservableCollection<EmployeeModel> _employees;
 
-    [ObservableProperty] private string _message = string.Empty;
+    [ObservableProperty] string _message = string.Empty;
 
-    [ObservableProperty] private bool _status = false;
+    [ObservableProperty] bool _status = false;
 
-    [ObservableProperty] private bool _enabled = true;
+    [ObservableProperty] bool _enabled = true;
 
-    [ObservableProperty] private InfoBarSeverity _saverty = InfoBarSeverity.Informational;
-    [ObservableProperty] private string _infoBarTitle = "رسالة";
+    [ObservableProperty] InfoBarSeverity _saverty = InfoBarSeverity.Informational;
+    [ObservableProperty] string _infoBarTitle = "رسالة";
     #endregion
 
     #region Constructors
@@ -121,6 +125,13 @@ public partial class EmployeeViewModel : ObservableValidator
     [RelayCommand]
     public async Task AddAsync()
     {
+        ValidateAllProperties();
+        if(HasErrors)
+        {
+            Message = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
+            Validate(Message, "Error", InfoBarSeverity.Error);
+            return;
+        }
         EmployeeModel? newEmployee = new()
         {
             EmployeeId = 0,
@@ -143,11 +154,11 @@ public partial class EmployeeViewModel : ObservableValidator
         };
         Enabled = false;
         Result<EmployeeModel>? result = await _unitOfWork.Service<EmployeeModel>().AddAsync(employeeController, newEmployee);
-        if (result.Succeeded)
+        if(result.Succeeded)
         {
             EmployeeModel? employee = result.Data;
             var index = Departments.IndexOf(SelectedDepartment);
-            if (index > -1)
+            if(index > -1)
                 Departments[index].Employees.Add(employee);
             Validate(result.Message, "Succeeded", InfoBarSeverity.Success);
             //Message = result.Message;
@@ -158,7 +169,7 @@ public partial class EmployeeViewModel : ObservableValidator
     [RelayCommand]
     public async Task UpdateAsync()
     {
-        if (SelectedDepartment == null) { return; }
+        if(SelectedDepartment == null) { return; }
         EmployeeModel? updatedEmployee = new()
         {
             EmployeeId = SelectedEmployee.EmployeeId,
@@ -181,14 +192,14 @@ public partial class EmployeeViewModel : ObservableValidator
         };
         Enabled = false;
         Result<EmployeeModel>? result = await _unitOfWork.Service<EmployeeModel>().UpdateAsync(employeeController, updatedEmployee);
-        if (result.Succeeded)
+        if(result.Succeeded)
         {
             //Departments = await _department.GetAllDeparmentsAsync();
             EmployeeModel? employee = result.Data;
             //DepartmentModel? newDep = result.Data.Department;
 
             DepartmentModel? oldDep = Departments.Where(x => x.Employees.Contains(SelectedEmployee)).FirstOrDefault();
-            if (oldDep != null && oldDep.DepartmentId == employee.Department.DepartmentId) return;
+            if(oldDep != null && oldDep.DepartmentId == employee.Department.DepartmentId) return;
             var newList = Departments.ToList();
 
             int oldDepIndex = Departments.IndexOf(oldDep);
@@ -208,10 +219,10 @@ public partial class EmployeeViewModel : ObservableValidator
     [RelayCommand]
     public async Task DeleteAsync()
     {
-        if (SelectedDepartment == null && SelectedEmployee.EmployeeId == 0) return;
+        if(SelectedDepartment == null && SelectedEmployee.EmployeeId == 0) return;
         Enabled = false;
         Result<int>? result = await _unitOfWork.Service<EmployeeModel>().DeleteAsync($"{employeeController}/{SelectedEmployee.EmployeeId} ");
-        if (result.Succeeded)
+        if(result.Succeeded)
         {
             var index = Departments.IndexOf(SelectedDepartment);
             var empindex = Departments[index].Employees.IndexOf(SelectedEmployee);
@@ -231,7 +242,7 @@ public partial class EmployeeViewModel : ObservableValidator
             Filter = "Image Files (*.jpg;*.jpeg;*.png;*.gif;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.bmp"
         };
         bool success = (bool)openFile.ShowDialog()!;
-        if (success)
+        if(success)
         {
             PathPhoto = openFile.FileName;
             Photo = File.ReadAllBytes(PathPhoto);
@@ -278,9 +289,9 @@ public partial class EmployeeViewModel : ObservableValidator
         var emp = Departments.Where(x => x.DepartmentId == SelectedEmployee.DepartmentId)
             .FirstOrDefault()!;
         SelectedDepartment = emp;
-        foreach (DepartmentModel department in Departments)
+        foreach(DepartmentModel department in Departments)
         {
-            if (department.Employees.Contains(SelectedEmployee))
+            if(department.Employees.Contains(SelectedEmployee))
                 SelectedDepartment = department;
         }
     }
@@ -296,7 +307,7 @@ public partial class EmployeeViewModel : ObservableValidator
         string stringToValidate = inputText;
         stringToValidate = stringToValidate.Replace('-', '+'); // 62nd char of encoding
         stringToValidate = stringToValidate.Replace('_', '/'); // 63rd char of encoding
-        switch (stringToValidate.Length % 4) // Pad with trailing '='s
+        switch(stringToValidate.Length % 4) // Pad with trailing '='s
         {
             case 0: break; // No pad chars in this case
             case 2: stringToValidate += "=="; break; // Two pad chars
@@ -324,7 +335,7 @@ public partial class EmployeeViewModel : ObservableValidator
     private void _dispatcher_Tick(object? sender, EventArgs e)
     {
         counter++;
-        if (counter == 5)
+        if(counter == 15)
         {
             counter = 0;
             StopAutoProgress();
@@ -334,7 +345,7 @@ public partial class EmployeeViewModel : ObservableValidator
     private void StopAutoProgress()
     {
         // Stop the timer when needed
-        if (_dispatcher != null)
+        if(_dispatcher != null)
         {
             Status = false;
             _dispatcher.Stop();

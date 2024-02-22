@@ -1,22 +1,26 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using Wpf.Ui.Extensions;
 using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
 namespace ZamzamUiCompact.ViewModels.Pages;
 
-public partial class DepartmentViewModel : ObservableValidator
+public partial class DepartmentViewModel(IUnitOfWork unitOfWork, IContentDialogService dialogService): ObservableValidator
 {
-    private readonly IUnitOfWork _unitOfWork;
     const string departmentControler = "Department";
+    public event EventHandler? FormSubmissionCompleted;
+    public event EventHandler? FormSubmissionFailed;
     private readonly DispatcherTimer _dispatcher = new()
     {
-        Interval = TimeSpan.FromMilliseconds(1000)
+        Interval = TimeSpan.FromMilliseconds(100)
     };
     private static int counter = 0;
     [ObservableProperty] private int _id;
+    //[NotifyPropertyChangedFor(nameof(SelectedDepartment))]
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(SelectedDepartment))]
-    [Required]
+    [Required(ErrorMessage = "يجب ادحال اسم القسم!!!")]
+    [RegularExpression(@"^[ا-ي]*$", ErrorMessage = "غير مسموح الا باللغة العربية")]
+    [MaxLength(20, ErrorMessage = "لا يزيد اسم القسم عن 20 حرف")]
     private string _departmentName = string.Empty;
 
     [ObservableProperty] private string _createdBy = string.Empty;
@@ -27,11 +31,10 @@ public partial class DepartmentViewModel : ObservableValidator
 
     [ObservableProperty] private DateTime _updatedOn = DateTime.Now;
 
-    [ObservableProperty] private ObservableCollection<string> _messages = [];
+    [ObservableProperty]
+    private string _message = string.Empty;
 
-    [ObservableProperty] private string _message = string.Empty;
-
-    [ObservableProperty] private bool _status = false;
+    [ObservableProperty] private bool _isInfoBarOpen = false;
 
     [ObservableProperty] private bool _enabled = true;
 
@@ -45,53 +48,47 @@ public partial class DepartmentViewModel : ObservableValidator
 
     private DepartmentModel _selectedDepartment = new();
 
-    public DepartmentViewModel(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     [RelayCommand]
     public async Task<ObservableCollection<DepartmentModel>> GetAllDeparmentsAsync()
     {
-        Result<List<DepartmentModel>>? Response = await _unitOfWork.Service<DepartmentModel>().GetAllAsync(departmentControler);
-        if (Response.Succeeded)
+        Result<List<DepartmentModel>>? Response = await unitOfWork.Service<DepartmentModel>().GetAllAsync(departmentControler);
+        if(Response.Succeeded)
             Departments = new ObservableCollection<DepartmentModel>(Response.Data);
         return new ObservableCollection<DepartmentModel>(Response.Data);
-        return [];
     }
 
     [RelayCommand]
     public async Task Create()
     {
-
-        if (!string.IsNullOrEmpty(DepartmentName))
+        ValidateAllProperties();
+        if(!HasErrors)
         {
-            Enabled = false;
-            DepartmentModel addmodel = new() { DepartmentName = DepartmentName };
-            Result<DepartmentModel>? responce = await _unitOfWork.Service<DepartmentModel>().AddAsync(departmentControler, addmodel);
+            ContentDialogResult cmd = await dialogService.ShowSimpleDialogAsync(new SimpleContentDialogCreateOptions
+            {
+                Content = "هل تريد اضافة قسم جديد؟",
+                Title = "اضافة قسم",
+                PrimaryButtonText = "نعم",
+                CloseButtonText = "الغاء",
+            });
+            if(cmd.HasFlag(ContentDialogResult.Primary))
+            {
+                DepartmentModel addmodel = new() { DepartmentName = DepartmentName };
+                Result<DepartmentModel>? responce = await unitOfWork.Service<DepartmentModel>().AddAsync(departmentControler, addmodel);
 
-            if (responce.Succeeded)
-            {
-                Id = responce.Data.DepartmentId;
-                DepartmentName = responce.Data.DepartmentName;
-                var model = responce.Data;
-                Departments.Add(model);
-                Validate("تم اضافة القسم بنجاح", "Succeeded", InfoBarSeverity.Success);
-                Enabled = true;
-                return;
-            }
-            else
-            {
-                Validate("فشل في انشاء القسم", "Error", InfoBarSeverity.Error);
-                Enabled = true;
-                return;
+                if(responce.Succeeded)
+                {
+                    Id = responce.Data.DepartmentId;
+                    DepartmentName = responce.Data.DepartmentName;
+                    var model = responce.Data;
+                    Departments.Add(model);
+                    Validate("تم اضافة القسم بنجاح", "Succeeded", InfoBarSeverity.Success);
+                    FormSubmissionCompleted?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
-
         else
         {
-            Validate("يجب اختيار قسم للاضافة", "Warning", InfoBarSeverity.Warning);
-            return;
+            FormSubmissionFailed?.Invoke(this, EventArgs.Empty);
         }
 
     }
@@ -99,13 +96,13 @@ public partial class DepartmentViewModel : ObservableValidator
     [RelayCommand]
     public async Task Update()
     {
-        if (SelectedDepartment == null)
+        if(SelectedDepartment == null)
         {
             Validate("يجب اختيار قسم للتعديل", "Warning", InfoBarSeverity.Warning);
             return;
         }
 
-        if (SelectedDepartment.DepartmentId == 0)
+        if(SelectedDepartment.DepartmentId == 0)
         {
             Validate("يجب اختيار قسم للتعديل", "Warning", InfoBarSeverity.Warning);
             return;
@@ -115,8 +112,8 @@ public partial class DepartmentViewModel : ObservableValidator
         DepartmentModel request = new() { DepartmentId = SelectedDepartment.DepartmentId, DepartmentName = DepartmentName };
 
 
-        Result<DepartmentModel>? response = await _unitOfWork.Service<DepartmentModel>().UpdateAsync(departmentControler, request);
-        if (response.Succeeded)
+        Result<DepartmentModel>? response = await unitOfWork.Service<DepartmentModel>().UpdateAsync(departmentControler, request);
+        if(response.Succeeded)
         {
             DepartmentModel? model = response.Data;
             int index = Departments.IndexOf(Departments.FirstOrDefault(x => x.DepartmentId == model.DepartmentId)!);
@@ -135,20 +132,20 @@ public partial class DepartmentViewModel : ObservableValidator
     [RelayCommand]
     public async Task Delete()
     {
-        if (SelectedDepartment == null)
+        if(SelectedDepartment == null)
         {
             Validate("يجب اخيار قسم للحذف", "Warning", InfoBarSeverity.Warning);
             return;
         }
 
-        if (SelectedDepartment?.DepartmentId == 0)
+        if(SelectedDepartment?.DepartmentId == 0)
         {
             Validate("يجب اخيار قسم للحذف", "Warning", InfoBarSeverity.Warning);
             return;
         }
         Enabled = false;
-        Result<int>? result = await _unitOfWork.Service<DepartmentModel>().DeleteAsync($"{departmentControler}/{SelectedDepartment!.DepartmentId}");
-        if (result.Succeeded)
+        Result<int>? result = await unitOfWork.Service<DepartmentModel>().DeleteAsync($"{departmentControler}/{SelectedDepartment!.DepartmentId}");
+        if(result.Succeeded)
         {
             Validate(result.Message, "Succeeded", InfoBarSeverity.Success);
             Departments.Remove(SelectedDepartment);
@@ -167,35 +164,60 @@ public partial class DepartmentViewModel : ObservableValidator
         DepartmentName = SelectedDepartment?.DepartmentName ?? "";
     }
 
+    [RelayCommand]
+    private void ShowErrors()
+    {
+        Message = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
+        IsInfoBarOpen = true;
+        Validate(Message, "خطأ", InfoBarSeverity.Error);
+
+        //_ = await dialogService.ShowAlertAsync("تاكد من صحة البيانات", Message, "Ok");
+    }
+
+    [RelayCommand]
+    private async Task ShowSuccsess()
+    {
+        ContentDialogResult cmd = await dialogService.ShowSimpleDialogAsync(new SimpleContentDialogCreateOptions
+        {
+            CloseButtonText = "تم",
+            Content = "تمت العملية بنجاج",
+            Title = "عملية ناجحة",
+            PrimaryButtonText = "OK",
+        });
+        if(cmd.HasFlag(ContentDialogResult.Primary))
+        {
+
+        }
+    }
     private void Validate(string message, string title, InfoBarSeverity saverty)
     {
         Message = message;
-        Status = true;
+        IsInfoBarOpen = true;
         InfoBarTitle = title;
         Saverty = saverty;
         StartTimer();
     }
     private void StartTimer()
     {
-        _dispatcher.Tick += _dispatcher_Tick;
+        _dispatcher.Tick += Dispatcher_Tick;
         _dispatcher.Start();
     }
-    private void _dispatcher_Tick(object? sender, EventArgs e)
+    private void Dispatcher_Tick(object? sender, EventArgs e)
     {
         counter++;
-        if (counter == 50)
+        if(counter == 15)
         {
             counter = 0;
+            _dispatcher.Tick -= Dispatcher_Tick;
             StopAutoProgress();
-            _dispatcher.Tick -= _dispatcher_Tick;
         }
     }
     private void StopAutoProgress()
     {
         // Stop the timer when needed
-        if (_dispatcher != null)
+        if(_dispatcher != null)
         {
-            Status = false;
+            IsInfoBarOpen = false;
             _dispatcher.Stop();
         }
     }
