@@ -20,19 +20,21 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): ObservableObject
     [ObservableProperty] ObservableCollection<EmployeeModel> _employees = [];
     [ObservableProperty] ItemModel _item = new();
     [ObservableProperty] ObservableCollection<ItemModel> _items = new();
+    [ObservableProperty] OrderDetailsModel order = new();
     [ObservableProperty] ObservableCollection<OrderDetailsModel> _orderDetails = new();
 
     [ObservableProperty]
-    decimal? _price;
+    [NotifyPropertyChangedFor(nameof(Total))]
+    int _quantity;
 
     [ObservableProperty]
-    decimal? _discount;
+    [NotifyPropertyChangedFor(nameof(Total))]
+    decimal _price;
 
     [ObservableProperty]
-    int? _quantity;
-
-    [ObservableProperty()]
-    decimal _Total;
+    [NotifyPropertyChangedFor(nameof(Total))]
+    decimal _discount;
+    public decimal Total => (Quantity * Price) - Discount;
 
     [RelayCommand]
     public async Task GetAllSuppliers()
@@ -40,10 +42,11 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): ObservableObject
         Result<List<SupplierModel>>? supps = await _unitOfWork.Service<SupplierModel>().GetAllAsync(supplierController);
         Suppliers = new ObservableCollection<SupplierModel>(supps.Data);
     }
+
     [RelayCommand]
     public async Task GetAllemployees()
     {
-        Result<List<EmployeeModel>>? emps = await _unitOfWork.Service<EmployeeModel>().GetAllAsync(employeeController);
+        Result<List<EmployeeModel>>? emps = await _unitOfWork.Service<EmployeeModel>().GetAllAsync($"{employeeController}/getall");
         Employees = new ObservableCollection<EmployeeModel>(emps.Data);
     }
 
@@ -56,6 +59,22 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): ObservableObject
     [RelayCommand]
     public void AddOrderDetails()
     {
+        Order.ItemId = Item.ItemId;
+        Order.ItemName = Item.ItemName;
+        Order.Quantity = Quantity;
+        Order.Price = Price;
+        Order.Discount = Discount;
+        Order.Total = Total;
+        OrderDetails.Add(Order);
+
+    }
+
+    [RelayCommand]
+    public async Task GetAll()
+    {
+        await GetAllSuppliers();
+        await GetAllemployees();
+        await GetAllItems();
 
     }
 

@@ -6,7 +6,7 @@ namespace ZamzamUiCompact.Views.Pages
     /// <summary>
     /// Interaction logic for EmployeePage.xaml
     /// </summary>
-    public partial class EmployeePage : Page
+    public partial class EmployeePage: Page
     {
         public EmployeePage(EmployeeViewModel viewModel)
         {
@@ -20,7 +20,7 @@ namespace ZamzamUiCompact.Views.Pages
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
 
-            if (e.NewValue is EmployeeModel emp)
+            if(e.NewValue is EmployeeModel emp)
             {
                 ViewModel.SelectedEmployee = emp;
                 ViewModel.FillProperities();
@@ -30,7 +30,7 @@ namespace ZamzamUiCompact.Views.Pages
         private void autoBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             var ky = sender as AutoSuggestBox;
-            if (ky != null)
+            if(ky != null)
             {
                 var txt = args.Text;
             }
@@ -38,12 +38,12 @@ namespace ZamzamUiCompact.Views.Pages
 
         private void autoBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Escape) { return; }
-            if (e.Key == Key.Enter)
+            if(e.Key == Key.Escape) { return; }
+            if(e.Key == Key.Enter)
             {
-                if (sender is AutoSuggestBox suggestBox)
+                if(sender is AutoSuggestBox suggestBox)
                 {
-                    var emp = ViewModel.Employees.Where(x => x.EmployeeName == suggestBox.Text).FirstOrDefault();
+                    EmployeeModel? emp = ViewModel.Employees.Where(x => x.EmployeeName == suggestBox.Text).FirstOrDefault();
                     ViewModel.SelectedEmployee = emp == null ? ViewModel.SelectedEmployee : emp;
                     ViewModel.FillProperities();
                 }
