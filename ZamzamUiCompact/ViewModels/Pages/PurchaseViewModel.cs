@@ -2,18 +2,17 @@
 
 namespace ZamzamUiCompact.ViewModels.Pages;
 
-public partial class PurchaseViewModel(IUnitOfWork unitOfWork): ObservableObject
+public partial class PurchaseViewModel(IUnitOfWork unitOfWork): ObservableValidator
 {
     const string purchaseController = "Purchase";
     const string supplierController = "Supplier";
     const string employeeController = "Employee";
     const string ItemController = "Item";
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     [ObservableProperty] DateTime _orderDate;
     [ObservableProperty] decimal _totalPrice;
     [ObservableProperty] decimal _totalDiscount;
-    [ObservableProperty] string _invoceType = string.Empty; // نوع الفاتورة {كاش,اجل}و
+    [ObservableProperty] int _invoceType; // نوع الفاتورة {كاش,اجل}و
     [ObservableProperty] SupplierModel _supplier = new();
     [ObservableProperty] ObservableCollection<SupplierModel> _suppliers = [];
     [ObservableProperty] EmployeeModel _employee = new();
@@ -37,26 +36,6 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): ObservableObject
     public decimal Total => (Quantity * Price) - Discount;
 
     [RelayCommand]
-    public async Task GetAllSuppliers()
-    {
-        Result<List<SupplierModel>>? supps = await _unitOfWork.Service<SupplierModel>().GetAllAsync(supplierController);
-        Suppliers = new ObservableCollection<SupplierModel>(supps.Data);
-    }
-
-    [RelayCommand]
-    public async Task GetAllemployees()
-    {
-        Result<List<EmployeeModel>>? emps = await _unitOfWork.Service<EmployeeModel>().GetAllAsync($"{employeeController}/getall");
-        Employees = new ObservableCollection<EmployeeModel>(emps.Data);
-    }
-
-    [RelayCommand]
-    public async Task GetAllItems()
-    {
-        Result<List<ItemModel>>? itms = await _unitOfWork.Service<ItemModel>().GetAllAsync(ItemController);
-        Items = new ObservableCollection<ItemModel>(itms.Data);
-    }
-    [RelayCommand]
     public void AddOrderDetails()
     {
         Order.ItemId = Item.ItemId;
@@ -75,7 +54,45 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): ObservableObject
         await GetAllSuppliers();
         await GetAllemployees();
         await GetAllItems();
-
     }
+
+    [RelayCommand]
+    public async Task AddInvoice()
+    {
+        ValidateAllProperties();
+        if(!HasErrors)
+        {
+            var purchase = new PurchaseModel()
+            {
+                OrderDate = OrderDate,
+                TotalPrice = TotalPrice,
+                TotalDiscount = TotalDiscount,
+                Details = OrderDetails.ToList(),
+                EmployeeId = Employee.EmployeeId,
+                InvoiceType = InvoceType == 0 ? "Cash" : "Installment"
+            };
+            var supps = await unitOfWork.Service<PurchaseModel>().GetAllAsync(purchaseController);
+
+        }
+    }
+
+    private async Task GetAllSuppliers()
+    {
+        Result<List<SupplierModel>>? supps = await unitOfWork.Service<SupplierModel>().GetAllAsync(supplierController);
+        Suppliers = new ObservableCollection<SupplierModel>(supps.Data);
+    }
+
+    private async Task GetAllemployees()
+    {
+        Result<List<EmployeeModel>>? emps = await unitOfWork.Service<EmployeeModel>().GetAllAsync($"{employeeController}/getall");
+        Employees = new ObservableCollection<EmployeeModel>(emps.Data);
+    }
+
+    private async Task GetAllItems()
+    {
+        Result<List<ItemModel>>? itms = await unitOfWork.Service<ItemModel>().GetAllAsync(ItemController);
+        Items = new ObservableCollection<ItemModel>(itms.Data);
+    }
+
 
 }

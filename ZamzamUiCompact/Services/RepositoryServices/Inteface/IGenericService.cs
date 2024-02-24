@@ -9,4 +9,5 @@ public interface IGenericService<T> where T : IModel
     Task<Result<int>> DeleteAsync(string uri);
     Task<Result<List<T>>> GetAllAsync(string uri);
     Task<Result<T>> GetByIdAsync(string uri);
+    Task<Result<T>> SendRequst(string uri, object obj);
 }

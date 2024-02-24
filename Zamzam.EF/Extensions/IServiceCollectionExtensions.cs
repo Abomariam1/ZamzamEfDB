@@ -9,58 +9,63 @@ using Zamzam.Application;
 using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.EF.Repositories;
 
-namespace Zamzam.EF.Extensions
+namespace Zamzam.EF.Extensions;
+
+public static class IServiceCollectionExtensions
 {
-    public static class IServiceCollectionExtensions
+    public static void AddEfLayer(this IServiceCollection services, IConfiguration configuration)
     {
-        public static void AddEfLayer(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddDbContext(configuration);
-            services.AddRepositories();
-            services.AddIdentity();
-            services.AddAuthentication(configuration);
+        services.AddDbContext(configuration);
+        services.AddRepositories();
+        services.AddIdentity();
+        services.AddAuthentication(configuration);
 
-        }
-        private static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
-        {
-            string? connectionString = configuration.GetConnectionString("DefaultConnection");
+    }
+    private static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
+    {
+        string? connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseSqlServer(connectionString,
-                   builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-        }
-        private static void AddRepositories(this IServiceCollection services)
+        services.AddDbContext<ApplicationDbContext>(options =>
+           options.UseSqlServer(connectionString,
+               builder =>
+               {
+                   builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
+                   builder.EnableRetryOnFailure(10, TimeSpan.FromSeconds(5), null);
+               }
+               )
+           );
+    }
+    private static void AddRepositories(this IServiceCollection services)
+    {
+        services
+            .AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork))
+            .AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>))
+            .AddTransient<ISaleOrderRepository, SaleOrderRepository>();
+    }
+    private static void AddIdentity(this IServiceCollection services)
+    {
+        services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+    }
+    private static void AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddAuthentication(option =>
         {
-            services
-                .AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork))
-                .AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>))
-                .AddTransient<ISaleOrderRepository, SaleOrderRepository>();
-        }
-        private static void AddIdentity(this IServiceCollection services)
+            option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(option =>
         {
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-        }
-        private static void AddAuthentication(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddAuthentication(option =>
+            option.SaveToken = true;
+            option.RequireHttpsMetadata = true;
+            option.TokenValidationParameters = new TokenValidationParameters()
             {
-                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(option =>
-            {
-                option.SaveToken = true;
-                option.RequireHttpsMetadata = true;
-                option.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = configuration["Jwt:Validessure"],
-                    ValidateAudience = true,
-                    ValidAudience = configuration["Jwt:ValidAudiance"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]))
-                };
-            });
-        }
+                ValidateIssuer = true,
+                ValidIssuer = configuration["Jwt:Validessure"],
+                ValidateAudience = true,
+                ValidAudience = configuration["Jwt:ValidAudiance"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]))
+            };
+        });
     }
 }

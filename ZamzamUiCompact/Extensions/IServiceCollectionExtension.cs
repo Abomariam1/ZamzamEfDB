@@ -6,7 +6,8 @@ namespace ZamzamUiCompact.Extensions;
 
 public static class IServiceCollectionExtension
 {
-    public static void AddAllServices(this IServiceCollection services, IConfiguration configuration)
+    public static void AddAllServices(this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddServices();
         services.AddViewModel();
@@ -21,40 +22,29 @@ public static class IServiceCollectionExtension
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<ISnackbarService, SnackbarService>();
         services.AddSingleton<IContentDialogService, ContentDialogService>();
-        services.AddSingleton<IAuthenticatedUser, AuthenticatedUser>();
         services.AddSingleton<ApplicationSettings>();
         services.AddTransient(typeof(IGenericService<>), typeof(GenericService<>));
         services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork));
 
-        services.ConfigureOptions<AuthenticatedUserSetup>();
-        services.ConfigureOptions<ApplicationSettingsSetup>();
+        //services.ConfigureOptions<AuthenticatedUserSetup>();
+        //services.ConfigureOptions<ApplicationSettingsSetup>();
 
     }
 
-    private static void AddHttpFactory(this IServiceCollection services, IConfiguration configuration)
+    private static void AddHttpFactory(this IServiceCollection services,
+        IConfiguration configuration)
     {
         string baseAdress = configuration.GetSection("ServerUrl").Value!;
+
         SecureString? retrievedToken = CredentialCache.DefaultNetworkCredentials.SecurePassword;
 
-        services.AddHttpClient("", options =>
+        services.AddHttpClient("services", options =>
         {
             options.BaseAddress = new Uri($"{baseAdress}");
             options.DefaultRequestHeaders.Add("Accept", "application/json");
-            //options.DefaultRequestHeaders.Add("Authorization", _user.Token);
         });
 
-        services.AddHttpClient<StartUpWindowViewModel>(client =>
-        {
-            client.BaseAddress = new Uri($"{baseAdress}/Account");
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-        });
-
-        services.AddHttpClient<LoginWindowViewModel>(client =>
-        {
-            client.BaseAddress = new Uri($"{baseAdress}/Account");
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-        });
-        services.AddHttpClient();
+        //services.AddHttpClient();
     }
 
     private static void AddViewModel(this IServiceCollection services)

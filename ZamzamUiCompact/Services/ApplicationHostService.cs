@@ -34,7 +34,7 @@ public class ApplicationHostService(IServiceProvider serviceProvider) : IHostedS
 
         if (!Application.Current.Windows.OfType<StartUpWindows>().Any())
         {
-            var navigationWindow = _serviceProvider.GetRequiredService<StartUpWindows>();
+            StartUpWindows? navigationWindow = _serviceProvider.GetRequiredService<StartUpWindows>();
             navigationWindow.Loaded += OnNavigationWindowLoaded;
             navigationWindow.Show();
         }

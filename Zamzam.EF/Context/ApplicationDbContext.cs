@@ -12,7 +12,8 @@ namespace Zamzam.EF
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         private readonly IDomainEventDispatcher _dispatcher;
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IDomainEventDispatcher dispatcher)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
+            IDomainEventDispatcher dispatcher)
             : base(options)
         {
             _dispatcher = dispatcher;

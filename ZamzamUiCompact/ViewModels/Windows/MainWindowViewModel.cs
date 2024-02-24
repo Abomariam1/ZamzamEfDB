@@ -1,6 +1,6 @@
 ﻿namespace ZamzamUiCompact.ViewModels.Windows;
 
-public partial class MainWindowViewModel : ObservableObject, IWindowEvent
+public partial class MainWindowViewModel: ObservableObject, IWindowEvent
 {
     private readonly IServiceProvider _provider;
 
@@ -73,14 +73,14 @@ public partial class MainWindowViewModel : ObservableObject, IWindowEvent
     };
 
     [ObservableProperty]
-    private IAuthenticatedUser _user;
+    private AuthenticatedUser _user;
 
     public Action Close { get; set; } = () => { };
 
-    public MainWindowViewModel(IServiceProvider provider, IAuthenticatedUser user)
+    public MainWindowViewModel(IServiceProvider provider, IOptionsSnapshot<AuthenticatedUser> options)
     {
         _provider = provider;
-        User = user;
+        _user = options.Value;
     }
 
     [RelayCommand]

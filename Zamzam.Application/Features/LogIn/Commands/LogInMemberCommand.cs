@@ -7,16 +7,18 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Zamzam.Application.Common.Mappings;
+using Zamzam.Application.DTOs;
+using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.LogIn.Commands
 {
-    public record LogInMemberCommand : IRequest<JwtSecurityToken>, IMapFrom<ApplicationUser>
+    public record LogInMemberCommand: IRequest<Result<UserDto>>, IMapFrom<ApplicationUser>
     {
         public required string UserName { get; set; }
         public required string Password { get; set; }
     }
 
-    internal class LoginMemberCommandHandler : IRequestHandler<LogInMemberCommand, JwtSecurityToken>
+    internal class LoginMemberCommandHandler: IRequestHandler<LogInMemberCommand, Result<UserDto>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _config;
@@ -26,13 +28,13 @@ namespace Zamzam.Application.Features.LogIn.Commands
             _userManager = userManager;
             _config = config;
         }
-        async Task<JwtSecurityToken> IRequestHandler<LogInMemberCommand, JwtSecurityToken>.Handle(LogInMemberCommand request, CancellationToken cancellationToken)
+        async Task<Result<UserDto>> IRequestHandler<LogInMemberCommand, Result<UserDto>>.Handle(LogInMemberCommand request, CancellationToken cancellationToken)
         {
             ApplicationUser? user = await _userManager.FindByNameAsync(request.UserName);
-            if (user is not null)
+            if(user is not null)
             {
                 bool found = await _userManager.CheckPasswordAsync(user, request.Password);
-                if (found)
+                if(found)
                 {
                     IList<string>? roles = await _userManager.GetRolesAsync(user);
                     List<Claim>? claims = new()
@@ -41,7 +43,7 @@ namespace Zamzam.Application.Features.LogIn.Commands
                             new(ClaimTypes.NameIdentifier,user.Id),
                             new(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                         };
-                    foreach (string role in roles)
+                    foreach(string role in roles)
                     {
                         claims.Add(new Claim(ClaimTypes.Role, role));
                     }
@@ -57,11 +59,17 @@ namespace Zamzam.Application.Features.LogIn.Commands
                         expires: DateTime.UtcNow.AddDays(1),
                         signingCredentials: credentials
                         );
-
-                    return token;
+                    JwtSecurityTokenHandler? tokenHandler = new JwtSecurityTokenHandler();
+                    UserDto usr = new()
+                    {
+                        Token = tokenHandler.WriteToken(token),
+                        Expiration = token.ValidTo,
+                        UserName = user.UserName,
+                    };
+                    return await Result<UserDto>.SuccessAsync(usr);
                 }
             }
-            return null;
+            return await Result<UserDto>.FailureAsync("فشل في تسجيل الدخول...");
         }
     }
 }

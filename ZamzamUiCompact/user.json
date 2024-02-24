@@ -1,0 +1,13 @@
+{
+  "user": {
+    "Token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiTW9zdGFmYSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiY2U5M2UyNzItYTBlNi00OTViLThlMjktMWVlZjFkODNlNjdlIiwianRpIjoiZTE2OTI3NmUtOTgzOS00MWJiLWI0ODEtNTZiOTdmNWE3MjgxIiwiZXhwIjoxNzA5MDE4NzE2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwNDk2IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0MjAwIn0.3MS6_GpmroluaUiqx_Mr7LA5FZ1l8MxFDevFkhN_Jpg",
+    "UserName": "Mostafa",
+    "Expiration": "2024-02-27T07:25:16Z"
+  },
+  "usersettings": {
+    "IsPasswordRemmemberd": true,
+    "IsAutoLogging": true,
+    "LogedInAt": "2024-02-26T09:25:16.8599945+02:00"
+
+  }
+}

@@ -6,23 +6,26 @@ namespace ZamzamUiCompact.Services.RepositoryServices;
 
 public class GenericService<T>: IGenericService<T> where T : IModel
 {
+
     private readonly HttpClient _httpClient;
-    private readonly IAuthenticatedUser _user;
+    private readonly IOptionsSnapshot<AuthenticatedUser> _user;
     private readonly JsonSerializerOptions option = new()
     {
         PropertyNameCaseInsensitive = true,
     };
-    public GenericService(HttpClient httpClient, IAuthenticatedUser user)
+    public GenericService(
+        IHttpClientFactory httpClient, IConfiguration configuration,
+        IOptionsSnapshot<AuthenticatedUser> user)
     {
-        _httpClient = httpClient;
+        _httpClient = httpClient.CreateClient("services");
         _user = user;
-        KeyValuePair<string, IEnumerable<string>> str = _httpClient.DefaultRequestHeaders
-            .FirstOrDefault(x => x.Key == "Authorization");
+        var str = _httpClient.DefaultRequestHeaders
+            .FirstOrDefault(x => x.Key == "Authorization")
+            .Value;
 
-        if(str.Value == null)
+        if(str is null)
         {
-            _user = user.GetUser();
-            _httpClient.DefaultRequestHeaders.Add("Authorization", _user.Token);
+            _httpClient.DefaultRequestHeaders.Add("Authorization", _user.Value.Token);
         }
     }
 
@@ -31,16 +34,14 @@ public class GenericService<T>: IGenericService<T> where T : IModel
         if(_user is null)
             throw new UserNullExecption();
         HttpResponseMessage? request = await _httpClient.PostAsJsonAsync($"{_httpClient.BaseAddress}/{uri}", model, option);
-        Result<T>? result = await SendRequst(request);
-        return result ?? new Result<T> { Succeeded = false, Message = $"fail to process" };
+        return await GenericService<T>.SendRequst(request);
     }
     public async Task<Result<T>> UpdateAsync(string uri, T model)
     {
         if(_user is null)
             throw new UserNullExecption();
         HttpResponseMessage? request = await _httpClient.PutAsJsonAsync($"{_httpClient.BaseAddress}/{uri}", model, option);
-        Result<T>? result = await SendRequst(request);
-        return result ?? new Result<T> { Succeeded = false, Message = $"fail to process" };
+        return await GenericService<T>.SendRequst(request);
     }
     public async Task<Result<int>> DeleteAsync(string uri)
     {
@@ -67,14 +68,19 @@ public class GenericService<T>: IGenericService<T> where T : IModel
         Result<T>? request = await _httpClient.GetFromJsonAsync<Result<T>>($"{_httpClient.BaseAddress}/{uri}");
         return request ?? new Result<T>() { Succeeded = false, Message = "faild to get the List" };
     }
-    private async Task<Result<T>> SendRequst(HttpResponseMessage responseMessage)
+    public async Task<Result<T>> SendRequst(string uri, object obj)
+    {
+        HttpResponseMessage? response = await _httpClient.PostAsJsonAsync($"{_httpClient.BaseAddress}/{uri}", obj, option);
+        var result = await SendRequst(response);
+        return result;
+    }
+    private static async Task<Result<T>> SendRequst(HttpResponseMessage responseMessage)
     {
         if(!responseMessage.IsSuccessStatusCode)
         {
             return new Result<T> { Succeeded = false, Message = $"fail to process" };
         }
         Result<T>? result = await responseMessage.Content.ReadFromJsonAsync<Result<T>>();
-
         return result ?? new Result<T> { Succeeded = false, Message = $"fail to process" };
     }
 }

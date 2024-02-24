@@ -1,11 +1,16 @@
-﻿namespace ZamzamUiCompact.ViewModels.Windows;
+﻿using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
-public partial class LoginWindowViewModel : ObservableObject, IWindowEvent
+namespace ZamzamUiCompact.ViewModels.Windows;
+
+public partial class LoginWindowViewModel(
+    IUnitOfWork unitOfWork,
+    IConfiguration configuration,
+    IOptionsSnapshot<AuthenticatedUser> user,
+    IOptionsSnapshot<SignInSettingsOptions> settings,
+    IServiceProvider provider): ObservableObject, IWindowEvent
 {
-    private const string _userPath = "user.json";
-    private readonly HttpClient _httpClient;
-    private readonly IServiceProvider _serviceProvider;
-    private IAuthenticatedUser _user;
+    const string accountController = "Account";
+
 
     [ObservableProperty]
     private string _applicationTitle = "زمزم لفلاتر المياه";
@@ -32,68 +37,67 @@ public partial class LoginWindowViewModel : ObservableObject, IWindowEvent
     private bool _isFileExists;
     public Action Close { get; set; }
 
-    public LoginWindowViewModel(HttpClient httpClient,
-        IServiceProvider serviceProvider,
-        IAuthenticatedUser user)
-    {
-        _httpClient = httpClient;
-        _serviceProvider = serviceProvider;
-        _user = user.GetUser() ?? new();
-        Initialize();
-    }
-
     public void Initialize()
     {
-        if (!string.IsNullOrEmpty(_user?.UserName))
+        if(settings.Value.IsPasswordRemmemberd)
         {
-            if (_user.IsPasswordRemmemberd)
-            {
-                UserName = _user.UserName;
-                PasswordStr = _user.Password;
-                RememberPassword = true;
-            }
+            UserName = user.Value.UserName;
+            PasswordStr = user.Value.UserName;
         }
     }
+
 
     [RelayCommand]
     public async Task SignIn()
     {
         try
         {
-            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(PasswordStr))
+            if(!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(PasswordStr))
             {
-                _user.UserName = UserName;
-                _user.Password = PasswordStr;
-                HttpResponseMessage? auth = await _httpClient.PostAsJsonAsync($"{_httpClient.BaseAddress}/login", _user);
-
-                if (auth.IsSuccessStatusCode)
+                var usr = new
                 {
-                    var content = await auth.Content.ReadAsStringAsync();
+                    UserName,
+                    Password = PasswordStr
+                };
+                Result<AuthenticatedUser>? result = await unitOfWork.Service<AuthenticatedUser>().SendRequst($"{accountController}/login", usr);
 
-                    var _user = await auth.Content.ReadFromJsonAsync<AuthenticatedUser>(new JsonSerializerOptions()
+                if(result.Succeeded)
+                {
+                    AuthenticatedUser? _user = result.Data;
+                    SignInSettingsOptions? setting = new SignInSettingsOptions
                     {
-                        IncludeFields = false,
-                        PropertyNameCaseInsensitive = true
-                    });
-                    string token = _user.Token;
-                    _user.Token = string.Empty;
-                    _user.Token += $"Bearer {token}";
-                    _user.IsPasswordRemmemberd = RememberPassword;
-                    _user.IsAutoLogging = AutoLoggin;
-                    _user.LogedInAt = DateTime.Now;
-                    string? file = JsonSerializer.Serialize(_user);
-                    File.WriteAllText(_userPath, file);
-                    ShowMainWindow(_serviceProvider);
+                        IsAutoLogging = AutoLoggin,
+                        IsPasswordRemmemberd = RememberPassword,
+                        LogedInAt = DateTime.Now,
+                        Password = PasswordStr,
+                    };
+                    _user.Token = $"Bearer {_user.Token}";
+
+                    string newUser = JsonSerializer.Serialize(_user);
+                    string newSettings = JsonSerializer.Serialize(setting);
+
+                    UserSettingsOPtions optin = new()
+                    {
+                        User = _user,
+                        UserSettings = setting
+                    };
+
+                    string? newFile = JsonSerializer.Serialize(optin,
+                        new JsonSerializerOptions { WriteIndented = true, PropertyNameCaseInsensitive = true });
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "user.json");
+
+                    File.WriteAllText(filePath, newFile);
+                    ShowMainWindow(provider);
                     CloseWindow();
                 }
                 else
                 {
-                    string? errors = await auth.Content.ReadAsStringAsync();
-                    Errors = ApiValidation.Validate(errors);
-                    foreach (var error in Errors)
-                    {
-                        ErrorMessage = error.Value.FirstOrDefault()!;
-                    }
+                    ErrorMessage = result.Message;
+                    //Errors = ApiValidation.Validate(result.Message);
+                    //foreach(var error in Errors)
+                    //{
+                    //    ErrorMessage = error.Value.FirstOrDefault()!;
+                    //}
                     return;
                 }
 
@@ -103,17 +107,17 @@ public partial class LoginWindowViewModel : ObservableObject, IWindowEvent
                 ErrorMessage = "يجب ادخال اسم المستخدم وكلمة المرور";
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             ErrorMessage = e.Message;
         }
     }
     public bool CanClose() => true;
     public void CloseWindow() => Close?.Invoke();
-    public void ShowMainWindow(IServiceProvider provider)
+    private void ShowMainWindow(IServiceProvider provider)
     {
         MainWindow? window = provider.GetRequiredService<MainWindow>();
-        window.ViewModel.User = _user;
+        //window.ViewModel.User = _user;
         window.Show();
     }
 }

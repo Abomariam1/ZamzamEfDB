@@ -7,8 +7,7 @@
                  xmlns:local="clr-namespace:ZamzamUiCompact.Views.Windows"
                  xmlns:closer="clr-namespace:ZamzamUiCompact.Helpers"
                  xmlns:windows="clr-namespace:ZamzamUiCompact.ViewModels.Windows"
-                 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
-                 xmlns:i1="http://schemas.microsoft.com/xaml/behaviors"
+                 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  mc:Ignorable="d"
                  d:DataContext="{d:DesignInstance Type=windows:StartUpWindowViewModel}"
                  FlowDirection="RightToLeft"
@@ -20,7 +19,13 @@
                  Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                  WindowBackdropType="Mica"
                  closer:WindowHelper.EnableWindowClosing="True"
-                 Height="400" Width="400">
+                 Height="400" Width="400"
+                 x:Name="starterwindow">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded" SourceName="starterwindow">
+            <i:InvokeCommandAction Command="{Binding UserValidationCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -31,7 +36,7 @@
                  HorizontalContentAlignment="Center"
                  VerticalContentAlignment="Center">
             <ui:Card.Footer>
-                <ui:TextBlock Text="hello"/>
+                <ui:TextBlock Text="جاري تحضير البيانات..."/>
             </ui:Card.Footer>
             Processing 
         </ui:Card>
@@ -46,8 +51,5 @@
                 StringFormat={}{0:0}%}" 
                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
-        <ui:Button Grid.Row="1" Content="close" 
-                   Command="{Binding UserValidationCommand}"
-                   HorizontalAlignment="Stretch"/>
     </Grid>
 </ui:FluentWindow>

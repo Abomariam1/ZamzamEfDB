@@ -3,10 +3,8 @@ using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
 namespace ZamzamUiCompact.Services.RepositoryServices;
 
-public class UnitOfWork(HttpClient httpClient, IAuthenticatedUser user) : IUnitOfWork
+public class UnitOfWork(IHttpClientFactory httpClient, IConfiguration configuration, IOptionsSnapshot<AuthenticatedUser> user): IUnitOfWork
 {
-    private readonly HttpClient _httpClient = httpClient;
-    private readonly IAuthenticatedUser _user = user;
     private Hashtable? _services;
     private bool _disposed;
 
@@ -16,11 +14,11 @@ public class UnitOfWork(HttpClient httpClient, IAuthenticatedUser user) : IUnitO
 
         var type = typeof(T).Name;
 
-        if (!_services.ContainsKey(type))
+        if(!_services.ContainsKey(type))
         {
             var repositoryType = typeof(GenericService<>);
 
-            var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _httpClient, _user);
+            var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), httpClient, configuration, user);
 
             _services.Add(type, repositoryInstance);
         }
@@ -32,9 +30,9 @@ public class UnitOfWork(HttpClient httpClient, IAuthenticatedUser user) : IUnitO
     }
     protected virtual void Dispose(bool disposing)
     {
-        if (_disposed)
+        if(_disposed)
         {
-            if (disposing)
+            if(disposing)
             {
                 //dispose managed resources
 
