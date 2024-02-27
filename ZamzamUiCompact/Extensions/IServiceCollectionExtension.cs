@@ -25,7 +25,7 @@ public static class IServiceCollectionExtension
         services.AddSingleton<ApplicationSettings>();
         services.AddTransient(typeof(IGenericService<>), typeof(GenericService<>));
         services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork));
-
+        services.AddSingleton<AuthenticatedUser>();
         //services.ConfigureOptions<AuthenticatedUserSetup>();
         //services.ConfigureOptions<ApplicationSettingsSetup>();
 

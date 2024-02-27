@@ -12,9 +12,11 @@ public class GenericService<T>: IGenericService<T> where T : IModel
     private readonly JsonSerializerOptions option = new()
     {
         PropertyNameCaseInsensitive = true,
+        WriteIndented = true,
     };
     public GenericService(
-        IHttpClientFactory httpClient, IConfiguration configuration,
+        IHttpClientFactory httpClient,
+        IConfiguration configuration,
         IOptionsSnapshot<AuthenticatedUser> user)
     {
         _httpClient = httpClient.CreateClient("services");
@@ -25,7 +27,7 @@ public class GenericService<T>: IGenericService<T> where T : IModel
 
         if(str is null)
         {
-            _httpClient.DefaultRequestHeaders.Add("Authorization", _user.Value.Token);
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_user.Value.Token}");
         }
     }
 
@@ -58,14 +60,14 @@ public class GenericService<T>: IGenericService<T> where T : IModel
     {
         if(_user is null)
             throw new UserNullExecption();
-        Result<List<T>>? request = await _httpClient.GetFromJsonAsync<Result<List<T>>>($"{_httpClient.BaseAddress}/{uri}");
+        Result<List<T>>? request = await _httpClient.GetFromJsonAsync<Result<List<T>>>($"{_httpClient.BaseAddress}/{uri}", option);
         return request ?? new Result<List<T>>() { Succeeded = false, Message = "faild to get the List" };
     }
     public async Task<Result<T>> GetByIdAsync(string uri)
     {
         if(_user is null)
             throw new UserNullExecption();
-        Result<T>? request = await _httpClient.GetFromJsonAsync<Result<T>>($"{_httpClient.BaseAddress}/{uri}");
+        Result<T>? request = await _httpClient.GetFromJsonAsync<Result<T>>($"{_httpClient.BaseAddress}/{uri}", option);
         return request ?? new Result<T>() { Succeeded = false, Message = "faild to get the List" };
     }
     public async Task<Result<T>> SendRequst(string uri, object obj)

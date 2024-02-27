@@ -22,7 +22,7 @@ public partial class StartUpWindowViewModel(
     {
         _timer.Tick += _Timer_Tick;
         _timer.Start();
-        SignInSettingsOptions? opt = settings.Value;
+        SignInSettingsOptions? opt = settings.Value ?? new();
         if(opt.IsAutoLogging)
         {
             try

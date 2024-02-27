@@ -10,7 +10,7 @@ namespace ZamzamUiCompact;
 /// <summary>
 /// Interaction logic for App.xaml
 /// </summary>
-public partial class App
+public partial class App: Application
 {
     // The.NET Generic Host provides dependency injection, configuration, logging, and other services.
     // https://docs.microsoft.com/dotnet/core/extensions/generic-host
@@ -22,9 +22,10 @@ public partial class App
         .CreateDefaultBuilder()
         .ConfigureAppConfiguration(c =>
         {
-            c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)!);
+            var dirName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+            c.SetBasePath(dirName);
             c.AddJsonFile("appsettings.json", false, true);
-            c.AddJsonFile("user.json", false, true);
+            c.AddJsonFile($"{dirName}\\user.json", false, true);
 
 
         })
@@ -34,6 +35,9 @@ public partial class App
             IConfigurationSection? signin = context.Configuration.GetSection("usersettings");
             var serv = services.Configure<AuthenticatedUser>(usr);
             services.Configure<SignInSettingsOptions>(signin);
+            services.AddSingleton<IOptionsMonitor<AuthenticatedUser>, OptionsMonitor<AuthenticatedUser>>();
+            services.AddSingleton<IOptionsMonitor<SignInSettingsOptions>, OptionsMonitor<SignInSettingsOptions>>();
+            services.AddSingleton<IConfigurationRoot>(context.Configuration as IConfigurationRoot);
             services.AddAllServices(context.Configuration);
         })
         .Build();

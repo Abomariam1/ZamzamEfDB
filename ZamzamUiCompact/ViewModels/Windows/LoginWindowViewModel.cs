@@ -6,7 +6,9 @@ public partial class LoginWindowViewModel(
     IUnitOfWork unitOfWork,
     IConfiguration configuration,
     IOptionsSnapshot<AuthenticatedUser> user,
+    IOptionsMonitor<AuthenticatedUser> monitor,
     IOptionsSnapshot<SignInSettingsOptions> settings,
+    AuthenticatedUser auth,
     IServiceProvider provider): ObservableObject, IWindowEvent
 {
     const string accountController = "Account";
@@ -25,7 +27,7 @@ public partial class LoginWindowViewModel(
     private string _errorMessage = string.Empty;
 
     [ObservableProperty]
-    private Dictionary<string, List<string>> _errors = new();
+    private Dictionary<string, List<string>> _errors = [];
 
     [ObservableProperty]
     private bool _rememberPassword = false;
@@ -35,7 +37,7 @@ public partial class LoginWindowViewModel(
 
     [ObservableProperty]
     private bool _isFileExists;
-    public Action Close { get; set; }
+    public Action Close { get; set; } = () => { };
 
     public void Initialize()
     {
@@ -50,6 +52,7 @@ public partial class LoginWindowViewModel(
     [RelayCommand]
     public async Task SignIn()
     {
+
         try
         {
             if(!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(PasswordStr))
@@ -63,41 +66,52 @@ public partial class LoginWindowViewModel(
 
                 if(result.Succeeded)
                 {
-                    AuthenticatedUser? _user = result.Data;
-                    SignInSettingsOptions? setting = new SignInSettingsOptions
+                    auth = result.Data;
+                    SignInSettingsOptions? setting = new()
                     {
                         IsAutoLogging = AutoLoggin,
                         IsPasswordRemmemberd = RememberPassword,
                         LogedInAt = DateTime.Now,
                         Password = PasswordStr,
                     };
-                    _user.Token = $"Bearer {_user.Token}";
 
-                    string newUser = JsonSerializer.Serialize(_user);
+                    string newUser = JsonSerializer.Serialize(auth);
                     string newSettings = JsonSerializer.Serialize(setting);
 
-                    UserSettingsOPtions optin = new()
+                    UserSettingsOPtions newUserSettings = new()
                     {
-                        User = _user,
+                        User = auth,
                         UserSettings = setting
                     };
 
-                    string? newFile = JsonSerializer.Serialize(optin,
-                        new JsonSerializerOptions { WriteIndented = true, PropertyNameCaseInsensitive = true });
-                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "user.json");
+                    JsonSerializerOptions options = new() { WriteIndented = true, PropertyNameCaseInsensitive = true };
+                    string? newFile = JsonSerializer.Serialize(newUserSettings, options);
+
+
+                    string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "user.json");
+
+                    var fileWathcer = new FileSystemWatcher(
+                        Path.GetDirectoryName(filePath)!,
+                        Path.GetFileName(filePath));
+                    fileWathcer.Changed += (sender, e) =>
+                    {
+                        var root = (IConfigurationRoot)configuration;
+                        root.Reload();
+                        var serv = App.Current.Properties.Values.GetEnumerator();
+                    };
+                    fileWathcer.EnableRaisingEvents = true;
+                    configuration["user"] = newUser;
+                    configuration["usersettings"] = newSettings;
 
                     File.WriteAllText(filePath, newFile);
+
+                    var modified = monitor.CurrentValue;
                     ShowMainWindow(provider);
                     CloseWindow();
                 }
                 else
                 {
                     ErrorMessage = result.Message;
-                    //Errors = ApiValidation.Validate(result.Message);
-                    //foreach(var error in Errors)
-                    //{
-                    //    ErrorMessage = error.Value.FirstOrDefault()!;
-                    //}
                     return;
                 }
 
@@ -116,6 +130,7 @@ public partial class LoginWindowViewModel(
     public void CloseWindow() => Close?.Invoke();
     private void ShowMainWindow(IServiceProvider provider)
     {
+
         MainWindow? window = provider.GetRequiredService<MainWindow>();
         //window.ViewModel.User = _user;
         window.Show();
