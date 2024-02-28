@@ -5,14 +5,11 @@ namespace ZamzamUiCompact.ViewModels.Windows;
 public partial class LoginWindowViewModel(
     IUnitOfWork unitOfWork,
     IConfiguration configuration,
-    IOptionsSnapshot<AuthenticatedUser> user,
-    IOptionsMonitor<AuthenticatedUser> monitor,
-    IOptionsSnapshot<SignInSettingsOptions> settings,
+    IOptionsMonitor<AuthenticatedUser> monitorUser,
     AuthenticatedUser auth,
     IServiceProvider provider): ObservableObject, IWindowEvent
 {
     const string accountController = "Account";
-
 
     [ObservableProperty]
     private string _applicationTitle = "زمزم لفلاتر المياه";
@@ -39,14 +36,14 @@ public partial class LoginWindowViewModel(
     private bool _isFileExists;
     public Action Close { get; set; } = () => { };
 
-    public void Initialize()
-    {
-        if(settings.Value.IsPasswordRemmemberd)
-        {
-            UserName = user.Value.UserName;
-            PasswordStr = user.Value.UserName;
-        }
-    }
+    //public void Initialize()
+    //{
+    //    if(settingsOption.Value.IsPasswordRemmemberd)
+    //    {
+    //        UserName = user.Value.UserName;
+    //        PasswordStr = user.Value.UserName;
+    //    }
+    //}
 
 
     [RelayCommand]
@@ -84,37 +81,43 @@ public partial class LoginWindowViewModel(
                         UserSettings = setting
                     };
 
-                    JsonSerializerOptions options = new() { WriteIndented = true, PropertyNameCaseInsensitive = true };
+                    JsonSerializerOptions options = new() { PropertyNameCaseInsensitive = true, WriteIndented = true };
                     string? newFile = JsonSerializer.Serialize(newUserSettings, options);
 
 
-                    string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "user.json");
+                    string dirPath = AppDomain.CurrentDomain.BaseDirectory;
+                    var filePath = Path.Combine(App.FindProjectPath(dirPath), "user.json");
+                    var filePath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "user.json");
+                    //string filePath = "/Settings / user.json";
 
-                    var fileWathcer = new FileSystemWatcher(
-                        Path.GetDirectoryName(filePath)!,
-                        Path.GetFileName(filePath));
-                    fileWathcer.Changed += (sender, e) =>
-                    {
-                        var root = (IConfigurationRoot)configuration;
-                        root.Reload();
-                        var serv = App.Current.Properties.Values.GetEnumerator();
-                    };
-                    fileWathcer.EnableRaisingEvents = true;
-                    configuration["user"] = newUser;
-                    configuration["usersettings"] = newSettings;
+                    //var fileWathcer = new FileSystemWatcher(
+                    //    Path.GetDirectoryName(filePath)!,
+                    //    Path.GetFileName(filePath));
+                    //fileWathcer.Changed += FileWathcer_Changed;
+                    //fileWathcer.Created += FileWathcer_Created;
+                    //fileWathcer.EnableRaisingEvents = true;
+
 
                     File.WriteAllText(filePath, newFile);
+                    File.WriteAllText(filePath2, newFile);
 
-                    var modified = monitor.CurrentValue;
+                    var conf = configuration as IConfigurationRoot;
+                    conf.Bind("User", auth);
+                    conf.Bind("UserSettings", setting);
+                    conf.Reload();
+
                     ShowMainWindow(provider);
                     CloseWindow();
+                    //Restarting the program
+                    //string appPath = Process.GetCurrentProcess().MainModule.FileName;
+                    //Process.Start(appPath);
+                    //Environment.Exit(0);
                 }
                 else
                 {
                     ErrorMessage = result.Message;
                     return;
                 }
-
             }
             else
             {
@@ -128,11 +131,14 @@ public partial class LoginWindowViewModel(
     }
     public bool CanClose() => true;
     public void CloseWindow() => Close?.Invoke();
+
     private void ShowMainWindow(IServiceProvider provider)
     {
 
         MainWindow? window = provider.GetRequiredService<MainWindow>();
-        //window.ViewModel.User = _user;
+        window.ViewModel.User = monitorUser.CurrentValue;
         window.Show();
     }
+
+
 }

@@ -12,28 +12,21 @@ namespace ZamzamUiCompact;
 /// </summary>
 public partial class App: Application
 {
-    // The.NET Generic Host provides dependency injection, configuration, logging, and other services.
-    // https://docs.microsoft.com/dotnet/core/extensions/generic-host
-    // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
-    // https://docs.microsoft.com/dotnet/core/extensions/configuration
-    // https://docs.microsoft.com/dotnet/core/extensions/logging
-
     private static readonly IHost _host = Host
         .CreateDefaultBuilder()
         .ConfigureAppConfiguration(c =>
         {
-            var dirName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-            c.SetBasePath(dirName);
+            var dirName = Path.GetDirectoryName(Path.GetFullPath(Assembly.GetExecutingAssembly().Location))!;
+            var filePath = FindProjectPath(dirName);
+            c.SetBasePath(filePath);
             c.AddJsonFile("appsettings.json", false, true);
-            c.AddJsonFile($"{dirName}\\user.json", false, true);
-
-
+            c.AddJsonFile("user.json", false, true);
         })
         .ConfigureServices((context, services) =>
         {
-            IConfigurationSection? usr = context.Configuration.GetSection("user");
-            IConfigurationSection? signin = context.Configuration.GetSection("usersettings");
-            var serv = services.Configure<AuthenticatedUser>(usr);
+            IConfigurationSection? usr = context.Configuration.GetSection("User");
+            IConfigurationSection? signin = context.Configuration.GetSection("UserSettings");
+            services.Configure<AuthenticatedUser>(usr);
             services.Configure<SignInSettingsOptions>(signin);
             services.AddSingleton<IOptionsMonitor<AuthenticatedUser>, OptionsMonitor<AuthenticatedUser>>();
             services.AddSingleton<IOptionsMonitor<SignInSettingsOptions>, OptionsMonitor<SignInSettingsOptions>>();
@@ -90,4 +83,23 @@ public partial class App: Application
         // For more info see https://docs.microsoft.com/en-us/dotnet/api/system.windows.application.dispatcherunhandledexception?view=windowsdesktop-6.0
         e.Handled = true;
     }
+
+    public static string FindProjectPath(string filePath)
+    {
+        string directory = Path.GetDirectoryName(filePath);
+        while(directory != null)
+        {
+            // Check if the directory contains a specific file indicating it's the root of the project
+            if(File.Exists(Path.Combine(directory, "ZamzamUiCompact.csproj"))) // Change "project.config" to the name of the file indicating the root of the project
+            {
+                return directory;
+            }
+
+            // Move to the parent directory
+            directory = Directory.GetParent(directory)?.FullName;
+        }
+
+        return null; // Project path not found
+    }
+
 }

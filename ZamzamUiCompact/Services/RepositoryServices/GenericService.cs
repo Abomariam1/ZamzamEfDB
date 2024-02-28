@@ -8,26 +8,31 @@ public class GenericService<T>: IGenericService<T> where T : IModel
 {
 
     private readonly HttpClient _httpClient;
-    private readonly IOptionsSnapshot<AuthenticatedUser> _user;
+    private readonly IOptionsMonitor<AuthenticatedUser> _user;
     private readonly JsonSerializerOptions option = new()
     {
         PropertyNameCaseInsensitive = true,
-        WriteIndented = true,
     };
     public GenericService(
         IHttpClientFactory httpClient,
         IConfiguration configuration,
-        IOptionsSnapshot<AuthenticatedUser> user)
+        IOptionsMonitor<AuthenticatedUser> user)
     {
         _httpClient = httpClient.CreateClient("services");
         _user = user;
-        var str = _httpClient.DefaultRequestHeaders
-            .FirstOrDefault(x => x.Key == "Authorization")
-            .Value;
 
-        if(str is null)
+        //var json = JsonSerializer.Deserialize<AuthenticatedUser>(test);
+        var str = _httpClient.DefaultRequestHeaders
+            .FirstOrDefault(x => x.Key == "Authorization");
+
+        if(str.Value is null)
         {
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_user.Value.Token}");
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_user.CurrentValue.Token}");
+        }
+        else
+        {
+            _httpClient.DefaultRequestHeaders.Remove(str.Key);
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_user.CurrentValue.Token}");
         }
     }
 

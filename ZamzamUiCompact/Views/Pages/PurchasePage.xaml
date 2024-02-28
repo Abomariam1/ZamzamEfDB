@@ -49,7 +49,7 @@
                 </StackPanel>
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="نوع العملية" Margin="5" FontSize="16"/>
-                    <ComboBox SelectedIndex="{Binding ViewModel.InvoceType+}" FontSize="16" >
+                    <ComboBox SelectedIndex="{Binding ViewModel.InvoceType}" FontSize="16" >
                         <ComboBoxItem Content="كاش" />
                         <ComboBoxItem Content="اجل"/>
                     </ComboBox>

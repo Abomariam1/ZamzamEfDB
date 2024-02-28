@@ -3,7 +3,7 @@ using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
 namespace ZamzamUiCompact.Services.RepositoryServices;
 
-public class UnitOfWork(IHttpClientFactory httpClient, IConfiguration configuration, IOptionsSnapshot<AuthenticatedUser> user): IUnitOfWork
+public class UnitOfWork(IHttpClientFactory httpClient, IConfiguration configuration, IOptionsMonitor<AuthenticatedUser> user): IUnitOfWork
 {
     private Hashtable? _services;
     private bool _disposed;

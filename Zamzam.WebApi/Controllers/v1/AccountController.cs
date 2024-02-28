@@ -36,7 +36,7 @@ namespace Zamzam.WebApi.Controllers.v1
 
         [Authorize]
         [HttpGet("getuser")]
-        public IActionResult GetUser() => Ok();
+        public ActionResult<Result<UserDto>> GetUser() => Result<UserDto>.Success();
 
     }
 }
