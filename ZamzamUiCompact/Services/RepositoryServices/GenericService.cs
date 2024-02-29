@@ -13,9 +13,7 @@ public class GenericService<T>: IGenericService<T> where T : IModel
     {
         PropertyNameCaseInsensitive = true,
     };
-    public GenericService(
-        IHttpClientFactory httpClient,
-        IConfiguration configuration,
+    public GenericService(IHttpClientFactory httpClient,
         IOptionsMonitor<AuthenticatedUser> user)
     {
         _httpClient = httpClient.CreateClient("services");

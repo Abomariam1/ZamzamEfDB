@@ -4,10 +4,10 @@ namespace ZamzamUiCompact.ViewModels.Windows;
 
 public partial class LoginWindowViewModel(
     IUnitOfWork unitOfWork,
-    IConfiguration configuration,
-    IOptionsMonitor<AuthenticatedUser> monitorUser,
+    IOptionsSnapshot<AuthenticatedUser> SnapUser,
+    IOptionsMonitor<AuthenticatedUser> monitor,
     AuthenticatedUser auth,
-    IServiceProvider provider): ObservableObject, IWindowEvent
+    IServiceProvider provider): ObservableValidator, IWindowEvent
 {
     const string accountController = "Account";
 
@@ -101,11 +101,12 @@ public partial class LoginWindowViewModel(
                     File.WriteAllText(filePath, newFile);
                     File.WriteAllText(filePath2, newFile);
 
-                    var conf = configuration as IConfigurationRoot;
-                    conf.Bind("User", auth);
-                    conf.Bind("UserSettings", setting);
-                    conf.Reload();
-
+                    //var conf = configuration as IConfigurationRoot;
+                    //conf.Bind("User", auth);
+                    //conf.Bind("UserSettings", setting);
+                    //conf.Reload();
+                    var su = SnapUser.Value;
+                    var su2 = monitor.CurrentValue;
                     ShowMainWindow(provider);
                     CloseWindow();
                     //Restarting the program
@@ -136,7 +137,7 @@ public partial class LoginWindowViewModel(
     {
 
         MainWindow? window = provider.GetRequiredService<MainWindow>();
-        window.ViewModel.User = monitorUser.CurrentValue;
+        window.ViewModel.User = SnapUser.Value;
         window.Show();
     }
 

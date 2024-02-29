@@ -1,14 +1,14 @@
 {
   "User": {
-    "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiTW9zdGFmYSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiY2U5M2UyNzItYTBlNi00OTViLThlMjktMWVlZjFkODNlNjdlIiwianRpIjoiMjMyZjVmYjAtMTk2Mi00MjEzLTkyNWMtZmViNzJjNzBiYTEzIiwiZXhwIjoxNzA5MjcxNjg4LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwNDk2IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0MjAwIn0.4F7SgFqCHn8IkioUpGawbxYD-fuE7cRgJ9g3ptGTrzE",
+    "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiTW9zdGFmYSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiY2U5M2UyNzItYTBlNi00OTViLThlMjktMWVlZjFkODNlNjdlIiwianRpIjoiODU4YmZlY2EtODk3ZC00NWMwLWE5NzctMDkxM2ZkNWQ1YzZhIiwiZXhwIjoxNzA5Mjg0MTg3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwNDk2IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0MjAwIn0.BBxy4YZXgXgqWPfVdb0oifn1coB2bQMsmjF6R8akwu8",
     "UserName": "Mostafa",
-    "Expiration": "2024-03-01T05:41:28Z",
-    "Id": "e3b3fbee-c8bc-4db5-bbfe-e70a0803c595"
+    "Expiration": "2024-03-01T09:09:47Z",
+    "Id": "e6cd336f-2198-42b4-8241-0f701a747b7d"
   },
   "UserSettings": {
-    "IsPasswordRemmemberd": true,
-    "IsAutoLogging": true,
-    "LogedInAt": "2024-02-29T07:41:28.7517473+02:00",
+    "IsPasswordRemmemberd": false,
+    "IsAutoLogging": false,
+    "LogedInAt": "2024-02-29T11:09:47.8049236+02:00",
     "Password": "Mo@123456"
   }
 }

@@ -10,6 +10,7 @@ public static class IServiceCollectionExtension
         IConfiguration configuration)
     {
         services.AddServices();
+        services.AddConfiguration(configuration);
         services.AddViewModel();
         services.AddViews();
         services.AddHttpFactory(configuration);
@@ -24,15 +25,27 @@ public static class IServiceCollectionExtension
         services.AddSingleton<IContentDialogService, ContentDialogService>();
         services.AddSingleton<ApplicationSettings>();
         services.AddTransient(typeof(IGenericService<>), typeof(GenericService<>));
-        services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork));
-        services.AddSingleton<AuthenticatedUser>();
+        services.AddTransient<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<AuthenticatedUser>();
         //services.ConfigureOptions<AuthenticatedUserSetup>();
         //services.ConfigureOptions<ApplicationSettingsSetup>();
 
     }
 
-    private static void AddHttpFactory(this IServiceCollection services,
-        IConfiguration configuration)
+    private static void AddConfiguration(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<AuthenticatedUser>(configuration.GetSection("User"));
+        services.Configure<SignInSettingsOptions>(configuration.GetSection("UserSettings"));
+        //services.AddTransient<IOptionsSnapshot<AuthenticatedUser>, OptionsManager<AuthenticatedUser>>();
+        //services.AddTransient<IOptionsMonitor<AuthenticatedUser>, OptionsMonitor<AuthenticatedUser>>();
+        //services.AddTransient<IOptionsSnapshot<SignInSettingsOptions>, OptionsManager<SignInSettingsOptions>>();
+        //services.AddTransient<IOptionsMonitor<SignInSettingsOptions>, OptionsMonitor<SignInSettingsOptions>>();
+
+        services.AddSingleton((IConfigurationRoot)configuration);
+
+    }
+
+    private static void AddHttpFactory(this IServiceCollection services, IConfiguration configuration)
     {
         string baseAdress = configuration.GetSection("ServerUrl").Value!;
 

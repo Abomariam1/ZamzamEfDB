@@ -24,13 +24,6 @@ public partial class App: Application
         })
         .ConfigureServices((context, services) =>
         {
-            IConfigurationSection? usr = context.Configuration.GetSection("User");
-            IConfigurationSection? signin = context.Configuration.GetSection("UserSettings");
-            services.Configure<AuthenticatedUser>(usr);
-            services.Configure<SignInSettingsOptions>(signin);
-            services.AddSingleton<IOptionsMonitor<AuthenticatedUser>, OptionsMonitor<AuthenticatedUser>>();
-            services.AddSingleton<IOptionsMonitor<SignInSettingsOptions>, OptionsMonitor<SignInSettingsOptions>>();
-            services.AddSingleton<IConfigurationRoot>(context.Configuration as IConfigurationRoot);
             services.AddAllServices(context.Configuration);
         })
         .Build();

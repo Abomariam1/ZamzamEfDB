@@ -3,7 +3,7 @@ using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
 namespace ZamzamUiCompact.Services.RepositoryServices;
 
-public class UnitOfWork(IHttpClientFactory httpClient, IConfiguration configuration, IOptionsMonitor<AuthenticatedUser> user): IUnitOfWork
+public class UnitOfWork(IHttpClientFactory httpClient, IOptionsMonitor<AuthenticatedUser> user): IUnitOfWork
 {
     private Hashtable? _services;
     private bool _disposed;
@@ -18,7 +18,7 @@ public class UnitOfWork(IHttpClientFactory httpClient, IConfiguration configurat
         {
             var repositoryType = typeof(GenericService<>);
 
-            var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), httpClient, configuration, user);
+            var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), httpClient, user);
 
             _services.Add(type, repositoryInstance);
         }
