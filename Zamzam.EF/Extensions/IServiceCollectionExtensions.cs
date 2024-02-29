@@ -5,8 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Zamzam.Application;
 using Zamzam.Application.Interfaces.Repositories;
+using Zamzam.Application.Security;
 using Zamzam.EF.Repositories;
 
 namespace Zamzam.EF.Extensions;
@@ -44,10 +44,13 @@ public static class IServiceCollectionExtensions
     }
     private static void AddIdentity(this IServiceCollection services)
     {
+        //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+        //    .AddEntityFrameworkStores<ApplicationDbContext>();
         services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
     }
     private static void AddAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<JwtConfig>(configuration.GetSection("Jwt"));
         services.AddAuthentication(option =>
         {
             option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -67,5 +70,6 @@ public static class IServiceCollectionExtensions
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]))
             };
         });
+
     }
 }

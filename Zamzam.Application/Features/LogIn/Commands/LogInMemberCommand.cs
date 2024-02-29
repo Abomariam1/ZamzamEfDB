@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using Zamzam.Application.Common.Mappings;
 using Zamzam.Application.DTOs;
+using Zamzam.Application.Security;
 using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.LogIn.Commands

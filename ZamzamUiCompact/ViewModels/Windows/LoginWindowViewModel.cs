@@ -36,15 +36,6 @@ public partial class LoginWindowViewModel(
     private bool _isFileExists;
     public Action Close { get; set; } = () => { };
 
-    //public void Initialize()
-    //{
-    //    if(settingsOption.Value.IsPasswordRemmemberd)
-    //    {
-    //        UserName = user.Value.UserName;
-    //        PasswordStr = user.Value.UserName;
-    //    }
-    //}
-
 
     [RelayCommand]
     public async Task SignIn()

@@ -17,7 +17,7 @@ namespace Zamzam.EF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -155,7 +155,7 @@ namespace Zamzam.EF.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Zamzam.Application.ApplicationUser", b =>
+            modelBuilder.Entity("Zamzam.Application.Security.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -265,7 +265,7 @@ namespace Zamzam.EF.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Areas", (string)null);
+                    b.ToTable("Areas");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.Customer", b =>
@@ -326,7 +326,7 @@ namespace Zamzam.EF.Migrations
 
                     b.HasIndex("AreaId");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.Department", b =>
@@ -361,7 +361,7 @@ namespace Zamzam.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments", (string)null);
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.Employee", b =>
@@ -456,7 +456,7 @@ namespace Zamzam.EF.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.Installment", b =>
@@ -515,7 +515,7 @@ namespace Zamzam.EF.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Installments", (string)null);
+                    b.ToTable("Installments");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.Item", b =>
@@ -573,7 +573,7 @@ namespace Zamzam.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Items", (string)null);
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.Maintenance", b =>
@@ -618,7 +618,7 @@ namespace Zamzam.EF.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Maintenances", (string)null);
+                    b.ToTable("Maintenances");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.Order", b =>
@@ -682,7 +682,7 @@ namespace Zamzam.EF.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
 
                     b.UseTptMappingStrategy();
                 });
@@ -741,7 +741,7 @@ namespace Zamzam.EF.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.Supplier", b =>
@@ -786,7 +786,7 @@ namespace Zamzam.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Suppliers", (string)null);
+                    b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.Entites.SaleOrder", b =>
@@ -798,7 +798,7 @@ namespace Zamzam.EF.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("SaleOrders", (string)null);
+                    b.ToTable("SaleOrders");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.InstallmentedSaleOrder", b =>
@@ -825,7 +825,7 @@ namespace Zamzam.EF.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("InstallmentSaleOrders", (string)null);
+                    b.ToTable("InstallmentSaleOrders");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.PurchaseOrder", b =>
@@ -837,7 +837,7 @@ namespace Zamzam.EF.Migrations
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("PurchaseOrders", (string)null);
+                    b.ToTable("PurchaseOrders");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.ReturnPurchaseOrder", b =>
@@ -848,7 +848,7 @@ namespace Zamzam.EF.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("ReturnPurchaseOrders", (string)null);
+                    b.ToTable("ReturnPurchaseOrders");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.ReturnSaleOrder", b =>
@@ -859,7 +859,7 @@ namespace Zamzam.EF.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("ReturnSaleOrders", (string)null);
+                    b.ToTable("ReturnSaleOrders");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -873,7 +873,7 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Zamzam.Application.ApplicationUser", null)
+                    b.HasOne("Zamzam.Application.Security.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -882,7 +882,7 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Zamzam.Application.ApplicationUser", null)
+                    b.HasOne("Zamzam.Application.Security.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -897,7 +897,7 @@ namespace Zamzam.EF.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Zamzam.Application.ApplicationUser", null)
+                    b.HasOne("Zamzam.Application.Security.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -906,7 +906,7 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Zamzam.Application.ApplicationUser", null)
+                    b.HasOne("Zamzam.Application.Security.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1057,7 +1057,7 @@ namespace Zamzam.EF.Migrations
                         .IsRequired();
 
                     b.HasOne("Zamzam.Domain.Supplier", "Supplier")
-                        .WithMany()
+                        .WithMany("PurchaseOrders")
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1121,6 +1121,11 @@ namespace Zamzam.EF.Migrations
                     b.Navigation("Maintenances");
 
                     b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("Zamzam.Domain.Supplier", b =>
+                {
+                    b.Navigation("PurchaseOrders");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.InstallmentedSaleOrder", b =>

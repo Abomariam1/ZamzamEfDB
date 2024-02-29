@@ -30,6 +30,7 @@ namespace Zamzam.Application.Extentions
             ArgumentNullException.ThrowIfNull(services);
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         }
+
         //private static void AddIdentity(this IServiceCollection services)
         //{
         //    services.AddIdentity<ApplicationUser, IdentityRole>();

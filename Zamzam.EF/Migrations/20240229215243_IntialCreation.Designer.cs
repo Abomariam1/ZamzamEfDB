@@ -12,7 +12,7 @@ using Zamzam.EF;
 namespace Zamzam.EF.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231007024220_IntialCreation")]
+    [Migration("20240229215243_IntialCreation")]
     partial class IntialCreation
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Zamzam.EF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -158,7 +158,7 @@ namespace Zamzam.EF.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Zamzam.Application.ApplicationUser", b =>
+            modelBuilder.Entity("Zamzam.Application.Security.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -876,7 +876,7 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Zamzam.Application.ApplicationUser", null)
+                    b.HasOne("Zamzam.Application.Security.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -885,7 +885,7 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Zamzam.Application.ApplicationUser", null)
+                    b.HasOne("Zamzam.Application.Security.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -900,7 +900,7 @@ namespace Zamzam.EF.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Zamzam.Application.ApplicationUser", null)
+                    b.HasOne("Zamzam.Application.Security.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -909,7 +909,7 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Zamzam.Application.ApplicationUser", null)
+                    b.HasOne("Zamzam.Application.Security.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1060,7 +1060,7 @@ namespace Zamzam.EF.Migrations
                         .IsRequired();
 
                     b.HasOne("Zamzam.Domain.Supplier", "Supplier")
-                        .WithMany()
+                        .WithMany("PurchaseOrders")
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1124,6 +1124,11 @@ namespace Zamzam.EF.Migrations
                     b.Navigation("Maintenances");
 
                     b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("Zamzam.Domain.Supplier", b =>
+                {
+                    b.Navigation("PurchaseOrders");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.InstallmentedSaleOrder", b =>
