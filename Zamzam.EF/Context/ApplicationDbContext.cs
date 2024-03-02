@@ -18,7 +18,7 @@ public class ApplicationDbContext: IdentityDbContext<ApplicationUser>
     {
         _dispatcher = dispatcher;
     }
-
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<Area> Areas => Set<Area>();
     public DbSet<Customer> Customers => Set<Customer>();
     public DbSet<Department> Departments => Set<Department>();

@@ -51,6 +51,21 @@ public static class IServiceCollectionExtensions
     private static void AddAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtConfig>(configuration.GetSection("Jwt"));
+        //services.AddSingleton<IOptionsMonitor<JwtConfig>, OptionsMonitor<JwtConfig>>();
+        services.AddTransient<Token>();
+        services.AddTransient<AuthResult>();
+
+
+        byte[]? key = Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]);
+        TokenValidationParameters tokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+        services.AddSingleton(tokenValidationParameters);
+
         services.AddAuthentication(option =>
         {
             option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -61,14 +76,8 @@ public static class IServiceCollectionExtensions
         {
             option.SaveToken = true;
             option.RequireHttpsMetadata = true;
-            option.TokenValidationParameters = new TokenValidationParameters()
-            {
-                ValidateIssuer = true,
-                ValidIssuer = configuration["Jwt:Validessure"],
-                ValidateAudience = true,
-                ValidAudience = configuration["Jwt:ValidAudiance"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]))
-            };
+            option.TokenValidationParameters = tokenValidationParameters;
+
         });
 
     }

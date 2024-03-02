@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using Zamzam.Application.Common.Mappings;
@@ -21,12 +20,10 @@ namespace Zamzam.Application.Features.Members.Commands.Create
     internal class CreateMemberCommandHandler: IRequestHandler<CreateMemberCommand, Result<IdentityResult>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IMapper _mapper;
 
-        public CreateMemberCommandHandler(UserManager<ApplicationUser> userManager, IMapper mapper)
+        public CreateMemberCommandHandler(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            _mapper = mapper;
         }
 
         public async Task<Result<IdentityResult>> Handle(CreateMemberCommand request, CancellationToken cancellationToken)

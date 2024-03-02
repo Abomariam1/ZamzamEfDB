@@ -24,12 +24,12 @@ builder.Services.AddApiVersioning(opt =>
         new HeaderApiVersionReader("Api-version"),
         new UrlSegmentApiVersionReader()
         );
-}).AddApiExplorer(opt =>
+}
+).AddApiExplorer(opt =>
 {
     opt.GroupNameFormat = "'v'V";
     opt.SubstituteApiVersionInUrl = true;
-}
-    );
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swagger =>
