@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Zamzam.Application.DTOs;
 using Zamzam.Application.Features.LogIn.Commands;
@@ -16,7 +15,7 @@ namespace Zamzam.WebApi.Controllers.v1
         //create Account new user
 
         [HttpPost("register")]
-        public async Task<Result<IdentityResult>> Regestration(CreateMemberCommand command) =>
+        public async Task<Result<AuthResult>> Regestration(CreateMemberCommand command) =>
             await mediator.Send(command);
 
         [HttpPost("login")]

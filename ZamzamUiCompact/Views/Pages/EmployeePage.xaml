@@ -17,6 +17,7 @@
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       x:Name="employeepage"
+      FontSize="16"
       Title="EmployeePage">
     <Page.Resources>
         <helpers:BytesToImageConverter x:Key="BytesToImageConverter"/>

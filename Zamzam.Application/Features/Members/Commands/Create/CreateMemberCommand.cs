@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
-using Zamzam.Application.Common.Mappings;
+using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.Application.Security;
 using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.Members.Commands.Create
 {
-    public record CreateMemberCommand: IRequest<Result<IdentityResult>>, IMapFrom<IdentityUser>
+    public record CreateMemberCommand: IRequest<Result<AuthResult>>
     {
         public required string UserName { get; set; }
         public required string Password { get; set; }
@@ -17,31 +17,38 @@ namespace Zamzam.Application.Features.Members.Commands.Create
         public string? Email { get; set; }
     }
 
-    internal class CreateMemberCommandHandler: IRequestHandler<CreateMemberCommand, Result<IdentityResult>>
+    internal class CreateMemberCommandHandler(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, Token token): IRequestHandler<CreateMemberCommand, Result<AuthResult>>
     {
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CreateMemberCommandHandler(UserManager<ApplicationUser> userManager)
-        {
-            _userManager = userManager;
-        }
-
-        public async Task<Result<IdentityResult>> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
+        public async Task<Result<AuthResult>> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
         {
             ApplicationUser user = new()
             {
                 UserName = request.UserName,
                 Email = request.Email
             };
-            ApplicationUser? existingUser = await _userManager.FindByNameAsync(user.UserName);
+            ApplicationUser? existingUser = await userManager.FindByNameAsync(user.UserName);
             if(existingUser != null)
             {
-                return Result<IdentityResult>.Failure("هذا الاسم مستخدم من قبل, برجاء استخدام اسم اخر...");
+                return await Result<AuthResult>.FailureAsync("هذا الاسم مستخدم من قبل, برجاء استخدام اسم اخر...");
             }
-            IdentityResult result = await _userManager.CreateAsync(user, request.Password);
+            IdentityResult result = await userManager.CreateAsync(user, request.Password);
             if(result.Succeeded)
-                return Result<IdentityResult>.Success(result, "تم تسجيل المستخدم بنجاح....");
-            return Result<IdentityResult>.Failure(result, result.Errors.ToString() ?? "فشل في تسجيل المستخدم, برجاء المحاولة مرة اخري");
+            {
+                ApplicationUser? newUser = await userManager.FindByNameAsync(request.UserName);
+                RefreshToken? newToken = await token.GenerateJwtTokenAsync(newUser);
+                RefreshToken? saved = await unitOfWork.Repository<RefreshToken>().AddAsync(newToken);
+                int count = await unitOfWork.Save(cancellationToken);
+                AuthResult authResult = new()
+                {
+                    Token = saved.Token,
+                    RefreshToken = saved.NewToken,
+                    ExpiredAt = saved.ExpiryDate
+                };
+
+                return await Result<AuthResult>.SuccessAsync(authResult, "تم تسجيل المستخدم بنجاح....");
+            }
+            return await Result<AuthResult>.FailureAsync("فشل في تسجيل المستخدم, برجاء المحاولة مرة اخري");
 
 
         }

@@ -20,7 +20,8 @@ public partial class App: Application
             var filePath = FindProjectPath(dirName);
             c.SetBasePath(filePath);
             c.AddJsonFile("appsettings.json", false, true);
-            c.AddJsonFile("user.json", false, true);
+            c.AddUserSecrets(Assembly.GetExecutingAssembly(), false, true);
+            //c.AddJsonFile("user.json", false, true);
         })
         .ConfigureServices((context, services) =>
         {

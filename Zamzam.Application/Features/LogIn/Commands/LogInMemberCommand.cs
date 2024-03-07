@@ -33,6 +33,7 @@ internal class LoginMemberCommandHandler(IUnitOfWork unitOfWork,
                 {
                     Token = saved.Token,
                     RefreshToken = saved.NewToken,
+                    ExpiredAt = saved.ExpiryDate
                 };
                 return count > 0 ? Result<AuthResult>.Success(result)
                     : Result<AuthResult>.Failure("فشل في تسجيل الدخول");

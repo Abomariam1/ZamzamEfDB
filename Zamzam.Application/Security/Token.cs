@@ -27,7 +27,7 @@ public class Token(IOptionsMonitor<JwtConfig> jwtMonitor,
         SecurityTokenDescriptor? tokenDescriptor = new SecurityTokenDescriptor()
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddSeconds(10),
+            Expires = DateTime.UtcNow.AddMonths(10),
             SigningCredentials = new SigningCredentials(symmetrickey, SecurityAlgorithms.HmacSha256),
         };
         RefreshToken usr = null;

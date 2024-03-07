@@ -1,4 +1,5 @@
-﻿using ZamzamUiCompact.Services.RepositoryServices.Inteface;
+﻿using Microsoft.Extensions.Configuration.UserSecrets;
+using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
 namespace ZamzamUiCompact.ViewModels.Windows;
 
@@ -76,21 +77,14 @@ public partial class LoginWindowViewModel(
                     string? newFile = JsonSerializer.Serialize(newUserSettings, options);
 
 
-                    string dirPath = AppDomain.CurrentDomain.BaseDirectory;
-                    var filePath = Path.Combine(App.FindProjectPath(dirPath), "user.json");
-                    var filePath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "user.json");
-                    //string filePath = "/Settings / user.json";
+                    string dirPath = Assembly.GetExecutingAssembly().Location;
+                    var filePath = Path.Combine(PathHelper.GetSecretsPathFromSecretsId("90b93fa4-7cb7-4f21-bb38-60199bfdb648"));
+                    //var filePath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "user.json");
 
-                    //var fileWathcer = new FileSystemWatcher(
-                    //    Path.GetDirectoryName(filePath)!,
-                    //    Path.GetFileName(filePath));
-                    //fileWathcer.Changed += FileWathcer_Changed;
-                    //fileWathcer.Created += FileWathcer_Created;
-                    //fileWathcer.EnableRaisingEvents = true;
 
 
                     File.WriteAllText(filePath, newFile);
-                    File.WriteAllText(filePath2, newFile);
+                    //File.WriteAllText(filePath2, newFile);
 
                     //var conf = configuration as IConfigurationRoot;
                     //conf.Bind("User", auth);

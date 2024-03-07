@@ -39,7 +39,7 @@ builder.Services.AddSwaggerGen(swagger =>
     swagger.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "ASP.NET 7 Web API",
+        Title = "ASP.NET 8 Web API",
         Description = "Zamzam Project"
     });
 
