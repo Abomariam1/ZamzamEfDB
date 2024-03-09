@@ -67,7 +67,6 @@ public static class IServiceCollectionExtension
         services.AddSingleton<LoginWindowViewModel>();
         services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<SettingsViewModel>();
-        services.AddTransient<DataViewModel>();
         services.AddTransient<DepartmentViewModel>();
         services.AddTransient<DepartmentModel>();
         services.AddTransient<EmployeeViewModel>();
@@ -84,7 +83,6 @@ public static class IServiceCollectionExtension
         services.AddSingleton<MainWindow>();
         services.AddSingleton<DashboardPage>();
         services.AddSingleton<SettingsPage>();
-        services.AddSingleton<DataPage>();
         services.AddSingleton<DepartmentPage>();
         services.AddSingleton<EmployeePage>();
         services.AddSingleton<AreasPage>();

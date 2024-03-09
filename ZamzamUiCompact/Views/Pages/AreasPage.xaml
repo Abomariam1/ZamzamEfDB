@@ -15,6 +15,7 @@
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       ScrollViewer.CanContentScroll="False"
       x:Name="areaPage"
+      FontSize="16"
       >
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded" SourceName="areaPage">
