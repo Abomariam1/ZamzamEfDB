@@ -1,6 +1,6 @@
 ﻿namespace ZamzamUiCompact.ViewModels.Pages;
 
-public partial class SettingsViewModel : ObservableObject, INavigationAware
+public partial class SettingsViewModel: ObservableObject, INavigationAware
 {
     private bool _isInitialized = false;
 
@@ -12,7 +12,7 @@ public partial class SettingsViewModel : ObservableObject, INavigationAware
 
     public void OnNavigatedTo()
     {
-        if (!_isInitialized)
+        if(!_isInitialized)
             InitializeViewModel();
     }
 
@@ -35,10 +35,10 @@ public partial class SettingsViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     private void OnChangeTheme(string parameter)
     {
-        switch (parameter)
+        switch(parameter)
         {
             case "theme_light":
-                if (CurrentTheme == SystemTheme.Light)
+                if(CurrentTheme == SystemTheme.Light)
                     break;
 
                 ApplicationThemeManager.Apply(ApplicationTheme.Light, WindowBackdropType.Acrylic);
@@ -47,7 +47,7 @@ public partial class SettingsViewModel : ObservableObject, INavigationAware
                 break;
 
             default:
-                if (CurrentTheme == SystemTheme.Dark)
+                if(CurrentTheme == SystemTheme.Dark)
                     break;
 
                 ApplicationThemeManager.Apply(ApplicationTheme.Dark, WindowBackdropType.Acrylic);

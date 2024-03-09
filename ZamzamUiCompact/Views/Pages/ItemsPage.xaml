@@ -12,6 +12,7 @@
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       x:Name="itemPage"
       mc:Ignorable="d" 
+      FontSize="16"
       d:DesignHeight="450" d:DesignWidth="800">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded" SourceName="itemPage" >

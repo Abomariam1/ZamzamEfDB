@@ -147,9 +147,13 @@
                                         SelectedDate="{Binding ViewModel.BirthDate ,StringFormat={}{0:dd-MM-yyyy}}"
                                         SelectedDateFormat="Short" FirstDayOfWeek="Saturday" 
                                         />
+                            <TextBlock Text="{Binding ElementName=num,Path=Value}"/>
                         </StackPanel>
 
                     </DockPanel>
+                </StackPanel>
+                <GridSplitter Grid.Column="0"/>
+                <StackPanel Grid.Column="1" Grid.Row="0" Margin="10 0">
                     <DockPanel Margin="0 5"
                         HorizontalAlignment="Stretch">
                         <StackPanel Margin="0 0 0 10">
@@ -178,9 +182,6 @@
                         </StackPanel>
 
                     </DockPanel>
-                </StackPanel>
-                <!--<GridSplitter Grid.Column="1"/>-->
-                <StackPanel Grid.Column="1" Grid.Row="0" Margin="10 0">
                     <DockPanel Margin="0 5"
                         HorizontalAlignment="Stretch">
                         <StackPanel Margin="0 0 0 10">
@@ -218,10 +219,14 @@
                                   Grid.Column="0"
                                   Margin="5"
                                   VerticalAlignment="Center"/>
-                            <ui:NumberBox PlaceholderText="{Binding RelativeSource={RelativeSource Mode=Self},Path=Minimum,StringFormat=C}" 
+                            <ui:NumberBox x:Name="num"
+                                          PlaceholderText="{Binding RelativeSource={RelativeSource Mode=Self},Path=Minimum,StringFormat=C}" 
                                           SmallChange="10" LargeChange="100"
                                           Minimum="1000" Maximum="100000"
-                                          Value="{Binding ViewModel.Salary,StringFormat=C}"
+                                          Value="{Binding ViewModel.Salary,Mode=TwoWay}"
+                                          Text="{Binding ViewModel.Salary}"
+                                          TextChanged="NumberBox_TextChanged"
+                                          KeyDown="NumberBox_KeyDown"
                                           />
                         </StackPanel>
 
