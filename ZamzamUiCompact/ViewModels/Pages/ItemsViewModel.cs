@@ -97,7 +97,7 @@ public partial class ItemsViewModel : ObservableValidator
         {
             Items = new ObservableCollection<ItemModel>(items.Data);
         }
-        return new List<ItemModel>();
+        return [];
     }
 
     private bool IsReady()
