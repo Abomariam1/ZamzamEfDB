@@ -4,7 +4,7 @@ using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
 namespace ZamzamUiCompact.ViewModels.Pages;
 
-public partial class EmployeeViewModel: ObservableValidator
+public partial class EmployeeViewModel: BaseValidator
 {
     #region Private fields
     const string employeeController = "Employee";
@@ -13,13 +13,6 @@ public partial class EmployeeViewModel: ObservableValidator
         $"{Directory.GetParent(path: AppDomain.CurrentDomain.BaseDirectory)!
             .Parent!.Parent!.Parent!.FullName}/Assets/zamzamlogo.png";
     private IUnitOfWork _unitOfWork;
-    private static int counter = 0;
-
-    private readonly DispatcherTimer _dispatcher = new()
-    {
-        Interval = TimeSpan.FromMilliseconds(100)
-    };
-
     #endregion
 
     #region Public Properities
@@ -61,6 +54,7 @@ public partial class EmployeeViewModel: ObservableValidator
     [ObservableProperty] DateTime _birthDate = DateTime.Today;
 
     [Required]
+    [RegularExpression(@" ^ [0 - 9] * $")]
     [ObservableProperty] decimal _salary;
 
     [Required]
@@ -81,14 +75,8 @@ public partial class EmployeeViewModel: ObservableValidator
     [ObservableProperty] EmployeeModel _selectedEmployee;
     [ObservableProperty] ObservableCollection<EmployeeModel> _employees;
 
-    [ObservableProperty] string _message = string.Empty;
-
-    [ObservableProperty] bool _status = false;
-
     [ObservableProperty] bool _enabled = true;
 
-    [ObservableProperty] InfoBarSeverity _saverty = InfoBarSeverity.Informational;
-    [ObservableProperty] string _infoBarTitle = "رسالة";
     #endregion
 
     #region Constructors
@@ -97,7 +85,6 @@ public partial class EmployeeViewModel: ObservableValidator
     {
         _unitOfWork = unitOfWork;
         Photo = PathToPhoto(PathPhoto);
-        StartTimer();
     }
     #endregion
 
@@ -169,6 +156,14 @@ public partial class EmployeeViewModel: ObservableValidator
     [RelayCommand]
     public async Task UpdateAsync()
     {
+        ValidateAllProperties();
+        if(HasErrors)
+        {
+            Message = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
+            Validate(Message, "Error", InfoBarSeverity.Error);
+            return;
+        }
+
         if(SelectedDepartment == null) { return; }
         EmployeeModel? updatedEmployee = new()
         {
@@ -229,6 +224,13 @@ public partial class EmployeeViewModel: ObservableValidator
     [RelayCommand]
     public async Task DeleteAsync()
     {
+        ValidateAllProperties();
+        if(HasErrors)
+        {
+            Message = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
+            Validate(Message, "Error", InfoBarSeverity.Error);
+            return;
+        }
         if(SelectedDepartment == null && SelectedEmployee.EmployeeId == 0) return;
         Enabled = false;
         Result<int>? result = await _unitOfWork.Service<EmployeeModel>().DeleteAsync($"{employeeController}/{SelectedEmployee.EmployeeId} ");
@@ -328,38 +330,6 @@ public partial class EmployeeViewModel: ObservableValidator
         }
 
         return stringToValidate;
-    }
-    private void Validate(string message, string title, InfoBarSeverity saverty)
-    {
-        Message = message;
-        InfoBarTitle = title;
-        Status = true;
-        Saverty = saverty;
-        StartTimer();
-    }
-    private void StartTimer()
-    {
-        _dispatcher.Tick += _dispatcher_Tick;
-        _dispatcher.Start();
-    }
-    private void _dispatcher_Tick(object? sender, EventArgs e)
-    {
-        counter++;
-        if(counter == 15)
-        {
-            counter = 0;
-            StopAutoProgress();
-            _dispatcher.Tick -= _dispatcher_Tick;
-        }
-    }
-    private void StopAutoProgress()
-    {
-        // Stop the timer when needed
-        if(_dispatcher != null)
-        {
-            Status = false;
-            _dispatcher.Stop();
-        }
     }
 
     #endregion

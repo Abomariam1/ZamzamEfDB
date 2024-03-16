@@ -14,7 +14,6 @@ namespace ZamzamUiCompact.Views.Windows
             IServiceProvider serviceProvider,
             ISnackbarService snackbarService,
             IContentDialogService contentDialogService
-
         )
         {
             SystemThemeWatcher.Watch(this);

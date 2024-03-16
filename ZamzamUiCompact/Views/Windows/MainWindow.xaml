@@ -53,16 +53,18 @@
             x:Name="NavigationView"
             Padding="42,0,42,0"
             BreadcrumbBar="{Binding ElementName=BreadcrumbBar}"
+            MenuItemsSource="{Binding MenuItems, Mode=OneWay}"
             FooterMenuItemsSource="{Binding FooterMenuItems, Mode=OneWay}"
             FrameMargin="0"
             IsBackButtonVisible="Visible"
             IsPaneToggleVisible="True"
-            MenuItemsSource="{Binding MenuItems, Mode=OneWay}"
-            OpenPaneLength="310"
+            OpenPaneLength="200"
             PaneDisplayMode="Left"
             TitleBar="{Binding ElementName=TitleBar, Mode=OneWay}">
             <ui:NavigationView.Header>
-                <ui:BreadcrumbBar x:Name="BreadcrumbBar" Margin="42,32,42,20" />
+                <ui:BreadcrumbBar x:Name="BreadcrumbBar"
+                                  Margin="30,32,30,20"
+                                  FontSize="18"/>
             </ui:NavigationView.Header>
             <ui:NavigationView.AutoSuggestBox>
                 <ui:AutoSuggestBox x:Name="AutoSuggestBox" PlaceholderText="Search">
@@ -75,12 +77,7 @@
             </ui:NavigationView.AutoSuggestBox>
             <ui:NavigationView.ContentOverlay>
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <GridSplitter Grid.Column="0"/>
-                    <ui:SnackbarPresenter x:Name="SnackbarPresenter" Grid.Column="1" />
+                    <ui:SnackbarPresenter x:Name="SnackbarPresenter" />
                 </Grid>
             </ui:NavigationView.ContentOverlay>
         </ui:NavigationView>

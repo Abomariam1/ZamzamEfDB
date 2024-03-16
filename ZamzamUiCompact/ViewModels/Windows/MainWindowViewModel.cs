@@ -8,15 +8,17 @@ public partial class MainWindowViewModel: ObservableObject, IWindowEvent
     private string _applicationTitle = "زمزم لفلاتر المياه";
 
     [ObservableProperty]
-    private ObservableCollection<object> _menuItems = new()
-    {
+    private ObservableCollection<object> _menuItems =
+    [
         new NavigationViewItem()
         {
             Content = "الرئيسية",
             Icon = new SymbolIcon { Symbol = SymbolRegular.Home24 },
-            TargetPageType = typeof(DashboardPage)
+            TargetPageType = typeof(DashboardPage),
+
         },
-         new NavigationViewItem()
+        new NavigationViewItemSeparator(),
+        new NavigationViewItem()
         {
             Content = "الاقسام",
             Icon = new SymbolIcon {Symbol = SymbolRegular.AlignTop24 },
@@ -53,24 +55,25 @@ public partial class MainWindowViewModel: ObservableObject, IWindowEvent
             Icon = new SymbolIcon { Symbol = SymbolRegular.Production24 },
             TargetPageType = typeof(PurchasePage)
         },
-    };
+
+    ];
 
     [ObservableProperty]
-    private ObservableCollection<object> _footerMenuItems = new()
-    {
+    private ObservableCollection<object> _footerMenuItems =
+    [
         new NavigationViewItem()
         {
             Content = "Settings",
             Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
             TargetPageType = typeof(SettingsPage)
         }
-    };
+    ];
 
     [ObservableProperty]
-    private ObservableCollection<MenuItem> _trayMenuItems = new()
-    {
-        new MenuItem { Header = "Home", Tag = "tray_home" }
-    };
+    private ObservableCollection<MenuItem> _trayMenuItems =
+    [
+        new MenuItem { Header = "Home", Tag = "tray_home" },
+    ];
 
     [ObservableProperty]
     private AuthenticatedUser _user;

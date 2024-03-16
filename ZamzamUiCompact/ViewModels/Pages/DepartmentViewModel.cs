@@ -5,16 +5,11 @@ using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
 namespace ZamzamUiCompact.ViewModels.Pages;
 
-public partial class DepartmentViewModel(IUnitOfWork unitOfWork, IContentDialogService dialogService): ObservableValidator
+public partial class DepartmentViewModel(IUnitOfWork unitOfWork, IContentDialogService dialogService): BaseValidator
 {
     const string departmentControler = "Department";
     public event EventHandler? FormSubmissionCompleted;
     public event EventHandler? FormSubmissionFailed;
-    private readonly DispatcherTimer _dispatcher = new()
-    {
-        Interval = TimeSpan.FromMilliseconds(100)
-    };
-    private static int counter = 0;
     [ObservableProperty] private int _id;
     //[NotifyPropertyChangedFor(nameof(SelectedDepartment))]
     [ObservableProperty]
@@ -31,15 +26,7 @@ public partial class DepartmentViewModel(IUnitOfWork unitOfWork, IContentDialogS
 
     [ObservableProperty] private DateTime _updatedOn = DateTime.Now;
 
-    [ObservableProperty]
-    private string _message = string.Empty;
-
-    [ObservableProperty] private bool _isInfoBarOpen = false;
-
     [ObservableProperty] private bool _enabled = true;
-
-    [ObservableProperty] private InfoBarSeverity _saverty = InfoBarSeverity.Informational;
-    [ObservableProperty] private string _infoBarTitle = "رسالة";
 
     [ObservableProperty]
     private ObservableCollection<DepartmentModel> _departments = [];
@@ -88,7 +75,9 @@ public partial class DepartmentViewModel(IUnitOfWork unitOfWork, IContentDialogS
         }
         else
         {
-            FormSubmissionFailed?.Invoke(this, EventArgs.Empty);
+            Message = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
+            Validate(Message, "Error", InfoBarSeverity.Error);
+
         }
 
     }
@@ -96,6 +85,13 @@ public partial class DepartmentViewModel(IUnitOfWork unitOfWork, IContentDialogS
     [RelayCommand]
     public async Task Update()
     {
+        ValidateAllProperties();
+        if(HasErrors)
+        {
+            Message = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
+            Validate(Message, "Error", InfoBarSeverity.Error);
+            return;
+        }
         if(SelectedDepartment == null)
         {
             Validate("يجب اختيار قسم للتعديل", "Warning", InfoBarSeverity.Warning);
@@ -132,6 +128,14 @@ public partial class DepartmentViewModel(IUnitOfWork unitOfWork, IContentDialogS
     [RelayCommand]
     public async Task Delete()
     {
+        ValidateAllProperties();
+        if(HasErrors)
+        {
+            Message = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
+            Validate(Message, "Error", InfoBarSeverity.Error);
+            return;
+        }
+
         if(SelectedDepartment == null)
         {
             Validate("يجب اخيار قسم للحذف", "Warning", InfoBarSeverity.Warning);
@@ -152,7 +156,7 @@ public partial class DepartmentViewModel(IUnitOfWork unitOfWork, IContentDialogS
         }
         else
         {
-            Validate(result.Message, "Faild", InfoBarSeverity.Error);
+            Validate(result.Message, "Error", InfoBarSeverity.Error);
 
         }
         Enabled = true;
@@ -164,61 +168,4 @@ public partial class DepartmentViewModel(IUnitOfWork unitOfWork, IContentDialogS
         DepartmentName = SelectedDepartment?.DepartmentName ?? "";
     }
 
-    [RelayCommand]
-    private void ShowErrors()
-    {
-        Message = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
-        IsInfoBarOpen = true;
-        Validate(Message, "خطأ", InfoBarSeverity.Error);
-
-        //_ = await dialogService.ShowAlertAsync("تاكد من صحة البيانات", Message, "Ok");
-    }
-
-    [RelayCommand]
-    private async Task ShowSuccsess()
-    {
-        ContentDialogResult cmd = await dialogService.ShowSimpleDialogAsync(new SimpleContentDialogCreateOptions
-        {
-            CloseButtonText = "تم",
-            Content = "تمت العملية بنجاج",
-            Title = "عملية ناجحة",
-            PrimaryButtonText = "OK",
-        });
-        if(cmd.HasFlag(ContentDialogResult.Primary))
-        {
-
-        }
-    }
-    private void Validate(string message, string title, InfoBarSeverity saverty)
-    {
-        Message = message;
-        IsInfoBarOpen = true;
-        InfoBarTitle = title;
-        Saverty = saverty;
-        StartTimer();
-    }
-    private void StartTimer()
-    {
-        _dispatcher.Tick += Dispatcher_Tick;
-        _dispatcher.Start();
-    }
-    private void Dispatcher_Tick(object? sender, EventArgs e)
-    {
-        counter++;
-        if(counter == 15)
-        {
-            counter = 0;
-            _dispatcher.Tick -= Dispatcher_Tick;
-            StopAutoProgress();
-        }
-    }
-    private void StopAutoProgress()
-    {
-        // Stop the timer when needed
-        if(_dispatcher != null)
-        {
-            IsInfoBarOpen = false;
-            _dispatcher.Stop();
-        }
-    }
 }

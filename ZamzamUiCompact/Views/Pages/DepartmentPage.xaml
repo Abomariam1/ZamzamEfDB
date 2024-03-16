@@ -82,16 +82,19 @@
             </Grid>
         </Grid>
 
-        <ui:InfoBar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                    x:Name="info"
-                    Height="50" Foreground="AliceBlue" 
+        <ui:InfoBar Grid.Row="1" Grid.ColumnSpan="2" Foreground="AliceBlue"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
                     Title="{Binding ViewModel.InfoBarTitle}"
                     Message="{Binding ViewModel.Message}"
-                    Severity="{Binding ViewModel.Saverty}" 
-                    IsOpen="{Binding ViewModel.IsInfoBarOpen}"
-                    IsClosable="True" >
-            
-            <!--<ui:InfoBar.Style>
+                    Severity="{Binding ViewModel.Saverty}"
+                    IsOpen="{Binding ViewModel.Status}"
+                    IsClosable="True" 
+                    Visibility="{Binding ViewModel.Status,
+            Converter={StaticResource BooleanToVisibilityConverter}}"
+                    />
+
+        <!--<ui:InfoBar.Style>
                 <Style TargetType="ui:InfoBar">
                     <Setter Property="Template">
                         <Setter.Value>
@@ -108,13 +111,11 @@
                     </Setter>
                 </Style>
             </ui:InfoBar.Style>-->
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="FormSubmissionFailed" SourceObject="{Binding ViewModel}">
-                    <i:InvokeCommandAction Command="{Binding ViewModel.ShowErrorsCommand}"/>
-                    <!--<i:ChangePropertyAction  TargetName="info" PropertyName="IsOpen" Value="True" />-->
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </ui:InfoBar>
-
+        <!--<i:Interaction.Triggers>
+            <i:EventTrigger EventName="FormSubmissionFailed" SourceObject="{Binding ViewModel}">
+                <i:InvokeCommandAction Command="{Binding ViewModel.ShowErrorsCommand}"/>
+                --><!--<i:ChangePropertyAction  TargetName="info" PropertyName="IsOpen" Value="True" />--><!--
+            </i:EventTrigger>
+        </i:Interaction.Triggers>-->
     </Grid>
 </Page>
