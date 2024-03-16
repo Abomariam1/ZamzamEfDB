@@ -5,7 +5,7 @@ using Zamzam.Domain.Types;
 namespace Zamzam.Domain
 {
 
-    public class Order : BaseAuditableEntity, IOrder
+    public class Order: BaseAuditableEntity, IOrder
     {
         public DateTime OrderDate { get; set; } //تاريخ العملية
         public decimal TotalPrice { get; set; } // جمالي السعر
@@ -15,7 +15,7 @@ namespace Zamzam.Domain
         public InvoiceType InvoiceType { get; set; } // نوع الفاتورة {كاش,اجل} و
         public int EmployeeId { get; set; } // الموظف المسؤول عن العملية
         public virtual Employee Employee { get; set; }
-        public required virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
         public virtual ICollection<Maintenance>? Maintenances { get; set; }
     }
 }

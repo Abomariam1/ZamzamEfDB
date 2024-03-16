@@ -66,14 +66,11 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
             order.AddDomainEvent(new PurchaseCreatedEvent(purchase));
             if(count > 0)
             {
-                foreach(var item in items)
-                {
-                }
                 items.ForEach(x => _unitOfWork.Repository<Item>().UpdateAsync(x));
+                int itemsAdded = await _unitOfWork.Save(cancellationToken);
             }
-            int itemsAdded = await _unitOfWork.Save(cancellationToken);
 
-            return count > 0 ? await Result<PurchaseDto>.SuccessAsync((PurchaseDto)order, "تم اضافة فاتورة الشراء بنجاح")
+            return count > 0 ? await Result<PurchaseDto>.SuccessAsync((PurchaseDto)purchase, "تم اضافة فاتورة الشراء بنجاح")
                 : await Result<PurchaseDto>.FailureAsync("فشل في انشاء فاتورة شراء");
         }
     }
