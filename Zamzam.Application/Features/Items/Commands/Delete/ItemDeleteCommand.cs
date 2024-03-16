@@ -36,7 +36,7 @@ namespace Zamzam.Application.Features.Items.Commands.Delete
             var item = await _unitOfWork.Repository<Item>().DeleteAsync(request.Id);
             int count = await _unitOfWork.Save(cancellationToken);
             if (item != null)
-                return Result<int>.Success(1, $"تم حذف الصنف{item.Name}");
+                return Result<int>.Success(1, $"تم حذف الصنف {item.Name}");
             return Result<int>.Failure(0, "لم يتم العثور على الصنف");
         }
     }

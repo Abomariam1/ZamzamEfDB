@@ -11,47 +11,41 @@ using Zamzam.Shared;
 namespace Zamzam.WebApi.Controllers.v1;
 
 [Authorize]
-public class AreasController : ApiControllerBase
+public class AreasController(IMediator mediator): ApiControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public AreasController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
     [HttpGet]
     public async Task<ActionResult<Result<List<AreaDto>>>> Get() =>
-        await _mediator.Send(new GetAllAreasQuery());
+        await mediator.Send(new GetAllAreasQuery());
 
     [HttpPost]
     public async Task<ActionResult<Result<AreaDto>>> Create(CreateAreaCommand command)
     {
-        if (!ModelState.IsValid)
+        if(!ModelState.IsValid)
         {
             return await Result<AreaDto>.FailureAsync("Not valid command");
         }
         command.CreatedBy = HttpContext.User.Identity?.Name;
-        return await _mediator.Send(command);
+        return await mediator.Send(command);
     }
 
     [HttpPut]
     public async Task<ActionResult<Result<AreaDto>>> Update(UpdateAreaCommand command)
     {
-        if (!ModelState.IsValid)
+        if(!ModelState.IsValid)
         {
             return await Result<AreaDto>.FailureAsync("Not valid command");
         }
         command.UpdatedBy = HttpContext.User.Identity?.Name;
-        return await _mediator.Send(command);
+        return await mediator.Send(command);
     }
 
-    [HttpDelete("{int id}")]
+    [HttpDelete("{id}")]
     public async Task<ActionResult<Result<int>>> Delete(int id)
     {
-        if (!ModelState.IsValid)
+        if(!ModelState.IsValid)
         {
             return await Result<int>.FailureAsync(0, "Not valid command");
         }
-        return await _mediator.Send(new AreaDeleteCommand(id));
+        return await mediator.Send(new AreaDeleteCommand(id));
     }
 }

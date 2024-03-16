@@ -53,7 +53,7 @@ namespace Zamzam.Application.Features.Sales.Commands.Create
                     cust = await _unitOfWork.Repository<Customer>().AddAsync(newCust);
                     cust.AddDomainEvent(new CreatedCustomerEvent(cust));
                 }
-                //Employee? emp = await _unitOfWork.Repository<Employee>().GetByIdAsync(request.EmployeeId);
+                //Employee? emp = await unitOfWork.Repository<Employee>().GetByIdAsync(request.EmployeeId);
                 var ordt = new List<OrderDetail>();
                 foreach (ODetails orderDetails in request.OrderDetails)
                 {

@@ -6,7 +6,7 @@ using Zamzam.Domain.Common;
 
 namespace Zamzam.EF.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseAuditableEntity, new()
+    public class GenericRepository<T>: IGenericRepository<T> where T : BaseAuditableEntity, new()
     {
         private readonly ApplicationDbContext _dbContext;
         public IQueryable<T> Entities => _dbContext.Set<T>();
@@ -41,6 +41,13 @@ namespace Zamzam.EF.Repositories
             EntityEntry<T>? updated = _dbContext.Set<T>().Update(exist);
             return updated.Entity;
         }
+        public async Task<int> UpdateRangAsync(T[] entities)
+        {
+            var result = await _dbContext.Set<T>()
+                  .ExecuteUpdateAsync<T>(x =>
+                  x.SetProperty(x => x.Id, x => x.Id));
+            return result;
+        }
 
         public async Task<List<T>> GetAllAsync() => await Entities.ToListAsync();
 
@@ -49,7 +56,7 @@ namespace Zamzam.EF.Repositories
         public async Task<T> GetByNameAsync(Expression<Func<T, bool>> criteria)
         {
             T? entity = await Entities.SingleOrDefaultAsync(criteria);
-            if (entity == null)
+            if(entity == null)
                 return null;
             return entity;
         }

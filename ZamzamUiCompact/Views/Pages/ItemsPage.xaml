@@ -6,14 +6,15 @@
       xmlns:local="clr-namespace:ZamzamUiCompact.Views.Pages"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-      xmlns:pages="clr-namespace:ZamzamUiCompact.ViewModels.Pages" d:DataContext="{d:DesignInstance Type=pages:ItemsViewModel}"
+      xmlns:pages="clr-namespace:ZamzamUiCompact.ViewModels.Pages"
+      d:DataContext="{d:DesignInstance Type=pages:ItemsViewModel}"
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       x:Name="itemPage"
       mc:Ignorable="d" 
       FontSize="16"
-      d:DesignHeight="450" d:DesignWidth="800">
+      d:DesignHeight="800" d:DesignWidth="1200">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded" SourceName="itemPage" >
             <i:InvokeCommandAction Command="{Binding ViewModel.GetAllItemsCommand}"/>
@@ -22,6 +23,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="9*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
@@ -43,7 +45,8 @@
                 <StackPanel Margin="10">
                     <ui:TextBlock Grid.Row="1" Text="سعر الشراء" />
                     <ui:NumberBox Grid.Column="1" PlaceholderText="1000"
-                                  Value="{Binding ViewModel.PurchasingPrice}"
+                                  Value="{Binding ViewModel.PurchasingPrice,Mode=TwoWay}"
+                                  Text="{Binding ViewModel.PurchasingPrice}"
                                   MaxDecimalPlaces="2"
                                   Maximum="100000"
                                   SmallChange="50" LargeChange="100"/>
@@ -52,7 +55,8 @@
                 <StackPanel Margin="10">
                     <ui:TextBlock Grid.Row="2" Text="سعر البيع كاش"/>
                     <ui:NumberBox Grid.Column="1" PlaceholderText="1400"
-                                  Value="{Binding ViewModel.SellingCashPrice}"
+                                  Value="{Binding ViewModel.SellingCashPrice,Mode=TwoWay}"
+                                  Text="{Binding ViewModel.SellingCashPrice}"
                                   MaxDecimalPlaces="2" Maximum="100000"
                                   SmallChange="50" LargeChange="100"/>
 
@@ -61,7 +65,8 @@
                 <StackPanel Margin="10">
                     <ui:TextBlock Grid.Row="3" Text="سعر البيع قسط" />
                     <ui:NumberBox Grid.Column="1" PlaceholderText="سعر البيع قسط"
-                                  Value="{Binding ViewModel.InstallmentPrice}"
+                                  Value="{Binding ViewModel.InstallmentPrice,Mode=TwoWay}"
+                                  Text="{Binding ViewModel.InstallmentPrice}"
                                   MaxDecimalPlaces="2" Maximum="100000"
                                   SmallChange="50" LargeChange="100"/>
                 </StackPanel>
@@ -70,25 +75,48 @@
                     <ui:TextBlock Grid.Row="3" Text="الرصيد" />
                     <ui:NumberBox Grid.Column="1" PlaceholderText="الرصيد"
                                   AcceptsExpression="False"
-                                  Value="{Binding ViewModel.Balance}"
+                                  Value="{Binding ViewModel.Balance,Mode=TwoWay}"
+                                  Text="{Binding ViewModel.Balance}"
                                   MaxDecimalPlaces="2" Maximum="100000"
                                   SmallChange="1" LargeChange="10"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Column="1">
-                <DataGrid ItemsSource="{Binding ViewModel.Items}" AutoGenerateColumns="False"
-                          IsReadOnly="True" SelectedItem="{Binding ViewModel.Item}"
-                          SelectionMode="Single" AlternatingRowBackground="Gray"
-                          HeadersVisibility="Column" 
+                <ui:DataGrid x:Name="dg"
+                             ItemsSource="{Binding ViewModel.Items}"
+                             SelectedItem="{Binding ViewModel.Item}"
+                             ColumnWidth="*"
+                             SelectionMode="Single"
+                             AlternatingRowBackground="Gray"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True" 
+                             HeadersVisibility="Column" 
                           >
-                    <DataGrid.Columns>
+                    <ui:DataGrid.Columns>
                         <DataGridTextColumn Header="اسم الصنف" Binding="{Binding ItemName}"/>
                         <DataGridTextColumn Header="سعر الشراء" Binding="{Binding PurchasingPrice}"/>
                         <DataGridTextColumn Header="سعر البيع كاش" Binding="{Binding SellingCashPrice}"/>
                         <DataGridTextColumn Header="سعر البيع قسط" Binding="{Binding InstallmentPrice}"/>
                         <DataGridTextColumn Header="الرصيد" Binding="{Binding Balance}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                    </ui:DataGrid.Columns>
+                    
+                    <ui:DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource ApplicationBackgroundBrush}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:DataGrid.RowStyle>
+                    
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged" SourceName="dg">
+                            <i:InvokeCommandAction Command="{Binding ViewModel.FillTextCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    
+                </ui:DataGrid>
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" >
@@ -100,8 +128,19 @@
                            Command="{Binding ViewModel.UpdateItemCommand}"/>
             <ui:Button Content="حذف" Margin="10 0"
                            Width="80" Height="40"
-                           Command="{Binding ViewModel.AddItemCommand}"/>
+                           Command="{Binding ViewModel.RemoveItemCommand}"/>
         </StackPanel>
+        <ui:InfoBar Grid.Row="2" Foreground="AliceBlue"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    Title="{Binding ViewModel.InfoBarTitle}"
+                    Message="{Binding ViewModel.Message}"
+                    Severity="{Binding ViewModel.Saverty}"
+                    IsOpen="{Binding ViewModel.Status}"
+                    IsClosable="True" 
+                    Visibility="{Binding ViewModel.Status,
+            Converter={StaticResource BooleanToVisibilityConverter}}"
+                    />
 
     </Grid>
 

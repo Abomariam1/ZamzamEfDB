@@ -29,13 +29,14 @@
     </i:Interaction.Triggers>
     <Grid >
         <Grid.RowDefinitions>
-            <RowDefinition Height="10*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <ui:DynamicScrollViewer  Grid.Row="0">
             <Grid>
                 <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -118,6 +119,10 @@
                         </StackPanel>
 
                     </DockPanel>
+                </StackPanel>
+                
+                <GridSplitter Grid.Column="0"/>
+                <StackPanel Grid.Column="1" Grid.Row="0" Margin="10 0">
                     <DockPanel Margin="0 5"
                         HorizontalAlignment="Stretch">
                         <StackPanel Margin="0 0 0 10">
@@ -147,13 +152,10 @@
                                         SelectedDate="{Binding ViewModel.BirthDate ,StringFormat={}{0:dd-MM-yyyy}}"
                                         SelectedDateFormat="Short" FirstDayOfWeek="Saturday" 
                                         />
-                            <TextBlock Text="{Binding ElementName=num,Path=Value}"/>
                         </StackPanel>
 
                     </DockPanel>
-                </StackPanel>
-                <GridSplitter Grid.Column="0"/>
-                <StackPanel Grid.Column="1" Grid.Row="0" Margin="10 0">
+
                     <DockPanel Margin="0 5"
                         HorizontalAlignment="Stretch">
                         <StackPanel Margin="0 0 0 10">
@@ -195,6 +197,9 @@
                         </StackPanel>
 
                     </DockPanel>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="2" >
                     <DockPanel Margin="0 5"
                         HorizontalAlignment="Stretch">
                         <StackPanel Margin="0 0 0 10">
@@ -210,6 +215,7 @@
                         </StackPanel>
 
                     </DockPanel>
+
                     <DockPanel Margin="0 5"
                         HorizontalAlignment="Stretch">
                         <StackPanel Margin="0 0 0 10">
@@ -279,8 +285,9 @@
                         <Button Content="اضافة صورة" Command="{Binding ViewModel.AddPhotoCommand}"/>
 
                     </DockPanel>
+
                 </StackPanel>
-                <StackPanel Grid.Column="2" HorizontalAlignment="Right">
+                <StackPanel Grid.Column="3" HorizontalAlignment="Right">
                     <TreeView x:Name="trview" 
                               ItemsSource="{Binding ViewModel.Departments}"
                               SelectedItemChanged="TreeView_SelectedItemChanged" >

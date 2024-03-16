@@ -25,6 +25,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"/>
             <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -37,7 +38,7 @@
                     <Setter Property="Background" Value="Gray"/>
                 </Style>
             </Grid.Resources>
-            <StackPanel >
+            <StackPanel  >
 
                 <StackPanel Margin="10">
                     <ui:TextBlock Text="اسم المورد"/>
@@ -61,8 +62,11 @@
 
             </StackPanel>
             <StackPanel Grid.Column="1">
-                <ui:DataGrid x:Name="Dg" ItemsSource="{Binding ViewModel.Suppliers}" AutoGenerateColumns="False"
-                             IsReadOnly="True" SelectedItem="{Binding ViewModel.Supplier}"
+                <ui:DataGrid x:Name="Dg" Margin="10"
+                             ItemsSource="{Binding ViewModel.Suppliers}" AutoGenerateColumns="False"
+                             SelectedItem="{Binding ViewModel.Supplier}"
+                             IsReadOnly="True"
+                             ColumnWidth="*"
                              SelectionMode="Single" SelectionUnit="FullRow" 
                              HeadersVisibility="Column"
                              >
@@ -99,6 +103,20 @@
                            Width="80" Height="40"
                            Command="{Binding ViewModel.DeleteSupplierCommand}"/>
         </StackPanel>
+        
+        <StackPanel Grid.Row="2">
+            <ui:InfoBar Foreground="AliceBlue"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    Title="{Binding ViewModel.InfoBarTitle}"
+                    Message="{Binding ViewModel.Message}"
+                    Severity="{Binding ViewModel.Saverty}"
+                    IsOpen="{Binding ViewModel.Status}"
+                    IsClosable="True" 
+                    Visibility="{Binding ViewModel.Status,
+            Converter={StaticResource BooleanToVisibilityConverter}}"
+                    />
 
+        </StackPanel>
     </Grid>
 </Page>

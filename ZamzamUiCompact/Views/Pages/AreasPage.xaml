@@ -30,9 +30,15 @@
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
             <Grid.Resources>
                 <Style TargetType="ui:TextBlock" >
                     <Setter Property="MinWidth" Value="100"/>
@@ -44,34 +50,7 @@
                     <Setter Property="FontSize" Value="14"/>
                 </Style>
             </Grid.Resources>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Grid.Column="0" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <ui:InfoBar x:Name="SuccessInfoBar"
-                            Title="Success"
-                            Message="The form was filled in correctly."
-                            Severity="Success">
-                    <!--<i:Interaction.Behaviors>
-                        <i:ConditionBehavior Condition="{Binding ViewModel.CounterIncrementCommand}">
-                            <i:Interaction.Triggers>
-                                <i:PropertyChangedTrigger>
-                                   
-                                </i:PropertyChangedTrigger>
-                            </i:Interaction.Triggers>
-                        </i:ConditionBehavior>
-                    </i:Interaction.Behaviors>-->
-       
-                </ui:InfoBar>
-
-                <StackPanel >
+            <StackPanel Grid.Column="0" >
                     
                     <StackPanel Margin="10">
                         <ui:TextBlock Text="اسم المنطقة"/>
@@ -106,48 +85,60 @@
                         </ComboBox>
                     </StackPanel>
                 </StackPanel>
-                <GridSplitter/>
-                <ScrollViewer Grid.Column="1">
-                    <Grid>
-                        <ui:DataGrid  ItemsSource="{Binding ViewModel.Areas}"
-                                      SelectedItem="{Binding ViewModel.Area}"
-                                      AutoGenerateColumns="False"
-                                      SelectionChanged="DataGrid_SelectionChanged">
-                            <ui:DataGrid.Columns>
-                                <DataGridTextColumn Header="اسم المنطقة" Binding="{Binding AreaName}" FontWeight="Bold"/>
-                                <DataGridTextColumn Header="المركز" Binding="{Binding Station}"/>
-                                <DataGridTextColumn Header="الموقع" Binding="{Binding Location}"/>
-                                <DataGridTextColumn Header="المحصل" Binding="{Binding CollectorName}"/>
-                            </ui:DataGrid.Columns>
-                            <ui:DataGrid.RowStyle>
-                                <Style TargetType="DataGridRow">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource ApplicationBackgroundBrush}"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ui:DataGrid.RowStyle>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding ViewModel.FillTextCommand}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </ui:DataGrid>
-                    </Grid>
-                </ScrollViewer>
-            </Grid>
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 50">
-                <ui:Button Content="اضافة" Margin="10 0"
-                           Width="80" Height="40"
-                           Command="{Binding ViewModel.AddAreaCommand}"/>
-                <ui:Button Content="تعديل" Margin="10 0"
-                           Width="80" Height="40"
-                           Command="{Binding ViewModel.UpdateAreaCommand}"/>
-                <ui:Button Content="حذف" Margin="10 0"
-                           Width="80" Height="40"
-                           Command="{Binding ViewModel.DeleteAreaCommand}"/>
-            </StackPanel>
+            <GridSplitter/>
+            
+            <ScrollViewer Grid.Column="1">
+                    <ui:DataGrid  ItemsSource="{Binding ViewModel.Areas}"
+                                    SelectedItem="{Binding ViewModel.Area}"
+                                    ColumnWidth="*"
+                                    AutoGenerateColumns="False"
+                                    SelectionChanged="DataGrid_SelectionChanged">
+                        <ui:DataGrid.Columns>
+                            <DataGridTextColumn Header="اسم المنطقة" Binding="{Binding AreaName}" FontWeight="Bold"/>
+                            <DataGridTextColumn Header="المركز" Binding="{Binding Station}"/>
+                            <DataGridTextColumn Header="الموقع" Binding="{Binding Location}"/>
+                            <DataGridTextColumn Header="المحصل" Binding="{Binding CollectorName}"/>
+                        </ui:DataGrid.Columns>
+                        <ui:DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource ApplicationBackgroundBrush}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:DataGrid.RowStyle>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding ViewModel.FillTextCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ui:DataGrid>                
+            </ScrollViewer>
         </Grid>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 50">
+            <ui:Button Content="اضافة" Margin="10 0"
+                        Width="80" Height="40"
+                        Command="{Binding ViewModel.AddAreaCommand}"/>
+            <ui:Button Content="تعديل" Margin="10 0"
+                        Width="80" Height="40"
+                        Command="{Binding ViewModel.UpdateAreaCommand}"/>
+            <ui:Button Content="حذف" Margin="10 0"
+                        Width="80" Height="40"
+                        Command="{Binding ViewModel.DeleteAreaCommand}"/>
+        </StackPanel>
+        
+        <ui:InfoBar Grid.Row="2" Foreground="AliceBlue"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                Title="{Binding ViewModel.InfoBarTitle}"
+                Message="{Binding ViewModel.Message}"
+                Severity="{Binding ViewModel.Saverty}"
+                IsOpen="{Binding ViewModel.Status}"
+                IsClosable="True" 
+                Visibility="{Binding ViewModel.Status,
+        Converter={StaticResource BooleanToVisibilityConverter}}"
+                />
     </Grid>
 </Page>

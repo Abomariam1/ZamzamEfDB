@@ -199,8 +199,17 @@ public partial class EmployeeViewModel: ObservableValidator
             //DepartmentModel? newDep = result.Data.Department;
 
             DepartmentModel? oldDep = Departments.Where(x => x.Employees.Contains(SelectedEmployee)).FirstOrDefault();
-            if(oldDep != null && oldDep.DepartmentId == employee.Department.DepartmentId) return;
-            var newList = Departments.ToList();
+            if(oldDep == null)
+            {
+                Enabled = true;
+                Validate("خطاء في القسم", "Error", InfoBarSeverity.Error);
+                return;
+            }
+            List<DepartmentModel>? newList = [.. Departments];
+            if(oldDep.DepartmentId != employee.Department.DepartmentId)
+            {
+
+            }
 
             int oldDepIndex = Departments.IndexOf(oldDep);
             DepartmentModel? dd = newList.Where(x => x.DepartmentId == employee.Department.DepartmentId).FirstOrDefault();
@@ -213,6 +222,7 @@ public partial class EmployeeViewModel: ObservableValidator
             Departments = new ObservableCollection<DepartmentModel>(newList);
             Validate(result.Message, "Succeeded", InfoBarSeverity.Success);
             Enabled = true;
+            NewEmployee();
         }
     }
 

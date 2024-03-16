@@ -28,7 +28,7 @@ internal class DepartmentCreatedCommandHandler : IRequestHandler<DepartmentCreat
 
     public async Task<Result<DepartmentDTO>> Handle(DepartmentCreateCommand request, CancellationToken cancellationToken)
     {
-        //_unitOfWork.RecreateCleanDatabase();
+        //unitOfWork.RecreateCleanDatabase();
         if (request == null) throw new ArgumentNullException(nameof(request));
         Department dep = new()
         {

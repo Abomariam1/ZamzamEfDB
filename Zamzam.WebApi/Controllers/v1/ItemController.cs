@@ -48,7 +48,7 @@ namespace Zamzam.WebApi.Controllers.v1
         [HttpDelete("{id}")]
         public async Task<Result<int>> Delete(int id)
         {
-            ItemDeleteCommand? command = new ItemDeleteCommand(id);
+            ItemDeleteCommand? command = new(id);
             if (!ModelState.IsValid)
             {
                 return Result<int>.Failure(0, "خطاء");

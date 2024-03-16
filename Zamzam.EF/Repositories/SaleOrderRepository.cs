@@ -4,7 +4,7 @@ using Zamzam.Domain.Entites;
 
 namespace Zamzam.EF.Repositories
 {
-    internal class SaleOrderRepository : ISaleOrderRepository
+    internal class SaleOrderRepository: ISaleOrderRepository
     {
         private readonly ApplicationDbContext _dbContext;
 
@@ -50,5 +50,7 @@ namespace Zamzam.EF.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task<int> UpdateRangAsync(SaleOrder[] entity) => throw new NotImplementedException();
     }
 }

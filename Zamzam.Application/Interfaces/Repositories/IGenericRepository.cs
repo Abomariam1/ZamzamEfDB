@@ -11,6 +11,7 @@ namespace Zamzam.Application.Interfaces.Repositories
         Task<T> GetByNameAsync(Expression<Func<T, bool>> criteria);
         Task<T> AddAsync(T entity);
         Task<T> UpdateAsync(T entity);
+        Task<int> UpdateRangAsync(T[] entity);
         Task<T> DeleteAsync(int id);
     }
 }

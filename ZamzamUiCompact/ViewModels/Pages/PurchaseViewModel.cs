@@ -8,9 +8,14 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): ObservableValida
     const string supplierController = "Supplier";
     const string employeeController = "Employee";
     const string ItemController = "Item";
+    private readonly DispatcherTimer _dispatcher = new()
+    {
+        Interval = TimeSpan.FromMilliseconds(100)
+    };
+    private static int counter = 0;
 
-    [ObservableProperty] DateTime _orderDate;
-    [ObservableProperty] decimal _totalPrice;
+
+    [ObservableProperty] DateTime _orderDate = DateTime.Today;
     [ObservableProperty] decimal _totalDiscount;
     [ObservableProperty] int _invoceType; // نوع الفاتورة {كاش,اجل}و
     [ObservableProperty] SupplierModel _supplier = new();
@@ -33,7 +38,24 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): ObservableValida
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Total))]
     decimal _discount;
-    public decimal Total => (Quantity * Price) - Discount;
+    private decimal _total;
+
+    public decimal Total
+    {
+        get
+        {
+            _total = (Quantity * Price) - Discount;
+            OnPropertyChanged(nameof(TotalPrice));
+            return _total;
+        }
+    }
+    public decimal TotalPrice => OrderDetails.Sum(x => x.Total);
+
+    [ObservableProperty] string _message;
+    [ObservableProperty] bool _status = false;
+    [ObservableProperty] InfoBarSeverity _saverty = InfoBarSeverity.Informational;
+    [ObservableProperty] string _infoBarTitle = "رسالة";
+
 
     [RelayCommand]
     public void AddOrderDetails()
@@ -62,16 +84,26 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): ObservableValida
         ValidateAllProperties();
         if(!HasErrors)
         {
-            var purchase = new PurchaseModel()
+            PurchaseModel? purchase = new()
             {
                 OrderDate = OrderDate,
                 TotalPrice = TotalPrice,
                 TotalDiscount = TotalDiscount,
-                Details = OrderDetails.ToList(),
+                Details = [.. OrderDetails],
                 EmployeeId = Employee.EmployeeId,
-                InvoiceType = InvoceType == 0 ? "Cash" : "Installment"
+                InvoiceType = InvoceType,
+                SupplierId = Supplier.SupplierId,
             };
-            var supps = await unitOfWork.Service<PurchaseModel>().GetAllAsync(purchaseController);
+            Result<PurchaseModel>? result = await unitOfWork.Service<PurchaseModel>().AddAsync(purchaseController, purchase);
+            if(result.Succeeded)
+            {
+
+                Validate(result.Message, "Success", InfoBarSeverity.Success);
+                return;
+            }
+            Validate(result.Message, "Error", InfoBarSeverity.Error);
+
+            //Result<List<PurchaseModel>>? supps = await unitOfWork.Service<PurchaseModel>().GetAllAsync(purchaseController);
 
         }
     }
@@ -94,5 +126,37 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): ObservableValida
         Items = new ObservableCollection<ItemModel>(itms.Data);
     }
 
+    private void Validate(string message, string title, InfoBarSeverity saverty)
+    {
+        Message = message;
+        InfoBarTitle = title;
+        Status = true;
+        Saverty = saverty;
+        StartTimer();
+    }
+    private void StartTimer()
+    {
+        _dispatcher.Tick += _dispatcher_Tick;
+        _dispatcher.Start();
+    }
+    private void _dispatcher_Tick(object? sender, EventArgs e)
+    {
+        counter++;
+        if(counter == 15)
+        {
+            counter = 0;
+            StopAutoProgress();
+            _dispatcher.Tick -= _dispatcher_Tick;
+        }
+    }
+    private void StopAutoProgress()
+    {
+        // Stop the timer when needed
+        if(_dispatcher != null)
+        {
+            Status = false;
+            _dispatcher.Stop();
+        }
+    }
 
 }

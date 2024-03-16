@@ -31,9 +31,10 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
         public async Task<Result<PurchaseDto>> Handle(PurchaseCreateCommand request, CancellationToken cancellationToken)
         {
             List<OrderDetail> details = new();
+            List<Item> items = [];
             foreach(ODetails requstDetails in request.Details)
             {
-                var product = await _unitOfWork.Repository<Item>().GetByIdAsync(requstDetails.ItemId);
+                Item? product = await _unitOfWork.Repository<Item>().GetByIdAsync(requstDetails.ItemId);
                 if(product == null)
                     return await Result<PurchaseDto>.FailureAsync($"لم يتم العثور على صنف");
                 OrderDetail? detail = new()
@@ -45,7 +46,7 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
                     CreatedBy = requstDetails.CreatedBy
                 };
                 product.Balance += requstDetails.Quantity;
-
+                items.Add(product);
                 details.Add(detail);
             }
             PurchaseOrder purchase = new()
@@ -63,6 +64,14 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
             PurchaseOrder? order = await _unitOfWork.Repository<PurchaseOrder>().AddAsync(purchase);
             int count = await _unitOfWork.Save(cancellationToken);
             order.AddDomainEvent(new PurchaseCreatedEvent(purchase));
+            if(count > 0)
+            {
+                foreach(var item in items)
+                {
+                }
+                items.ForEach(x => _unitOfWork.Repository<Item>().UpdateAsync(x));
+            }
+            int itemsAdded = await _unitOfWork.Save(cancellationToken);
 
             return count > 0 ? await Result<PurchaseDto>.SuccessAsync((PurchaseDto)order, "تم اضافة فاتورة الشراء بنجاح")
                 : await Result<PurchaseDto>.FailureAsync("فشل في انشاء فاتورة شراء");

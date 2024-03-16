@@ -24,9 +24,10 @@
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.7*"/>
-            <RowDefinition Height="0.7*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -57,7 +58,10 @@
                 </StackPanel>
                 <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="التاريخ" Margin="5" FontSize="16"/>
-                    <DatePicker FontSize="16" SelectedDate="{x:Static sys:DateTime.Today}"/>
+                    <DatePicker FontSize="16"
+                                DisplayDate="{x:Static sys:DateTime.Today}"
+                                SelectedDate="{Binding ViewModel.OrderDate}"
+                                />
                 </StackPanel>
                 <StackPanel Grid.Column="3" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="مسؤول المشتريات" Margin="5" FontSize="16"/>
@@ -92,8 +96,10 @@
                 
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="الكمية" Margin="5" FontSize="16"/>
-                    <ui:NumberBox FontSize="16" Value="{Binding ViewModel.Quantity}"
+                    <ui:NumberBox FontSize="16" 
+                                  Value="{Binding ViewModel.Quantity}"
                                   PlaceholderText="ادخل الكمية"
+                                  
                                   LargeChange="10"
                                   SmallChange="1"
                                   Icon="{ui:SymbolIcon NumberSymbolSquare24}"/>
@@ -125,9 +131,11 @@
                 CornerRadius="15">
             <ScrollViewer >
                 <ui:DataGrid x:Name="DG" ItemsSource="{Binding ViewModel.OrderDetails,Mode=TwoWay}"
-                        AutoGenerateColumns="False" GridLinesVisibility="None"
-                        AlternatingRowBackground="DimGray"
-                         HorizontalAlignment="Center">
+                             AutoGenerateColumns="False" GridLinesVisibility="None"
+                             AlternatingRowBackground="DimGray"
+                             CanUserAddRows="False"
+                             CanUserDeleteRows="False"
+                             HorizontalAlignment="Center">
                     <ui:DataGrid.Columns>
                         <DataGridTextColumn Header="اسم الصنف" Binding="{Binding ItemName}"
                                         Width="*" />
@@ -139,7 +147,7 @@
                         <DataGridTemplateColumn Header="Action" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ui:Button Content="حذف"/>
+                                    <ui:Button Content="حذف" Command="{Binding }"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -147,15 +155,29 @@
                 </ui:DataGrid>
             </ScrollViewer>
         </Border>
+        
         <Border Grid.Row="3" BorderBrush="AliceBlue" BorderThickness="1"
                         SnapsToDevicePixels="True"
                         CornerRadius="15" Margin="0 20" Padding="10">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Content="اضافة" Height="40" Width="80" Margin="10 0" FontSize="18"
+                <Button Content="اضافة" Height="40" Width="80" Margin="10 0"
+                        FontSize="18" Command="{Binding ViewModel.AddInvoiceCommand}"
                         />
                 <Button Content="تعديل" Height="40" Width="80" Margin="10 0" FontSize="18"/>
                 <Button Content="حذف" Height="40" Width="80" Margin="10 0" FontSize="18"/>
             </StackPanel>
         </Border>
+        <ui:InfoBar Grid.Row="4" Foreground="AliceBlue"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                Title="{Binding ViewModel.InfoBarTitle}"
+                Message="{Binding ViewModel.Message}"
+                Severity="{Binding ViewModel.Saverty}"
+                IsOpen="{Binding ViewModel.Status}"
+                IsClosable="True" 
+                Visibility="{Binding ViewModel.Status,
+        Converter={StaticResource BooleanToVisibilityConverter}}"
+                />
+
     </Grid>
 </Page>

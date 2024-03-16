@@ -111,7 +111,7 @@ namespace Zamzam.Application.Features
 
             //foreach (KeyValuePair<int, int> itm in itemBalance)
             //{
-            //    Item? item = await _unitOfWork.Repository<Item>().GetByIdAsync(itm.Key);
+            //    Item? item = await unitOfWork.Repository<Item>().GetByIdAsync(itm.Key);
             //    item.Balance = itm.Value;
             //}
         }
