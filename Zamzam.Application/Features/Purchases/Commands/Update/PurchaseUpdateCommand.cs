@@ -8,7 +8,7 @@ using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.Purchases.Commands.Update
 {
-    public record PurchaseUpdateCommand : IRequest<Result<int>>
+    public record PurchaseUpdateCommand: IRequest<Result<int>>
     {
         public int OrderId { get; set; }
         public required DateTime OrderDate { get; set; }
@@ -21,27 +21,40 @@ namespace Zamzam.Application.Features.Purchases.Commands.Update
         public string? UpdatedBy { get; set; }
     }
 
-    internal class PurchaseUpdateCommandHandler : IRequestHandler<PurchaseUpdateCommand, Result<int>>
+    internal class PurchaseUpdateCommandHandler(IUnitOfWork unitOfWork): IRequestHandler<PurchaseUpdateCommand, Result<int>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public PurchaseUpdateCommandHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
 
         public async Task<Result<int>> Handle(PurchaseUpdateCommand request, CancellationToken cancellationToken)
         {
-            PurchaseOrder? order = await _unitOfWork.Repository<PurchaseOrder>().Entities.Include("OrderDetail")
-                .FirstOrDefaultAsync(x => x.Id == request.OrderId);
-            if (order == null)
+            PurchaseOrder? oldOrder = await unitOfWork.Repository<PurchaseOrder>().Entities.Include("OrderDetail")
+                .FirstOrDefaultAsync(x => x.Id == request.OrderId, cancellationToken: cancellationToken);
+            if(oldOrder == null)
                 return await Result<int>.FailureAsync(0, "لم يتم العثور على الفاتورة");
-            order.OrderDate = request.OrderDate;
-            order.TotalPrice = request.TotalPrice;
-            order.TotalDiscount = request.TotalDiscount;
-            order.InvoiceType = request.InvoiceType;
-            order.EmployeeId = request.EmployeeId;
-            order.SupplierId = request.SupplierId;
+            List<Item> items = [];
+            List<OrderDetail>? od = [];
+            oldOrder.OrderDate = request.OrderDate;
+            oldOrder.TotalPrice = request.TotalPrice;
+            oldOrder.TotalDiscount = request.TotalDiscount;
+            oldOrder.InvoiceType = request.InvoiceType;
+            oldOrder.EmployeeId = request.EmployeeId;
+            oldOrder.SupplierId = request.SupplierId;
+            foreach(var dt in request.Details)
+            {
+                var newdt = new OrderDetail
+                {
+                    OrderId = dt.OrderId,
+                    ItemId = dt.ItemId,
+                    Price = dt.Price,
+                    Quantity = dt.Quantity,
+                    Discount = dt.Discount,
+                };
+                od.Add(newdt);
+                Item? product = await unitOfWork.Repository<Item>().GetByIdAsync(dt.ItemId);
+                var qt = oldOrder.OrderDetails.FirstOrDefault(x => x.OrderId == dt.OrderId && x.ItemId == dt.ItemId);
+                product.Balance = qt.Quantity == dt.Quantity ? product.Balance : product.Balance;
+
+            }
+            oldOrder.OrderDetails = od;
 
             return await Result<int>.SuccessAsync(request.OrderId);
         }

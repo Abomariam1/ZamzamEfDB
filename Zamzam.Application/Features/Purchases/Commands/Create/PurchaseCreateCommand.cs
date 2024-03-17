@@ -30,7 +30,7 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
 
         public async Task<Result<PurchaseDto>> Handle(PurchaseCreateCommand request, CancellationToken cancellationToken)
         {
-            List<OrderDetail> details = new();
+            List<OrderDetail> details = [];
             List<Item> items = [];
             foreach(ODetails requstDetails in request.Details)
             {
