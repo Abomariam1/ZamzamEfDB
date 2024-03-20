@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ZamzamUiCompact.Services.RepositoryServices.Inteface;
+﻿using ZamzamUiCompact.Services.RepositoryServices.Inteface;
 
 namespace ZamzamUiCompact.ViewModels.Pages;
 
@@ -11,12 +10,40 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): BaseValidator
     const string ItemController = "Item";
 
     [ObservableProperty]
-    DateTime _orderDate = DateTime.Today;
+    //[RegularExpression(@" ^ [0 - 9] * $")]
+    [NotifyPropertyChangedFor(nameof(Total))]
+    int _quantity;
 
     [ObservableProperty]
-    decimal _totalDiscount;
+    [NotifyPropertyChangedFor(nameof(Total))]
+    decimal _price;
 
+    [ObservableProperty]
+    //[RegularExpression(@" ^ [0 - 9] * $")]
+    [NotifyPropertyChangedFor(nameof(Total))]
+    decimal _discount;
+    public decimal Total => ((Quantity * Price) - Discount);
+    [ObservableProperty]
+    DateTime _orderDate = DateTime.Today;
     [ObservableProperty] int _invoceType; // نوع الفاتورة {كاش,اجل}و
+    public decimal TotalPrice => OrderDetails.Sum(x => x.Total);
+
+    [ObservableProperty]
+    //[RegularExpression(@" ^ [0 - 9] * $")]
+    [NotifyPropertyChangedFor(nameof(NetPrice))]
+    decimal _totalDiscount;
+    public decimal NetPrice => TotalPrice - TotalDiscount;
+
+    [ObservableProperty]
+    //[RegularExpression(@" ^ [0 - 9] * $")]
+    int _suppInvID;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(Remaining))]
+    decimal _payed;
+
+    public decimal Remaining => NetPrice - Payed;
+
     [ObservableProperty] SupplierModel _supplier = new();
     [ObservableProperty] ObservableCollection<SupplierModel> _suppliers = [];
     [ObservableProperty] EmployeeModel _employee = new();
@@ -24,45 +51,38 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): BaseValidator
     [ObservableProperty] ItemModel _item = new();
     [ObservableProperty] ObservableCollection<ItemModel> _items = [];
     [ObservableProperty] OrderDetailsModel order = new();
-    [ObservableProperty] ObservableCollection<OrderDetailsModel> _orderDetails = [];
-
     [ObservableProperty]
-    [RegularExpression(@" ^ [0 - 9] * $")]
-    [NotifyPropertyChangedFor(nameof(Total))]
-    int _quantity;
+    ObservableCollection<OrderDetailsModel> _orderDetails = [];
 
-    [ObservableProperty]
-    [RegularExpression(@" ^ [0 - 9] * $")]
-    [NotifyPropertyChangedFor(nameof(Total))]
-    decimal _price;
-
-    [ObservableProperty]
-    [RegularExpression(@" ^ [0 - 9] * $")]
-    [NotifyPropertyChangedFor(nameof(Total))]
-    decimal _discount;
-
-    private decimal _total;
-    public decimal Total
-    {
-        get
-        {
-            _total = (Quantity * Price) - Discount;
-            OnPropertyChanged(nameof(TotalPrice));
-            return _total;
-        }
-    }
-    public decimal TotalPrice => OrderDetails.Sum(x => x.Total);
 
     [RelayCommand]
     public void AddOrderDetails()
     {
-        Order.ItemId = Item.ItemId;
-        Order.ItemName = Item.ItemName;
-        Order.Quantity = Quantity;
-        Order.Price = Price;
-        Order.Discount = Discount;
-        Order.Total = Total;
-        OrderDetails.Add(Order);
+        OrderDetailsModel? item = OrderDetails.FirstOrDefault(x => x.ItemId == Item.ItemId);
+        if(item == null)
+        {
+            Order.ItemId = Item.ItemId;
+            Order.ItemName = Item.ItemName;
+            Order.Quantity = Quantity;
+            Order.Price = Price;
+            Order.Discount = Discount;
+            Order.Total = Total;
+            OrderDetails.Add(Order);
+            OnPropertyChanged(nameof(TotalPrice));
+            OnPropertyChanged(nameof(NetPrice));
+            OnPropertyChanged(nameof(Remaining));
+        }
+        else
+            Validate("لايمكن اضافة الصنف مرتين", "Error", InfoBarSeverity.Error);
+    }
+
+    [RelayCommand]
+    public void RemoveOrderDetail(OrderDetailsModel detail)
+    {
+        OrderDetails.Remove(detail);
+        OnPropertyChanged(nameof(TotalPrice));
+        OnPropertyChanged(nameof(NetPrice));
+        OnPropertyChanged(nameof(Remaining));
 
     }
 
@@ -84,12 +104,17 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): BaseValidator
             Validate(Message, "Error", InfoBarSeverity.Error);
             return;
         }
+        if(OrderDetails.Count <= 0)
+            Validate("يجب اضافة اصناف اولا", "Error", InfoBarSeverity.Error);
 
         PurchaseModel? purchase = new()
         {
+            SuppInvID = SuppInvID,
             OrderDate = OrderDate,
             TotalPrice = TotalPrice,
             TotalDiscount = TotalDiscount,
+            TotalPayed = Payed,
+            TotalRemaining = Remaining,
             Details = [.. OrderDetails],
             EmployeeId = Employee.EmployeeId,
             InvoiceType = InvoceType,

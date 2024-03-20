@@ -38,11 +38,11 @@ namespace Zamzam.Application.Features.Purchases.Commands.Update
             oldOrder.InvoiceType = request.InvoiceType;
             oldOrder.EmployeeId = request.EmployeeId;
             oldOrder.SupplierId = request.SupplierId;
-            foreach(var dt in request.Details)
+            foreach(ODetails dt in request.Details)
             {
                 var newdt = new OrderDetail
                 {
-                    OrderId = dt.OrderId,
+                    OrderId = (int)dt.OrderId,
                     ItemId = dt.ItemId,
                     Price = dt.Price,
                     Quantity = dt.Quantity,

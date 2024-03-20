@@ -9,7 +9,7 @@ public class ODetails
     public int Quantity { get; set; }
     public decimal Price { get; set; }
     public decimal Discount { get; set; }
-    public decimal TotalPrice { get; set; }
+    public decimal Total { get; set; }
     public string? CreatedBy { get; set; }
     public string? UpdateddBy { get; set; }
 
@@ -20,7 +20,7 @@ public class ODetails
         Quantity = v.Quantity,
         Price = v.Price,
         Discount = v.Discount,
-        TotalPrice = v.TotalPrice,
+        Total = v.TotalPrice,
         CreatedBy = v.CreatedBy,
         UpdateddBy = v.UpdatedBy,
     };

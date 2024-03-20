@@ -38,6 +38,7 @@ public class GenericService<T>: IGenericService<T> where T : IModel
     {
         if(_user is null)
             throw new UserNullExecption();
+        var mod = JsonSerializer.Serialize(model);
         HttpResponseMessage? request = await _httpClient.PostAsJsonAsync($"{_httpClient.BaseAddress}/{uri}", model, option);
         return await GenericService<T>.SendRequst(request);
     }

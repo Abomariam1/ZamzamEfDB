@@ -11,7 +11,7 @@ public class PurchaseDto
     public InvoiceType InvoiceType { get; set; }
     public int EmployeeId { get; set; }
     public int SupplierId { get; set; }
-    public List<ODetails> Details { get; set; }
+    public required List<ODetails> Details { get; set; }
     public string? CreatedBy { get; set; }
     public string? UpdatedBy { get; set; }
     public DateTime? CreatedOn { get; set; }

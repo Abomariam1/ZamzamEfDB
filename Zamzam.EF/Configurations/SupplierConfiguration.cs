@@ -4,7 +4,7 @@ using Zamzam.Domain;
 
 namespace Zamzam.EF
 {
-    public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
+    public class SupplierConfiguration: IEntityTypeConfiguration<Supplier>
     {
         public void Configure(EntityTypeBuilder<Supplier> builder)
         {
@@ -16,6 +16,9 @@ namespace Zamzam.EF
                 .HasMaxLength(100);
             builder.Property(p => p.Phone)
                 .HasMaxLength(15);
+
+            builder.Property(t => t.Balance)
+                .HasPrecision(9, 2);
 
         }
     }
