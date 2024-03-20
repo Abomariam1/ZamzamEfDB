@@ -40,30 +40,35 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="10 0" >
+                    <TextBlock Text="رقم فاتورة المورد" Margin="5" FontSize="16"/>
+                    <TextBox Text=""/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10 0" >
                     <TextBlock Text="اسم المورد" Margin="5" FontSize="16"/>
                     <ComboBox ItemsSource="{Binding ViewModel.Suppliers}"
                               DisplayMemberPath="SupplierName"
                               SelectedItem="{Binding ViewModel.Supplier}"
                               />
                 </StackPanel>
-                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10 0">
+                <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="نوع العملية" Margin="5" FontSize="16"/>
                     <ComboBox SelectedIndex="{Binding ViewModel.InvoceType}" FontSize="16" >
                         <ComboBoxItem Content="كاش" />
                         <ComboBoxItem Content="اجل"/>
                     </ComboBox>
                 </StackPanel>
-                <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="10 0">
+                <StackPanel Grid.Column="3" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="التاريخ" Margin="5" FontSize="16"/>
                     <DatePicker FontSize="16"
                                 DisplayDate="{x:Static sys:DateTime.Today}"
                                 SelectedDate="{Binding ViewModel.OrderDate}"
                                 />
                 </StackPanel>
-                <StackPanel Grid.Column="3" VerticalAlignment="Center" Margin="10 0">
+                <StackPanel Grid.Column="4" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="مسؤول المشتريات" Margin="5" FontSize="16"/>
                     <ComboBox FontSize="16" ItemsSource="{Binding ViewModel.Employees}"
                               SelectedItem="{Binding ViewModel.Employee}"
@@ -147,7 +152,7 @@
                         <DataGridTemplateColumn Header="Action" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ui:Button Content="حذف" Command="{Binding }"/>
+                                    <ui:Button Content="حذف" Command=""/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -156,15 +161,14 @@
             </ScrollViewer>
         </Border>
         
-        <Border Grid.Row="3" BorderBrush="AliceBlue" BorderThickness="1"
-                        SnapsToDevicePixels="True"
-                        CornerRadius="15" Margin="0 20" Padding="10">
+        <Border Grid.Row="3" BorderBrush="AliceBlue"
+                BorderThickness="1" SnapsToDevicePixels="True"
+                CornerRadius="15" Margin="0 20" Padding="10">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                
                 <Button Content="اضافة" Height="40" Width="80" Margin="10 0"
                         FontSize="18" Command="{Binding ViewModel.AddInvoiceCommand}"
                         />
-                <Button Content="تعديل" Height="40" Width="80" Margin="10 0" FontSize="18"/>
-                <Button Content="حذف" Height="40" Width="80" Margin="10 0" FontSize="18"/>
             </StackPanel>
         </Border>
         <ui:InfoBar Grid.Row="4" Foreground="AliceBlue"

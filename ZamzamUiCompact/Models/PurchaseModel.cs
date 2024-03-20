@@ -1,7 +1,8 @@
 ﻿namespace ZamzamUiCompact.Models;
 
-public class PurchaseModel : Model
+public class PurchaseModel: Model
 {
+    public int SuppInvID { get; set; }
     public DateTime OrderDate { get; set; }
     public decimal TotalPrice { get; set; }
     public decimal TotalDiscount { get; set; }

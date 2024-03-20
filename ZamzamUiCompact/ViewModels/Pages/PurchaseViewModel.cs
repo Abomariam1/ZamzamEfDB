@@ -14,17 +14,13 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): BaseValidator
     DateTime _orderDate = DateTime.Today;
 
     [ObservableProperty]
+    [RegularExpression(@" ^ [0 - 9] * $")]
     decimal _totalDiscount;
 
-    [ObservableProperty] int _invoceType; // نوع الفاتورة {كاش,اجل}و
-    [ObservableProperty] SupplierModel _supplier = new();
-    [ObservableProperty] ObservableCollection<SupplierModel> _suppliers = [];
-    [ObservableProperty] EmployeeModel _employee = new();
-    [ObservableProperty] ObservableCollection<EmployeeModel> _employees = [];
-    [ObservableProperty] ItemModel _item = new();
-    [ObservableProperty] ObservableCollection<ItemModel> _items = [];
-    [ObservableProperty] OrderDetailsModel order = new();
-    [ObservableProperty] ObservableCollection<OrderDetailsModel> _orderDetails = [];
+    [ObservableProperty]
+    [RegularExpression(@" ^ [0 - 9] * $")]
+    public int _suppInvID;
+
 
     [ObservableProperty]
     [RegularExpression(@" ^ [0 - 9] * $")]
@@ -40,6 +36,16 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): BaseValidator
     [RegularExpression(@" ^ [0 - 9] * $")]
     [NotifyPropertyChangedFor(nameof(Total))]
     decimal _discount;
+    public decimal TotalPrice => OrderDetails.Sum(x => x.Total);
+    [ObservableProperty] int _invoceType; // نوع الفاتورة {كاش,اجل}و
+    [ObservableProperty] SupplierModel _supplier = new();
+    [ObservableProperty] ObservableCollection<SupplierModel> _suppliers = [];
+    [ObservableProperty] EmployeeModel _employee = new();
+    [ObservableProperty] ObservableCollection<EmployeeModel> _employees = [];
+    [ObservableProperty] ItemModel _item = new();
+    [ObservableProperty] ObservableCollection<ItemModel> _items = [];
+    [ObservableProperty] OrderDetailsModel order = new();
+    [ObservableProperty] ObservableCollection<OrderDetailsModel> _orderDetails = [];
 
     private decimal _total;
     public decimal Total
@@ -51,7 +57,6 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): BaseValidator
             return _total;
         }
     }
-    public decimal TotalPrice => OrderDetails.Sum(x => x.Total);
 
     [RelayCommand]
     public void AddOrderDetails()
@@ -63,7 +68,15 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): BaseValidator
         Order.Discount = Discount;
         Order.Total = Total;
         OrderDetails.Add(Order);
+    }
 
+    [RelayCommand]
+    public void RemoveOrderDetail(int row)
+    {
+        if(row >= 0)
+        {
+
+        }
     }
 
     [RelayCommand]
@@ -87,6 +100,7 @@ public partial class PurchaseViewModel(IUnitOfWork unitOfWork): BaseValidator
 
         PurchaseModel? purchase = new()
         {
+            SuppInvID = SuppInvID,
             OrderDate = OrderDate,
             TotalPrice = TotalPrice,
             TotalDiscount = TotalDiscount,

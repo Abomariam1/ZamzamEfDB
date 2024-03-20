@@ -1,8 +1,6 @@
-﻿namespace Zamzam.Domain.Types
+﻿namespace Zamzam.Domain.Types;
+public enum InvoiceType
 {
-    public enum InvoiceType
-    {
-        Cash,
-        Installment,
-    }
+    Cash,
+    Installment,
 }

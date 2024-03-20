@@ -22,6 +22,7 @@ public class PurchaseController: ApiControllerBase
         {
             return await Result<PurchaseDto>.FailureAsync("يجب ادخال كافة البيانات المطلوبة");
         }
+        command.CreatedBy = HttpContext.User.Identity?.Name;
         return await _mediator.Send(command);
     }
 }
