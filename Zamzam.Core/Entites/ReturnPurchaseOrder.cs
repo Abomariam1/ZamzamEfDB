@@ -1,7 +1,12 @@
 ﻿namespace Zamzam.Domain
 {
-    public class ReturnPurchaseOrder : Order
+    public class ReturnPurchaseOrder: Order
     {
-        public string ReasonForReturn { get; set; }
+        public int InvoiceNumber { get; set; }
+        public int PurchaseId { get; set; }
+        public int SupplierId { get; set; }
+        public required string ReasonForReturn { get; set; } = string.Empty;
+        public virtual PurchaseOrder? Purchase { get; set; }
+        public virtual Supplier? Supplier { get; set; }
     }
 }

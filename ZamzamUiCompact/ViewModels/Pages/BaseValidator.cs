@@ -7,7 +7,7 @@ public partial class BaseValidator: ObservableValidator
     };
     private static int counter = 0;
 
-    [ObservableProperty] string _message;
+    [ObservableProperty] string _message = string.Empty;
     [ObservableProperty] bool _status = false;
     [ObservableProperty] InfoBarSeverity _saverty = InfoBarSeverity.Informational;
     [ObservableProperty] string _infoBarTitle = "رسالة";

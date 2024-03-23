@@ -29,6 +29,7 @@ public class OrderConfiguration: IEntityTypeConfiguration<Order>
              .HasForeignKey(x => x.EmployeeId)
              .OnDelete(DeleteBehavior.Restrict);
 
+
         builder.Property(d => d.OrderDate)
             .HasDefaultValueSql("GETDATE()");
 

@@ -1,5 +1,6 @@
 ﻿using Zamzam.Domain.Common;
 using Zamzam.Domain.Common.Interfaces;
+using Zamzam.Domain.Entites;
 using Zamzam.Domain.Types;
 
 namespace Zamzam.Domain
@@ -17,7 +18,9 @@ namespace Zamzam.Domain
         public InvoiceType InvoiceType { get; set; } // نوع الفاتورة {كاش,اجل} و
         public int EmployeeId { get; set; } // الموظف المسؤول عن العملية
         public virtual Employee Employee { get; set; }
-        public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
+        public virtual required ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<Maintenance>? Maintenances { get; set; }
+        public virtual ICollection<ItemOperation>? ItemOperations { get; set; }
+        public virtual ICollection<SupplierOperations> SupplierOperations { get; set; }
     }
 }

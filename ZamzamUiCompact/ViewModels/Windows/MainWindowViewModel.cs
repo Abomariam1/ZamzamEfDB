@@ -55,8 +55,24 @@ public partial class MainWindowViewModel: ObservableObject, IWindowEvent
             Icon = new SymbolIcon { Symbol = SymbolRegular.Production24 },
             TargetPageType = typeof(PurchasePage)
         },
-
-    ];
+        new NavigationViewItem()
+        {
+            Content = "مرتجعات مشتريات",
+            Icon = new SymbolIcon { Symbol = SymbolRegular.Production24 },
+            TargetPageType = typeof(ReturnPurchasesPage)
+        },
+        new NavigationViewItem()
+        {
+            Content = "المبيعات",
+            Icon = new SymbolIcon { Symbol = SymbolRegular.Production24 },
+            TargetPageType = typeof(SalePage)
+        },
+        new NavigationViewItem()
+        {
+            Content = "مرتجعات المبيعات",
+            Icon = new SymbolIcon { Symbol = SymbolRegular.Production24 },
+            TargetPageType = typeof(ReturnSalesPage)
+        },    ];
 
     [ObservableProperty]
     private ObservableCollection<object> _footerMenuItems =

@@ -11,4 +11,5 @@ public class Supplier: BaseAuditableEntity
     public decimal Balance { get; set; }
     public virtual ICollection<PurchaseOrder>? PurchaseOrders { get; set; }
     public virtual ICollection<SupplierOperations>? SupplierOperations { get; set; }
+    public virtual ICollection<ReturnPurchaseOrder>? ReturnPurchaseOrders { get; set; }
 }

@@ -12,6 +12,6 @@ public class SupplierOperations: BaseAuditableEntity
     public decimal Value { get; set; }
     public decimal NewBalance { get; set; } = decimal.Zero;
     public virtual Supplier? Supplier { get; set; }
-    public virtual PurchaseOrder? Order { get; set; }
+    public virtual Order? Order { get; set; }
 
 }

@@ -1,5 +1,5 @@
 ﻿namespace ZamzamUiCompact.ViewModels.Pages;
 
-public partial class SalesViewModel: ObservableValidator
+public partial class SalesViewModel: BaseValidator
 {
 }

@@ -39,7 +39,6 @@
     <Folder Include="Features\ReturnSales\Commands\Delete\" />
     <Folder Include="Features\ReturnSales\Commands\Update\" />
     <Folder Include="Features\ReturnSales\Queries\" />
-    <Folder Include="Features\ReturnPurchases\Commands\Create\" />
     <Folder Include="Features\ReturnPurchases\Commands\Delete\" />
     <Folder Include="Features\ReturnPurchases\Commands\Update\" />
     <Folder Include="Features\ReturnPurchases\Queries\" />

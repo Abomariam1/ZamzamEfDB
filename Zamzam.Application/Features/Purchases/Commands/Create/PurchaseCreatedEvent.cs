@@ -3,13 +3,8 @@ using Zamzam.Domain.Common;
 
 namespace Zamzam.Application.Features.Purchases.Commands.Create
 {
-    public class PurchaseCreatedEvent : BaseEvent
+    public class PurchaseCreatedEvent(PurchaseOrder purchaseOrder): BaseEvent
     {
-        public PurchaseOrder PurchaseOrder { get; }
-
-        public PurchaseCreatedEvent(PurchaseOrder purchaseOrder)
-        {
-            PurchaseOrder = purchaseOrder;
-        }
+        public PurchaseOrder PurchaseOrder { get; } = purchaseOrder;
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Zamzam.EF;
 
@@ -11,9 +12,11 @@ using Zamzam.EF;
 namespace Zamzam.EF.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240322213842_AddRePurchProp")]
+    partial class AddRePurchProp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -551,11 +554,6 @@ namespace Zamzam.EF.Migrations
                         .HasMaxLength(7)
                         .HasColumnType("nvarchar(7)");
 
-                    b.Property<string>("OrderType")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -1033,9 +1031,6 @@ namespace Zamzam.EF.Migrations
                 {
                     b.HasBaseType("Zamzam.Domain.Order");
 
-                    b.Property<int>("InvoiceNumber")
-                        .HasColumnType("int");
-
                     b.Property<int>("PurchaseId")
                         .HasColumnType("int");
 
@@ -1043,12 +1038,7 @@ namespace Zamzam.EF.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SupplierId")
-                        .HasColumnType("int");
-
                     b.HasIndex("PurchaseId");
-
-                    b.HasIndex("SupplierId");
 
                     b.ToTable("ReturnPurchaseOrders");
                 });
@@ -1330,15 +1320,7 @@ namespace Zamzam.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Zamzam.Domain.Supplier", "Supplier")
-                        .WithMany("ReturnPurchaseOrders")
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Purchase");
-
-                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.ReturnSaleOrder", b =>
@@ -1399,8 +1381,6 @@ namespace Zamzam.EF.Migrations
             modelBuilder.Entity("Zamzam.Domain.Supplier", b =>
                 {
                     b.Navigation("PurchaseOrders");
-
-                    b.Navigation("ReturnPurchaseOrders");
 
                     b.Navigation("SupplierOperations");
                 });

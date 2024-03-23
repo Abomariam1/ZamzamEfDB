@@ -57,7 +57,7 @@ public static class IServiceCollectionExtensions
 
 
         byte[]? key = Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]);
-        TokenValidationParameters tokenValidationParameters = new TokenValidationParameters()
+        TokenValidationParameters tokenValidationParameters = new()
         {
             ValidateIssuer = false,
             ValidateAudience = false,

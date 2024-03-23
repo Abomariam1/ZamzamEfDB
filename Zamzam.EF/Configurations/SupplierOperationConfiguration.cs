@@ -19,12 +19,11 @@ public class SupplierOperationConfiguration: IEntityTypeConfiguration<SupplierOp
             .WithMany(a => a.SupplierOperations)
             .HasForeignKey(a => a.OrderId)
             .OnDelete(DeleteBehavior.Restrict);
-
         builder.Property(x => x.OperationType)
             .HasConversion(
             x => x.ToString(),
-            x => (OperationType)Enum.Parse(typeof(InvoiceType), x))
-            .HasMaxLength(20);
+            x => (OperationType)Enum.Parse(typeof(OperationType), x))
+            .HasMaxLength(7);
 
         builder.Property(t => t.OldBalance)
             .HasPrecision(9, 2);

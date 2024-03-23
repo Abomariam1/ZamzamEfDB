@@ -34,16 +34,25 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
 
         public async Task<Result<PurchaseDto>> Handle(PurchaseCreateCommand request, CancellationToken cancellationToken)
         {
-            
-            List<OrderDetail> details = [];
-            List<Item> items = [];
+
             /*----------------التحقق من عدم تكرار فاتورة المورد----------------------------------*/
             var inv = await _unitOfWork.Repository<PurchaseOrder>().GetByNameAsync(x => x.InvoiceNumber == request.SuppInvID);
             if(inv != null) return await Result<PurchaseDto>.FailureAsync("هذه الفاتورة مسجلة من قبل");
             /*---------------------------------------------------------------*/
 
-            /*----------------تحميل تفاصيل الاصناف المباعة--------------------------------*/
+            /****************التاكد من وجود اصناف في الفاتورة****************************/
+            if(request.Details.Count <= 0) return await Result<PurchaseDto>.FailureAsync("لا توجد اصناف في الفاتورة");
+            /*---------------------------------------------       --------------------------*/
 
+            /*-----------------------التحقق من ان الفاتورة كاش وليس هناك باقي-------------------------*/
+            if(request.InvoiceType == 0 && request.TotalRemaining > 0)
+                return await Result<PurchaseDto>.FailureAsync("الفاتورة كاش لا يجب ان يكون هناك باقي");
+            /*------------------------------------------------------------------------------*/
+
+            /*--------------------------تحميل تفاصيل الاصناف المشتراة--------------------------------*/
+            List<OrderDetail> details = [];
+            List<Item> items = [];
+            List<ItemOperation> operations = [];
             foreach(ODetails requstDetails in request.Details!)
             {
                 Item? product = await _unitOfWork.Repository<Item>().GetByIdAsync(requstDetails.ItemId);
@@ -57,10 +66,22 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
                     Discount = requstDetails.Discount,
                     CreatedBy = requstDetails.CreatedBy
                 };
+
+                ItemOperation itmOp = new()
+                {
+                    ItemId = product.Id,
+                    Value = requstDetails.Quantity,
+                    OldBalance = product.Balance,
+                    NewBalance = product.Balance + requstDetails.Quantity,
+                    OperationType = OperationType.Debit,
+                    OrderType = OrderType.Purchase,
+                };
+
                 product.Balance += requstDetails.Quantity;
                 product.UpdatedDate = DateTime.UtcNow;
                 product.UpdatedBy = request.CreatedBy;
                 items.Add(product);
+                operations.Add(itmOp);
                 details.Add(detail);
             }
             /*---------------------------------------------------------------*/
@@ -84,10 +105,8 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
             PurchaseOrder? order = await _unitOfWork.Repository<PurchaseOrder>().AddAsync(purchase);
             /*---------------------------------------------------------------*/
 
-
-
-            var supp = await _unitOfWork.Repository<Supplier>().GetByIdAsync(request.SupplierId);
             /*---------------------حفظ عملية شراء في جدول عمليات شراء من مورد------------------------------------*/
+            Supplier? supp = await _unitOfWork.Repository<Supplier>().GetByIdAsync(request.SupplierId);
             SupplierOperations? operatin = new()
             {
                 Order = order,
@@ -107,18 +126,30 @@ namespace Zamzam.Application.Features.Purchases.Commands.Create
                 if(supp != null)
                 {
                     supp.Balance = operatin.NewBalance;
-                    var updatedSupp = await _unitOfWork.Repository<Supplier>().UpdateAsync(supp);
+                    Supplier? updatedSupp = await _unitOfWork.Repository<Supplier>().UpdateAsync(supp);
                 }
             }
-            var op = await _unitOfWork.Repository<SupplierOperations>().AddAsync(operatin);
+            SupplierOperations? op = await _unitOfWork.Repository<SupplierOperations>().AddAsync(operatin);
             /*---------------------------------------------------------------*/
-            int count = await _unitOfWork.Save(cancellationToken);
+
             order.AddDomainEvent(new PurchaseCreatedEvent(purchase));
-            if(count > 0)
+            items.ForEach(x =>
             {
-                items.ForEach(x => _unitOfWork.Repository<Item>().UpdateAsync(x));
-                int itemsAdded = await _unitOfWork.Save(cancellationToken);
+                x.UpdatedBy = request.CreatedBy;
+                x.UpdatedDate = DateTime.Now;
+                _unitOfWork.Repository<Item>().UpdateAsync(x);
+            });
+
+            operations.ForEach(x =>
+            {
+                x.Order = order;
+                x.CreatedBy = request.CreatedBy;
+                x.CreatedDate = DateTime.Now;
+                _unitOfWork.Repository<ItemOperation>().AddAsync(x);
             }
+            );
+            int count = await _unitOfWork.Save(cancellationToken);
+
 
             return count > 0 ? await Result<PurchaseDto>.SuccessAsync((PurchaseDto)purchase, "تم اضافة فاتورة الشراء بنجاح")
                 : await Result<PurchaseDto>.FailureAsync("فشل في انشاء فاتورة شراء");

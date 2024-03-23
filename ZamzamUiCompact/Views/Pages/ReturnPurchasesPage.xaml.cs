@@ -1,28 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿namespace ZamzamUiCompact.Views.Pages;
 
-namespace ZamzamUiCompact.Views.Pages
+/// <summary>
+/// Interaction logic for ReturnPurchasesPage.xaml
+/// </summary>
+public partial class ReturnPurchasesPage: INavigableView<ReturnPurchasesViewModel>
 {
-    /// <summary>
-    /// Interaction logic for ReturnPurchasesPage.xaml
-    /// </summary>
-    public partial class ReturnPurchasesPage : Page
+    public ReturnPurchasesViewModel ViewModel { get; }
+    public ReturnPurchasesPage(ReturnPurchasesViewModel viewModel)
     {
-        public ReturnPurchasesPage()
-        {
-            InitializeComponent();
-        }
+        ViewModel = viewModel;
+        DataContext = this;
+        InitializeComponent();
     }
 }

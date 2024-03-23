@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Zamzam.EF;
 
@@ -11,9 +12,11 @@ using Zamzam.EF;
 namespace Zamzam.EF.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240321214131_FixSupplierOperationTypeLength")]
+    partial class FixSupplierOperationTypeLength
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -519,60 +522,6 @@ namespace Zamzam.EF.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("Zamzam.Domain.Entites.ItemOperation", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("NewBalance")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OldBalance")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OperationType")
-                        .IsRequired()
-                        .HasMaxLength(7)
-                        .HasColumnType("nvarchar(7)");
-
-                    b.Property<string>("OrderType")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrderId", "ItemId");
-
-                    b.HasIndex("ItemId");
-
-                    b.ToTable("ItemOperation");
-                });
-
             modelBuilder.Entity("Zamzam.Domain.Entites.SupplierOperations", b =>
                 {
                     b.Property<int>("Id")
@@ -1033,22 +982,9 @@ namespace Zamzam.EF.Migrations
                 {
                     b.HasBaseType("Zamzam.Domain.Order");
 
-                    b.Property<int>("InvoiceNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PurchaseId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ReasonForReturn")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SupplierId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("PurchaseId");
-
-                    b.HasIndex("SupplierId");
 
                     b.ToTable("ReturnPurchaseOrders");
                 });
@@ -1159,28 +1095,9 @@ namespace Zamzam.EF.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("Zamzam.Domain.Entites.ItemOperation", b =>
-                {
-                    b.HasOne("Zamzam.Domain.Item", "Items")
-                        .WithMany("ItemOperations")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Zamzam.Domain.Order", "Order")
-                        .WithMany("ItemOperations")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Items");
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("Zamzam.Domain.Entites.SupplierOperations", b =>
                 {
-                    b.HasOne("Zamzam.Domain.Order", "Order")
+                    b.HasOne("Zamzam.Domain.PurchaseOrder", "Order")
                         .WithMany("SupplierOperations")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1323,22 +1240,6 @@ namespace Zamzam.EF.Migrations
                         .HasForeignKey("Zamzam.Domain.ReturnPurchaseOrder", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Zamzam.Domain.PurchaseOrder", "Purchase")
-                        .WithMany("ReturnPurchaseOrders")
-                        .HasForeignKey("PurchaseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Zamzam.Domain.Supplier", "Supplier")
-                        .WithMany("ReturnPurchaseOrders")
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Purchase");
-
-                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.ReturnSaleOrder", b =>
@@ -1380,27 +1281,19 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Domain.Item", b =>
                 {
-                    b.Navigation("ItemOperations");
-
                     b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.Order", b =>
                 {
-                    b.Navigation("ItemOperations");
-
                     b.Navigation("Maintenances");
 
                     b.Navigation("OrderDetails");
-
-                    b.Navigation("SupplierOperations");
                 });
 
             modelBuilder.Entity("Zamzam.Domain.Supplier", b =>
                 {
                     b.Navigation("PurchaseOrders");
-
-                    b.Navigation("ReturnPurchaseOrders");
 
                     b.Navigation("SupplierOperations");
                 });
@@ -1412,7 +1305,7 @@ namespace Zamzam.EF.Migrations
 
             modelBuilder.Entity("Zamzam.Domain.PurchaseOrder", b =>
                 {
-                    b.Navigation("ReturnPurchaseOrders");
+                    b.Navigation("SupplierOperations");
                 });
 #pragma warning restore 612, 618
         }
