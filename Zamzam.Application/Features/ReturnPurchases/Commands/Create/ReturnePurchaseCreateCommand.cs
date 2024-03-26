@@ -37,16 +37,17 @@ internal class ReturnePurchaseCreateCommandHandler(IUnitOfWork unitOfWork): IReq
         if(request.Details == null) return await Result<int>.FailureAsync("يجب اضافة اصناف للفاتورة");
 
         /*التحقق من وجود اصناف متواجدة بفاتورة المشتريات المختارة وليست اصناف اخرى*/
-        bool bassed = true;
+        bool passed = true;
         request.Details.ForEach(x =>
         {
-            var detail = purchase.OrderDetails
-            .FirstOrDefault(s => s.OrderId == x.OrderId && s.ItemId == x.ItemId);
+            OrderDetail? detail = purchase.OrderDetails.Where(s => s.OrderId == x.OrderId)
+            .FirstOrDefault(s => s.ItemId == x.ItemId && s.IsDeleted == false);
             if(detail == null)
-                bassed = false;
+                passed = false;
         });
-        if(!bassed) return await Result<int>.FailureAsync("الصنف غير متواجد في فاتورة المشتريات");
+        if(!passed) return await Result<int>.FailureAsync("الصنف غير متواجد في فاتورة المشتريات");
 
+        //---------------------------------------
         List<OrderDetail> details = [];
         List<Item> items = [];
         List<ItemOperation> operations = [];
@@ -81,7 +82,7 @@ internal class ReturnePurchaseCreateCommandHandler(IUnitOfWork unitOfWork): IReq
             operations.Add(itmOp);
             details.Add(detail);
         }
-        /*-------------------------تحميل فاتورة المشتريات-----------------------------------*/
+        /*-------------------------تحميل فاتورة مرتجعات المشتريات-----------------------------------*/
         ReturnPurchaseOrder rePurchase = new()
         {
             SupplierId = request.SupplierId,

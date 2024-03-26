@@ -14,6 +14,7 @@ public class ReturnPurchaseController(IMediator mediator): ApiControllerBase
     {
         if(!ModelState.IsValid)
             return Result<int>.Failure("خطاء");
+        command.CreatedBy = HttpContext.User.Identity!.Name ?? "Anonymous";
         return await mediator.Send(command);
     }
 }

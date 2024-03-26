@@ -11,13 +11,11 @@ public record GetAllSupliiersQuery: IRequest<Result<List<SupplierDto>>>;
 
 internal class GetAllSupliiersQueryHandler(IUnitOfWork unitOfWork): IRequestHandler<GetAllSupliiersQuery, Result<List<SupplierDto>>>
 {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
-
     public async Task<Result<List<SupplierDto>>> Handle(GetAllSupliiersQuery request, CancellationToken cancellationToken)
     {
-        List<Supplier>? list = await _unitOfWork.Repository<Supplier>().Entities
+        List<Supplier>? list = await unitOfWork.Repository<Supplier>().Entities
             .Where(x => x.IsDeleted == false)
-            .ToListAsync();
+            .ToListAsync(cancellationToken: cancellationToken);
         List<SupplierDto>? result = list.ConvertAll(c => (SupplierDto)c);
         return result != null ? await Result<List<SupplierDto>>.SuccessAsync(result)
             : await Result<List<SupplierDto>>.FailureAsync("Error");

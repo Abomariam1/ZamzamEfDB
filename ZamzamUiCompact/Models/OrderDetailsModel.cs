@@ -1,11 +1,8 @@
-﻿using System.Text.Json.Serialization;
-
-namespace ZamzamUiCompact.Models;
+﻿namespace ZamzamUiCompact.Models;
 public class OrderDetailsModel: Model
 {
     public int OrderId { get; set; }
     public int ItemId { get; set; }
-    [JsonIgnore]
     public string? ItemName { get; set; } = string.Empty;
     public int Quantity { get; set; }
     public decimal Price { get; set; }

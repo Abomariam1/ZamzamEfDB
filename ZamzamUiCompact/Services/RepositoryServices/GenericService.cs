@@ -72,7 +72,7 @@ public class GenericService<T>: IGenericService<T> where T : IModel
         if(_user is null)
             throw new UserNullExecption();
         Result<T>? request = await _httpClient.GetFromJsonAsync<Result<T>>($"{_httpClient.BaseAddress}/{uri}", option);
-        return request ?? new Result<T>() { Succeeded = false, Message = "faild to get the List" };
+        return request ?? new Result<T>() { Succeeded = false, Message = "faild to get the Enity" };
     }
     public async Task<Result<T>> SendRequst(string uri, object obj)
     {

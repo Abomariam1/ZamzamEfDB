@@ -34,7 +34,6 @@
     <Folder Include="Features\Members\Commands\Update\" />
     <Folder Include="Features\Members\Queries\" />
     <Folder Include="Features\Purchases\Commands\Delete\" />
-    <Folder Include="Features\Purchases\Queries\" />
     <Folder Include="Features\ReturnSales\Commands\Create\" />
     <Folder Include="Features\ReturnSales\Commands\Delete\" />
     <Folder Include="Features\ReturnSales\Commands\Update\" />

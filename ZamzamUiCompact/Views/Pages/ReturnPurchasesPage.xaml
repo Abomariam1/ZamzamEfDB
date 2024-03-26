@@ -1,4 +1,4 @@
-﻿<Page x:Class="ZamzamUiCompact.Views.Pages.ReturnPurchasesPage"
+﻿<Page x:Class="ZamzamUiCompact.Views.Pages.ReturnPurchasePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,6 +7,7 @@
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:local="clr-namespace:ZamzamUiCompact.Views.Pages"
+      xmlns:models="clr-namespace:ZamzamUiCompact.Models"
       xmlns:pages="clr-namespace:ZamzamUiCompact.ViewModels.Pages"
       d:DataContext="{d:DesignInstance Type=pages:ReturnPurchasesViewModel}"
       mc:Ignorable="d" 
@@ -15,10 +16,14 @@
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       FontSize="16"
       d:DesignHeight="800" d:DesignWidth="1200"
-      Title="ReturnPurchasesPage"
-      x:Name="returnPurchases"
+      x:Name="PurchaseReturn"
       >
-
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded" SourceName="PurchaseReturn">
+            <i:InvokeCommandAction Command="{Binding ViewModel.GetAllCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -41,14 +46,20 @@
 
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="10 0" >
                     <TextBlock Text="رقم فاتورة المورد" Margin="5" FontSize="16"/>
-                    <ComboBox ItemsSource="{Binding ViewModel}"
-                              DisplayMemberPath="SupplierName"
-                              SelectedItem="{Binding ViewModel}"
-                              />
+                    <ComboBox ItemsSource="{Binding ViewModel.PurchasesList}" x:Name="CboInv"
+                              DisplayMemberPath="SuppInvID"
+                              SelectedItem="{Binding ViewModel.PurchasesInv}"
+                              >
+                            <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged" SourceName="CboInv">
+                                    <i:InvokeCommandAction Command="{Binding ViewModel.FillComponentsCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
                 </StackPanel>
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="نوع العملية" Margin="5" FontSize="16"/>
-                    <ComboBox SelectedIndex="{Binding ViewModel}" FontSize="16" >
+                    <ComboBox SelectedIndex="{Binding ViewModel.InvoceType}" FontSize="16" >
                         <ComboBoxItem Content="كاش" />
                         <ComboBoxItem Content="اجل"/>
                     </ComboBox>
@@ -57,13 +68,13 @@
                     <TextBlock Text="التاريخ" Margin="5" FontSize="16"/>
                     <DatePicker FontSize="16"
                                 DisplayDate="{x:Static sys:DateTime.Today}"
-                                SelectedDate="{Binding ViewModel}"
+                                SelectedDate="{Binding ViewModel.OrderDate}"
                                 />
                 </StackPanel>
                 <StackPanel Grid.Column="3" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="مسؤول المشتريات" Margin="5" FontSize="16"/>
-                    <ComboBox FontSize="16" ItemsSource="{Binding ViewModel}"
-                              SelectedItem="{Binding ViewModel}"
+                    <ComboBox FontSize="16" ItemsSource="{Binding ViewModel.Employees}"
+                              SelectedItem="{Binding ViewModel.Employee}"
                               DisplayMemberPath="EmployeeName" SelectedIndex="0"/>
                 </StackPanel>
 
@@ -85,16 +96,16 @@
 
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="10 0" >
                     <TextBlock Text="اسم الصنف" Margin="5" FontSize="16"/>
-                    <ComboBox ItemsSource="{Binding ViewModel}"
+                    <ComboBox ItemsSource="{Binding ViewModel.Items}"
                               DisplayMemberPath="ItemName"
-                              SelectedItem="{Binding ViewModel}"
+                              SelectedItem="{Binding ViewModel.Item}"
                               />
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="الكمية" Margin="5" FontSize="16"/>
                     <ui:NumberBox FontSize="16" 
-                                  Value="{Binding ViewModel}"
+                                  Value="{Binding ViewModel.Quantity}"
                                   PlaceholderText="ادخل الكمية"
                                   
                                   LargeChange="10"
@@ -104,21 +115,21 @@
 
                 <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="السعر" Margin="5" FontSize="16"/>
-                    <ui:NumberBox FontSize="16" Text="{Binding ViewModel}" PlaceholderText="ادخل السعر"/>
+                    <ui:NumberBox FontSize="16" Text="{Binding ViewModel.Price}" PlaceholderText="ادخل السعر"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="3" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="خصم" Margin="5" FontSize="16"/>
-                    <ui:NumberBox FontSize="16" Text="{Binding ViewModel}"/>
+                    <ui:NumberBox FontSize="16" Text="{Binding ViewModel.Discount}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="4" VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="اجمالي" Margin="5" FontSize="16"/>
-                    <ui:NumberBox FontSize="16" Value="{Binding ViewModel}" IsEnabled="False"/>
+                    <ui:NumberBox FontSize="16" Value="{Binding ViewModel.Total}" IsEnabled="False"/>
                 </StackPanel>
 
                 <ui:Button Grid.Column="5" Content="اضافة" Margin="10 25 10 0"
-                           Height="50" Command="{Binding ViewModel}"
+                           Height="50" Command="{Binding ViewModel.AddOrderDetailsCommand}"
                            HorizontalAlignment="Stretch" />
             </Grid>
         </Border>
@@ -127,7 +138,7 @@
                 SnapsToDevicePixels="True" Margin="0 20" Padding="10"
                 CornerRadius="15">
             <ScrollViewer >
-                <ui:DataGrid x:Name="DG" ItemsSource="{Binding ViewModel,Mode=TwoWay}"
+                <ui:DataGrid x:Name="DG" ItemsSource="{Binding ViewModel.OrderDetails,Mode=TwoWay}"
                              AutoGenerateColumns="False" GridLinesVisibility="None"
                              AlternatingRowBackground="DimGray"
                              CanUserAddRows="False"
@@ -143,8 +154,11 @@
                         <DataGridTextColumn Header="الاجمالي" Binding="{Binding Total}" Width="*"/>
                         <DataGridTemplateColumn Header="Action" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ui:Button Content="حذف" Command="{Binding }"/>
+                                <DataTemplate DataType="{x:Type models:OrderDetailsModel}">
+                                    <ui:Button Content="حذف" 
+                                               Command="{Binding DataContext.ViewModel.RemoveOrderDetailCommand,RelativeSource={RelativeSource AncestorType=ui:DataGrid}}"
+                                               CommandParameter="{Binding}"
+                                               />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -153,15 +167,41 @@
             </ScrollViewer>
         </Border>
 
-        <Border Grid.Row="3" BorderBrush="AliceBlue" BorderThickness="1"
-                        SnapsToDevicePixels="True"
-                        CornerRadius="15" Margin="0 20" Padding="10">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Border Grid.Row="3" BorderBrush="AliceBlue"
+                BorderThickness="1" SnapsToDevicePixels="True"
+                CornerRadius="15" Margin="0 20" Padding="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+
+                <StackPanel VerticalAlignment="Center" Margin="10 0">
+                    <TextBlock Text="اجمالى المبلغ" Margin="5" FontSize="16"/>
+                    <ui:TextBlock FontSize="16" Text="{Binding ViewModel.TotalPrice,Mode=TwoWay}" HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel VerticalAlignment="Center" Margin="10 0">
+                    <TextBlock Text="اجمالى الخصم" Margin="5" FontSize="16"/>
+                    <ui:NumberBox FontSize="16" Value="{Binding ViewModel.TotalDiscount}"
+                                  IsEnabled="True" 
+                                  Text="{Binding ViewModel.TotalDiscount,StringFormat={}{0:0.00}}"/>
+                </StackPanel>
+
+                <StackPanel VerticalAlignment="Center" Margin="10 0">
+                    <TextBlock Text="صافى المبلغ" Margin="5" FontSize="16"/>
+                    <ui:TextBlock FontSize="16" Text="{Binding ViewModel.NetPrice,Mode=OneWay}" HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel VerticalAlignment="Center" Margin="10 0">
+                    <TextBlock Text="المدفوع" Margin="5" FontSize="16"/>
+                    <ui:NumberBox FontSize="16" Value="{Binding ViewModel.TotalPayed}" IsEnabled="True"/>
+                </StackPanel>
+
+                <StackPanel VerticalAlignment="Center" Margin="10 0">
+                    <TextBlock Text="الباقي" Margin="5" FontSize="16"/>
+                    <ui:TextBlock FontSize="16" Text="{Binding ViewModel.Totalremind}" HorizontalAlignment="Center"/>
+                </StackPanel>
+
                 <Button Content="اضافة" Height="40" Width="80" Margin="10 0"
-                        FontSize="18" Command="{Binding ViewModel}"
+                        FontSize="18" Command="{Binding ViewModel.AddInvoiceCommand}"
                         />
-                <Button Content="تعديل" Height="40" Width="80" Margin="10 0" FontSize="18"/>
-                <Button Content="حذف" Height="40" Width="80" Margin="10 0" FontSize="18"/>
             </StackPanel>
         </Border>
         <ui:InfoBar Grid.Row="4" Foreground="AliceBlue"

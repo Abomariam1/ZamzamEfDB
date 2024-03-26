@@ -74,6 +74,7 @@ public static class IServiceCollectionExtension
         services.AddTransient<ItemsViewModel>();
         services.AddTransient<SupplierViewModel>();
         services.AddTransient<PurchaseViewModel>();
+        services.AddTransient<ReturnPurchasesViewModel>();
         services.AddTransient<ReturnSalesViewModel>();
         services.AddTransient<SalesViewModel>();
         services.AddTransient<ReturnSalesViewModel>();
@@ -92,7 +93,7 @@ public static class IServiceCollectionExtension
         services.AddSingleton<ItemsPage>();
         services.AddSingleton<SupplierPage>();
         services.AddSingleton<PurchasePage>();
-        services.AddSingleton<ReturnPurchasesPage>();
+        services.AddSingleton<ReturnPurchasePage>();
         services.AddSingleton<SalePage>();
         services.AddSingleton<ReturnSalesPage>();
     }

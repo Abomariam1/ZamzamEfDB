@@ -1,9 +1,8 @@
 ﻿namespace ZamzamUiCompact.ViewModels.Windows;
 
-public partial class MainWindowViewModel: ObservableObject, IWindowEvent
+public partial class MainWindowViewModel(IServiceProvider provider, IOptionsSnapshot<AuthenticatedUser> options)
+    : ObservableObject, IWindowEvent
 {
-    private readonly IServiceProvider _provider;
-
     [ObservableProperty]
     private string _applicationTitle = "زمزم لفلاتر المياه";
 
@@ -23,7 +22,6 @@ public partial class MainWindowViewModel: ObservableObject, IWindowEvent
             Content = "الاقسام",
             Icon = new SymbolIcon {Symbol = SymbolRegular.AlignTop24 },
             TargetPageType = typeof(DepartmentPage),
-
         },
         new NavigationViewItem()
         {
@@ -57,9 +55,9 @@ public partial class MainWindowViewModel: ObservableObject, IWindowEvent
         },
         new NavigationViewItem()
         {
-            Content = "مرتجعات مشتريات",
-            Icon = new SymbolIcon { Symbol = SymbolRegular.Production24 },
-            TargetPageType = typeof(ReturnPurchasesPage)
+            Content = "مرتجعات المشتريات",
+            Icon = new SymbolIcon { Symbol = SymbolRegular.ArrowRedo24 },
+            TargetPageType = typeof(ReturnPurchasePage)
         },
         new NavigationViewItem()
         {
@@ -70,9 +68,11 @@ public partial class MainWindowViewModel: ObservableObject, IWindowEvent
         new NavigationViewItem()
         {
             Content = "مرتجعات المبيعات",
-            Icon = new SymbolIcon { Symbol = SymbolRegular.Production24 },
+            Icon = new SymbolIcon { Symbol = SymbolRegular.CaretDown24 },
             TargetPageType = typeof(ReturnSalesPage)
-        },    ];
+        },
+
+    ];
 
     [ObservableProperty]
     private ObservableCollection<object> _footerMenuItems =
@@ -92,15 +92,9 @@ public partial class MainWindowViewModel: ObservableObject, IWindowEvent
     ];
 
     [ObservableProperty]
-    private AuthenticatedUser _user;
+    private AuthenticatedUser _user = options.Value;
 
     public Action Close { get; set; } = () => { };
-
-    public MainWindowViewModel(IServiceProvider provider, IOptionsSnapshot<AuthenticatedUser> options)
-    {
-        _provider = provider;
-        _user = options.Value;
-    }
 
     [RelayCommand]
     public void Logout()
@@ -111,7 +105,7 @@ public partial class MainWindowViewModel: ObservableObject, IWindowEvent
 
     private void ShowLoginWindow()
     {
-        LoginWindow? window = _provider.GetRequiredService<LoginWindow>();
+        LoginWindow? window = provider.GetRequiredService<LoginWindow>();
         window.Show();
     }
     public bool CanClose() => true;
