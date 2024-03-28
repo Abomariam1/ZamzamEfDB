@@ -9,13 +9,13 @@ public class ItemOperationConfiguration: IEntityTypeConfiguration<ItemOperation>
     public void Configure(EntityTypeBuilder<ItemOperation> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.HasKey(x => new { x.OrderId, x.ItemId });
+        //builder.HasKey(x => new { x.OrderId, x.ItemId, x.OperationType });
 
         builder.HasOne(i => i.Order)
             .WithMany(i => i.ItemOperations)
             .HasForeignKey(i => i.OrderId)
             .OnDelete(DeleteBehavior.Restrict);
-        builder.HasOne(t => t.Items)
+        builder.HasOne(t => t.Item)
             .WithMany(t => t.ItemOperations)
             .HasForeignKey(t => t.ItemId)
             .OnDelete(DeleteBehavior.Restrict);
@@ -29,7 +29,7 @@ public class ItemOperationConfiguration: IEntityTypeConfiguration<ItemOperation>
             .HasConversion(
             x => x.ToString(),
             x => (OrderType)Enum.Parse(typeof(OrderType), x)
-            ).HasMaxLength(15);
+            ).HasMaxLength(17);
 
     }
 }

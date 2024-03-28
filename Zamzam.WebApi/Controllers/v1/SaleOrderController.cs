@@ -10,56 +10,45 @@ using Zamzam.Shared;
 namespace Zamzam.WebApi.Controllers.v1
 {
     [Authorize]
-    public class SaleOrderController : ApiControllerBase
+    public class SaleOrderController(IMediator mediator): ApiControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public SaleOrderController(IMediator mediator)
+        [HttpPost]
+        public async Task<Result<SaleResponse>> AddSaleInvoice(SaleCreateCommand command)
         {
-            _mediator = mediator;
-        }
-
-        [HttpPost("cash")]
-        public async Task<Result<int>> CreateCash(SaleCreateCommand command)
-        {
-            if (!ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
-                return await Result<int>.FailureAsync(0, "Not valid command");
+                return await Result<SaleResponse>.FailureAsync("Not valid command");
             }
-            command.CreatedBy = HttpContext.User.Identity.Name;
-            foreach (var o in command.OrderDetails)
-            {
-                o.CreatedBy = HttpContext.User.Identity.Name;
-            }
-            return await _mediator.Send(command);
+            command.CreatedBy = HttpContext.User.Identity!.Name;
+            return await mediator.Send(command);
         }
 
         [HttpPost("CashUpdate")]
         public async Task<Result<int>> CashUpdate(SaleOrderUpdateCommand command)
         {
-            if (!ModelState.IsValid)
+            if(!ModelState.IsValid)
                 return await Result<int>.FailureAsync(0, "يجب ادخال الحقول كاملة");
             command.UpdatedBy = HttpContext.User.Identity!.Name;
-            foreach (ODetails o in command.OrderDetails!)
+            foreach(ODetails o in command.OrderDetails!)
             {
                 o.UpdateddBy = HttpContext.User.Identity.Name;
             }
-            return await _mediator.Send(command);
+            return await mediator.Send(command);
         }
 
         [HttpPost("installment")]
         public async Task<Result<int>> Createinstallment(InstallmentSaleOrderCreateCommand command)
         {
-            if (!ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
                 return await Result<int>.FailureAsync(0, "Not valid command");
             }
             command.CreatedBy = HttpContext.User.Identity!.Name;
-            foreach (var o in command.OrderDetails!)
+            foreach(var o in command.OrderDetails!)
             {
                 o.CreatedBy = HttpContext.User.Identity.Name;
             }
-            return await _mediator.Send(command);
+            return await mediator.Send(command);
         }
     }
 }

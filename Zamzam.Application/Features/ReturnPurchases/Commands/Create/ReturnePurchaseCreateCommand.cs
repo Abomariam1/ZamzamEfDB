@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Zamzam.Application.DTOs;
 using Zamzam.Application.Interfaces.Repositories;
 using Zamzam.Domain;
@@ -7,7 +8,7 @@ using Zamzam.Domain.Types;
 using Zamzam.Shared;
 
 namespace Zamzam.Application.Features.ReturnPurchases.Commands.Create;
-public record ReturnePurchaseCreateCommand: IRequest<Result<int>>
+public record ReturnePurchaseCreateCommand: IRequest<Result<ReturnePurchaseResponse>>
 {
     public int PurchaseId { get; set; }
     public int SuppInvID { get; set; }
@@ -25,85 +26,90 @@ public record ReturnePurchaseCreateCommand: IRequest<Result<int>>
 
 }
 
-internal class ReturnePurchaseCreateCommandHandler(IUnitOfWork unitOfWork): IRequestHandler<ReturnePurchaseCreateCommand, Result<int>>
+internal class ReturnePurchaseCreateCommandHandler(IUnitOfWork unitOfWork): IRequestHandler<ReturnePurchaseCreateCommand, Result<ReturnePurchaseResponse>>
 {
-    public async Task<Result<int>> Handle(ReturnePurchaseCreateCommand request, CancellationToken cancellationToken)
+    public async Task<Result<ReturnePurchaseResponse>> Handle(ReturnePurchaseCreateCommand request, CancellationToken cancellationToken)
     {
         /*التحقق من اختيار فاتورة مشتريات*/
-        PurchaseOrder? purchase = await unitOfWork.Repository<PurchaseOrder>().GetByIdAsync(request.PurchaseId);
-        if(purchase == null) return await Result<int>.FailureAsync("يجب اختيار فاتورة مشتريات");
+        PurchaseOrder? purchase = unitOfWork.Repository<PurchaseOrder>().Entities
+            .Include(x => x.OrderDetails)
+            .SingleOrDefault(x => x.Id == request.PurchaseId && x.IsDeleted == false);
+        if(purchase == null) return await Result<ReturnePurchaseResponse>
+                .FailureAsync("يجب اختيار فاتورة مشتريات");
 
         /*التحقق من وجود اصناف بالفاتورة*/
-        if(request.Details == null) return await Result<int>.FailureAsync("يجب اضافة اصناف للفاتورة");
+        if(request.Details == null) return await Result<ReturnePurchaseResponse>
+                .FailureAsync("يجب اضافة اصناف للفاتورة");
 
         /*التحقق من وجود اصناف متواجدة بفاتورة المشتريات المختارة وليست اصناف اخرى*/
         bool passed = true;
         request.Details.ForEach(x =>
         {
-            OrderDetail? detail = purchase.OrderDetails.Where(s => s.OrderId == x.OrderId)
+            OrderDetail? detail = purchase.OrderDetails
+            .Where(s => s.OrderId == purchase.Id)
             .FirstOrDefault(s => s.ItemId == x.ItemId && s.IsDeleted == false);
             if(detail == null)
                 passed = false;
         });
-        if(!passed) return await Result<int>.FailureAsync("الصنف غير متواجد في فاتورة المشتريات");
+        if(!passed) return await Result<ReturnePurchaseResponse>.FailureAsync("الصنف غير متواجد في فاتورة المشتريات");
 
         //---------------------------------------
         List<OrderDetail> details = [];
         List<Item> items = [];
-        List<ItemOperation> operations = [];
-        foreach(ODetails requstDetails in request.Details!)
+        List<ItemOperation> itemOperations = [];
+        Supplier? supp = await unitOfWork.Repository<Supplier>().GetByIdAsync(request.SupplierId);
+        foreach(ODetails requestDetails in request.Details!)
         {
-            Item? product = await unitOfWork.Repository<Item>().GetByIdAsync(requstDetails.ItemId);
+            Item? product = await unitOfWork.Repository<Item>().GetByIdAsync(requestDetails.ItemId);
             if(product == null)
-                return await Result<int>.FailureAsync($"لم يتم العثور على صنف");
+                return await Result<ReturnePurchaseResponse>.FailureAsync($"لم يتم العثور على صنف");
             OrderDetail? detail = new()
             {
-                ItemId = requstDetails.ItemId,
-                Price = requstDetails.Price,
-                Quantity = requstDetails.Quantity,
-                Discount = requstDetails.Discount,
-                CreatedBy = requstDetails.CreatedBy
+                Item = product,
+                Price = requestDetails.Price,
+                Quantity = requestDetails.Quantity,
+                Discount = requestDetails.Discount,
+                CreatedBy = request.CreatedBy
             };
 
             ItemOperation itmOp = new()
             {
                 ItemId = product.Id,
-                Value = requstDetails.Quantity,
+                Value = requestDetails.Quantity,
                 OldBalance = product.Balance,
-                NewBalance = product.Balance - requstDetails.Quantity,
+                NewBalance = product.Balance - requestDetails.Quantity,
                 OperationType = OperationType.Credit,
                 OrderType = OrderType.PurchasReturns,
             };
 
-            product.Balance -= requstDetails.Quantity;
+            product.Balance -= requestDetails.Quantity;
             product.UpdatedDate = DateTime.UtcNow;
             product.UpdatedBy = request.CreatedBy;
             items.Add(product);
-            operations.Add(itmOp);
+            itemOperations.Add(itmOp);
             details.Add(detail);
         }
         /*-------------------------تحميل فاتورة مرتجعات المشتريات-----------------------------------*/
         ReturnPurchaseOrder rePurchase = new()
         {
-            SupplierId = request.SupplierId,
+            Purchase = purchase,
+            Supplier = supp,
             InvoiceNumber = request.SuppInvID,
+            ReasonForReturn = request.ResonForReturn,
             OrderDate = request.OrderDate,
-            InvoiceType = request.InvoiceType == 0 ? InvoiceType.Cash : InvoiceType.Installment,
             TotalPrice = request.TotalPrice,
             TotalDiscount = request.TotalDiscount,
             TotalPayed = request.TotalPayed,
             TotalRemaining = request.TotalRemaining,
             OrderType = OrderType.PurchasReturns,
-            OrderDetails = details,
-            ReasonForReturn = request.ResonForReturn,
+            InvoiceType = request.InvoiceType == 0 ? InvoiceType.Cash : InvoiceType.Installment,
             EmployeeId = request.EmployeeId,
+            OrderDetails = [.. details],
             CreatedBy = request.CreatedBy,
         };
         ReturnPurchaseOrder? rOrder = await unitOfWork.Repository<ReturnPurchaseOrder>().AddAsync(rePurchase);
-
-        /*---------------------حفظ عملية شراء في جدول عمليات شراء من مورد------------------------------------*/
-        Supplier? supp = await unitOfWork.Repository<Supplier>().GetByIdAsync(request.SupplierId);
-        SupplierOperations? operatin = new()
+        /*---------------------حفظ عملية مرتجع مشتريات في جدول عمليات مرتجع مشتريات من مورد------------------------------------*/
+        SupplierOperations? supOperatin = new()
         {
             Order = rOrder,
             Supplier = supp,
@@ -115,14 +121,14 @@ internal class ReturnePurchaseCreateCommandHandler(IUnitOfWork unitOfWork): IReq
             NewBalance = supp.Balance - rOrder.TotalRemaining,
             CreatedDate = DateTime.Now,
         };
-        SupplierOperations? op = await unitOfWork.Repository<SupplierOperations>().AddAsync(operatin);
+        SupplierOperations? op = await unitOfWork.Repository<SupplierOperations>().AddAsync(supOperatin);
         /*---------------------------------------------------------------*/
         /*------------اثبات عملية البيع بالاجل وتحميلها للمورد--------------*/
         if(request.InvoiceType == 1)
         {
             if(supp != null)
             {
-                supp.Balance = operatin.NewBalance;
+                supp.Balance = supOperatin.NewBalance;
                 Supplier? updatedSupp = await unitOfWork.Repository<Supplier>().UpdateAsync(supp);
             }
         }
@@ -130,10 +136,14 @@ internal class ReturnePurchaseCreateCommandHandler(IUnitOfWork unitOfWork): IReq
         rOrder.AddDomainEvent(new ReturnPurchasesCreatedEvent(rOrder));
         items.ForEach(x => unitOfWork.Repository<Item>().UpdateAsync(x));
 
-        operations.ForEach(x => unitOfWork.Repository<ItemOperation>().AddAsync(x));
+        itemOperations.ForEach(x =>
+        {
+            x.Order = rOrder;
+            unitOfWork.Repository<ItemOperation>().AddAsync(x);
+        });
         int count = await unitOfWork.Save(cancellationToken);
 
-        return count > 0 ? await Result<int>.SuccessAsync("تم انشاء فاتورة مرتجعات مشتريات بنجاح")
-            : await Result<int>.FailureAsync("فشل في انشاء فاتورة مرتجعات مشتريات");
+        return count > 0 ? await Result<ReturnePurchaseResponse>.SuccessAsync(new ReturnePurchaseResponse(), "تم انشاء فاتورة مرتجعات مشتريات بنجاح")
+            : await Result<ReturnePurchaseResponse>.FailureAsync("فشل في انشاء فاتورة مرتجعات مشتريات");
     }
 }

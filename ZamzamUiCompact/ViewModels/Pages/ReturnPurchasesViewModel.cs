@@ -4,7 +4,7 @@ namespace ZamzamUiCompact.ViewModels.Pages;
 
 public partial class ReturnPurchasesViewModel(IUnitOfWork unitOfWork): BaseValidator
 {
-    const string RePurchase = "ReturnPurchase";
+    const string RePurchaseController = "ReturnPurchase";
     const string purchaseController = "Purchase";
     const string purchasesList = "GetSuppInvIdList";
     const string supplierController = "Supplier";
@@ -28,20 +28,21 @@ public partial class ReturnPurchasesViewModel(IUnitOfWork unitOfWork): BaseValid
     /*----------------------------------------------------------*/
 
     [ObservableProperty]
-    int _purchaseId;
+    int _purchaseId; //رقم فاتورة الشراء
 
     [ObservableProperty]
-    int _suppInvID;
+    int _suppInvID; // رقم فاتورة المورد
 
     [ObservableProperty]
-    DateTime _orderDate = DateTime.Today;
-    [ObservableProperty]
-    decimal _totalPrice;
+    DateTime _orderDate = DateTime.Today; // تاريخ فاتورة المرتجع
 
-    [ObservableProperty] decimal _totalDiscount;
-    [ObservableProperty] decimal _netPrice;
-    [ObservableProperty] decimal _totalPayed;
-    [ObservableProperty] decimal _totalremind;
+    [ObservableProperty]
+    decimal _totalPrice; // اجمالي السعر
+    [ObservableProperty] string _resoneForReturn;
+    [ObservableProperty] decimal _totalDiscount;// اجمالي الخصم
+    [ObservableProperty] decimal _netPrice;// صافى السعر بعد الخصم
+    [ObservableProperty] decimal _totalPayed; // المسترد
+    [ObservableProperty] decimal _totalremind; // الباقي
     [ObservableProperty] int _invoceType; // نوع الفاتورة {كاش,اجل}و
 
     [ObservableProperty] SupplierModel _supplier = new();
@@ -89,21 +90,27 @@ public partial class ReturnPurchasesViewModel(IUnitOfWork unitOfWork): BaseValid
     public async Task FillComponents()
     {
         Purchase = await GetPurchase(PurchasesInv.PurchaseId);
-        ItemModel item = new();
-        Items.Clear();
-        Purchase.Details!.ForEach(x =>
+        if(Purchase != null && Purchase.Details != null)
         {
-            item.ItemId = x.ItemId;
-            item.ItemName = x.ItemName!;
-            Items.Add(item);
+            ItemModel item = new();
+            Items.Clear();
+            Purchase.Details.ForEach(x =>
+            {
+                item.ItemId = x.ItemId;
+                item.ItemName = x.ItemName!;
+                Items.Add(item);
+            }
+            );
         }
-        );
+        else
+            Validate("لم يتم ايجاد الفاتورة", "Error", InfoBarSeverity.Error);
+
     }
 
     [RelayCommand]
     public void AddOrderDetails()
     {
-        int qt = Purchase.Details.Single(x => x.ItemId == Item.ItemId).Quantity;
+        int qt = Purchase.Details!.Single(x => x.ItemId == Item.ItemId).Quantity;
         decimal prc = Purchase.Details.Single(x => x.ItemId == Item.ItemId).Price;
         if(Quantity > qt)
         {
@@ -126,9 +133,7 @@ public partial class ReturnPurchasesViewModel(IUnitOfWork unitOfWork): BaseValid
             OrderDetail.Discount = Discount;
             OrderDetail.Total = Total;
             OrderDetails.Add(OrderDetail);
-            OnPropertyChanged(nameof(TotalPrice));
-            OnPropertyChanged(nameof(NetPrice));
-            OnPropertyChanged(nameof(Totalremind));
+            CalcPrices();
         }
         else
             Validate("لايمكن اضافة الصنف مرتين", "Error", InfoBarSeverity.Error);
@@ -138,10 +143,9 @@ public partial class ReturnPurchasesViewModel(IUnitOfWork unitOfWork): BaseValid
     public void RemoveRow(OrderDetailsModel detail)
     {
         OrderDetails.Remove(detail);
-        OnPropertyChanged(nameof(TotalPrice));
-        OnPropertyChanged(nameof(NetPrice));
-        OnPropertyChanged(nameof(Totalremind));
+        CalcPrices();
     }
+
 
     [RelayCommand]
     public async Task AddInvoice()
@@ -155,24 +159,24 @@ public partial class ReturnPurchasesViewModel(IUnitOfWork unitOfWork): BaseValid
         }
         if(OrderDetails.Count <= 0)
             Validate("يجب اضافة اصناف اولا", "Error", InfoBarSeverity.Error);
-        ReturnPurchaseModel returnPurchase = new();
-        //? purchase = new()
-        //{
-        //    SuppInvID = SuppInvID,
-        //    OrderDate = OrderDate,
-        //    TotalPrice = TotalPrice,
-        //    TotalDiscount = TotalDiscount,
-        //    TotalPayed = Payed,
-        //    TotalRemaining = Remaining,
-        //    Details = [.. OrderDetails],
-        //    EmployeeId = Employee.EmployeeId,
-        //    InvoiceType = InvoceType,
-        //    SupplierId = Supplier.SupplierId,
-        //};
-        Result<ReturnPurchaseModel>? result = await unitOfWork.Service<ReturnPurchaseModel>().AddAsync(purchaseController, returnPurchase);
+        ReturnPurchaseModel returnPurchase = new()
+        {
+            PurchaseId = PurchasesInv.PurchaseId,
+            SuppInvID = PurchasesInv.SuppInvID,
+            ResonForReturn = ResoneForReturn,
+            OrderDate = OrderDate,
+            TotalPrice = TotalPrice,
+            TotalDiscount = TotalDiscount,
+            TotalPayed = TotalPayed,
+            TotalRemaining = Totalremind,
+            Details = [.. OrderDetails],
+            EmployeeId = Employee.EmployeeId,
+            InvoiceType = InvoceType,
+            SupplierId = Purchase.SupplierId,
+        };
+        Result<ReturnPurchaseModel>? result = await unitOfWork.Service<ReturnPurchaseModel>().SendRequst(RePurchaseController, returnPurchase);
         if(result.Succeeded)
         {
-
             Validate(result.Message, "Success", InfoBarSeverity.Success);
             return;
         }
@@ -183,8 +187,15 @@ public partial class ReturnPurchasesViewModel(IUnitOfWork unitOfWork): BaseValid
 
     }
 
-    #endregion
+    [RelayCommand]
+    public void CalcPrices()
+    {
+        TotalPrice = OrderDetails.Sum(x => x.Total);
+        NetPrice = TotalPrice - TotalDiscount;
+        Totalremind = NetPrice - TotalPayed;
+    }
 
+    #endregion
 
     #region Private Methods
     private async Task<List<SupplierModel>> GetSuppliers()

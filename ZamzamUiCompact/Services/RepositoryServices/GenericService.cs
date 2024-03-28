@@ -38,7 +38,6 @@ public class GenericService<T>: IGenericService<T> where T : IModel
     {
         if(_user is null)
             throw new UserNullExecption();
-        var mod = JsonSerializer.Serialize(model);
         HttpResponseMessage? request = await _httpClient.PostAsJsonAsync($"{_httpClient.BaseAddress}/{uri}", model, option);
         return await GenericService<T>.SendRequst(request);
     }
@@ -49,6 +48,7 @@ public class GenericService<T>: IGenericService<T> where T : IModel
         HttpResponseMessage? request = await _httpClient.PutAsJsonAsync($"{_httpClient.BaseAddress}/{uri}", model, option);
         return await GenericService<T>.SendRequst(request);
     }
+
     public async Task<Result<int>> DeleteAsync(string uri)
     {
         if(_user is null)
@@ -60,6 +60,7 @@ public class GenericService<T>: IGenericService<T> where T : IModel
         Result<int>? result = await request.Content.ReadFromJsonAsync<Result<int>>();
         return result ?? new Result<int> { Succeeded = false, Message = $"fail to process" };
     }
+
     public async Task<Result<List<T>>> GetAllAsync(string uri)
     {
         if(_user is null)
@@ -67,6 +68,7 @@ public class GenericService<T>: IGenericService<T> where T : IModel
         Result<List<T>>? request = await _httpClient.GetFromJsonAsync<Result<List<T>>>($"{_httpClient.BaseAddress}/{uri}", option);
         return request ?? new Result<List<T>>() { Succeeded = false, Message = "faild to get the List" };
     }
+
     public async Task<Result<T>> GetByIdAsync(string uri)
     {
         if(_user is null)
@@ -74,12 +76,15 @@ public class GenericService<T>: IGenericService<T> where T : IModel
         Result<T>? request = await _httpClient.GetFromJsonAsync<Result<T>>($"{_httpClient.BaseAddress}/{uri}", option);
         return request ?? new Result<T>() { Succeeded = false, Message = "faild to get the Enity" };
     }
+
     public async Task<Result<T>> SendRequst(string uri, object obj)
     {
-        HttpResponseMessage? response = await _httpClient.PostAsJsonAsync($"{_httpClient.BaseAddress}/{uri}", obj, option);
-        var result = await SendRequst(response);
+        HttpResponseMessage? response = await _httpClient
+            .PostAsJsonAsync($"{_httpClient.BaseAddress}/{uri}", obj, option);
+        Result<T>? result = await SendRequst(response);
         return result;
     }
+
     private static async Task<Result<T>> SendRequst(HttpResponseMessage responseMessage)
     {
         if(!responseMessage.IsSuccessStatusCode)

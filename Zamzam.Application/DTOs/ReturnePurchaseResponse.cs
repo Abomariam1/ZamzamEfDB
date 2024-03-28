@@ -1,5 +1,5 @@
-﻿namespace ZamzamUiCompact.Models;
-public class ReturnPurchaseModel: Model
+﻿namespace Zamzam.Application.DTOs;
+public class ReturnePurchaseResponse
 {
     public int PurchaseId { get; set; }
     public int SuppInvID { get; set; }
@@ -12,6 +12,7 @@ public class ReturnPurchaseModel: Model
     public string ResonForReturn { get; set; } = string.Empty;
     public int EmployeeId { get; set; }
     public int SupplierId { get; set; }
-    public List<OrderDetailsModel>? Details { get; set; }
+    public List<ODetails>? Details { get; set; }
     public string? CreatedBy { get; set; }
+
 }

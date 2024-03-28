@@ -17,10 +17,10 @@ namespace Zamzam.Domain
         public OrderType OrderType { get; set; } // نوع العملية {بيع, شراء, مرتجع مبيعات, مرتجع مشتريات } و
         public InvoiceType InvoiceType { get; set; } // نوع الفاتورة {كاش,اجل} و
         public int EmployeeId { get; set; } // الموظف المسؤول عن العملية
-        public virtual Employee Employee { get; set; }
+        public virtual Employee? Employee { get; set; }
         public virtual required ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<Maintenance>? Maintenances { get; set; }
         public virtual ICollection<ItemOperation>? ItemOperations { get; set; }
-        public virtual ICollection<SupplierOperations> SupplierOperations { get; set; }
+        public virtual ICollection<SupplierOperations>? SupplierOperations { get; set; }
     }
 }

@@ -23,7 +23,7 @@
             <i:InvokeCommandAction Command="{Binding ViewModel.GetAllCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -38,6 +38,7 @@
                 CornerRadius="15">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -77,7 +78,11 @@
                               SelectedItem="{Binding ViewModel.Employee}"
                               DisplayMemberPath="EmployeeName" SelectedIndex="0"/>
                 </StackPanel>
-
+                <StackPanel Grid.Column="4" VerticalAlignment="Center" Margin="10 0">
+                    <TextBlock Text="سبب الاسترجاع" Margin="5" FontSize="16"/>
+                    <ui:TextBox FontSize="16" Text="{Binding ViewModel.ResoneForReturn}"
+                             />
+                </StackPanel>
             </Grid>
         </Border>
 
@@ -156,7 +161,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate DataType="{x:Type models:OrderDetailsModel}">
                                     <ui:Button Content="حذف" 
-                                               Command="{Binding DataContext.ViewModel.RemoveOrderDetailCommand,RelativeSource={RelativeSource AncestorType=ui:DataGrid}}"
+                                               Command="{Binding DataContext.ViewModel.RemoveRowCommand,RelativeSource={RelativeSource AncestorType=ui:DataGrid}}"
                                                CommandParameter="{Binding}"
                                                />
                                 </DataTemplate>
@@ -179,19 +184,37 @@
 
                 <StackPanel VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="اجمالى الخصم" Margin="5" FontSize="16"/>
-                    <ui:NumberBox FontSize="16" Value="{Binding ViewModel.TotalDiscount}"
+                    <ui:NumberBox FontSize="16"
+                                  Value="{Binding ViewModel.TotalDiscount}"
                                   IsEnabled="True" 
-                                  Text="{Binding ViewModel.TotalDiscount,StringFormat={}{0:0.00}}"/>
+                                  x:Name="totalDiscount"
+                                  Text="{Binding ViewModel.TotalDiscount,StringFormat={}{0:0.00}}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="TextChanged" SourceName="totalDiscount">
+                                <i:InvokeCommandAction Command="{Binding ViewModel.CalcPricesCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ui:NumberBox>
                 </StackPanel>
 
                 <StackPanel VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="صافى المبلغ" Margin="5" FontSize="16"/>
-                    <ui:TextBlock FontSize="16" Text="{Binding ViewModel.NetPrice,Mode=OneWay}" HorizontalAlignment="Center"/>
+                    <ui:TextBlock FontSize="16" Text="{Binding ViewModel.NetPrice}" HorizontalAlignment="Center"/>
                 </StackPanel>
 
                 <StackPanel VerticalAlignment="Center" Margin="10 0">
                     <TextBlock Text="المدفوع" Margin="5" FontSize="16"/>
-                    <ui:NumberBox FontSize="16" Value="{Binding ViewModel.TotalPayed}" IsEnabled="True"/>
+                    <ui:NumberBox x:Name="totalPayed" FontSize="16"
+                                  Text="{Binding ViewModel.TotalPayed,StringFormat={}{0:0.00}}"
+                                  Value="{Binding ViewModel.TotalPayed}"
+                                  IsEnabled="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="TextChanged" SourceName="totalPayed">
+                                <i:InvokeCommandAction Command="{Binding ViewModel.CalcPricesCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+
+                    </ui:NumberBox>
                 </StackPanel>
 
                 <StackPanel VerticalAlignment="Center" Margin="10 0">
